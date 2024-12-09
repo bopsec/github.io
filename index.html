@@ -16,23 +16,27 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 0;
         }
+
         pre {
-            font-size: 16px;
+            font-size: 1vw; /* Dynamically sized based on viewport width */
             line-height: 1.2;
             white-space: pre-wrap;
+            text-align: center;
         }
+
         .gradient {
             background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);
             -webkit-background-clip: text;
             color: transparent;
-            font-size: 8px;
         }
+
         img {
             margin-top: 20px;
             border-radius: 50%;
-            width: 150px;
-            height: 150px;
+            width: 128px;
+            height: 128px; /* Fixed size */
         }
     </style>
 </head>
