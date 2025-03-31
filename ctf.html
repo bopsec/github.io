@@ -1,99 +1,97 @@
+<!-- ctf.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Tools</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #ffffff;
-            font-family: monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        pre {
-            font-size: 1vw;
-            line-height: 1.2;
-            white-space: pre-wrap;
-        }
-        .gradient {
-            background: linear-gradient(to right, #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .resources {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .resources a {
-            color: #00ffff;
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: block;
-            margin: 10px 0;
-            transition: color 0.3s ease;
-        }
-        .resources a:hover {
-            color: #ffffff;
-        }
-        .resource-info {
-            margin-top: 10px;
-            display: none;
-            color: #bbbbbb;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BopSec — CTF Tools</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0b0f14;
+      font-family: 'Playfair Display', serif;
+      color: #e6d8a8;
+      text-align: center;
+    }
+    .hero {
+      padding: 60px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .logo {
+      max-width: 600px;
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 40px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+      color: #f0e6b2;
+    }
+    .subline {
+      font-size: 1rem;
+      color: #c2b280;
+      font-style: italic;
+      margin-bottom: 40px;
+    }
+    .tool-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 40px;
+      max-width: 1000px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+    }
+    .tool {
+      border: 1px solid #2f2f2f;
+      padding: 20px;
+      border-radius: 12px;
+      background-color: #0d1218;
+      transition: transform 0.2s ease;
+    }
+    .tool:hover {
+      transform: scale(1.03);
+    }
+    .tool a {
+      color: #fdf5c7;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .tool a:hover {
+      color: #ffffff;
+      text-shadow: 0 0 8px #d1b66f;
+    }
+    .back {
+      margin-bottom: 40px;
+    }
+    .back a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.95rem;
+    }
+    .back a:hover {
+      color: #ddd;
+    }
+  </style>
 </head>
 <body>
-    <pre class="gradient">
-      BBBBBBBBBBBBBBBBB                                           SSSSSSSSSSSSSSS
-      B::::::::::::::::B                                        SS:::::::::::::::S
-      B::::::BBBBBB:::::B                                      S:::::SSSSSS::::::S
-      BB:::::B     B:::::B                                     S:::::S     SSSSSSS
-        B::::B     B:::::B   ooooooooooo   ppppp   ppppppppp   S:::::S                eeeeeeeeeeee        cccccccccccccccc
-        B::::B     B:::::B oo:::::::::::oo p::::ppp:::::::::p  S:::::S              ee::::::::::::ee    cc:::::::::::::::c
-        B::::BBBBBB:::::B o:::::::::::::::op:::::::::::::::::p  S::::SSSS          e::::::eeeee:::::ee c:::::::::::::::::c
-        B:::::::::::::BB  o:::::ooooo:::::opp::::::ppppp::::::p  SS::::::SSSSS    e::::::e     e:::::ec:::::::cccccc:::::c
-        B::::BBBBBB:::::B o::::o     o::::o p:::::p     p:::::p    SSS::::::::SS  e:::::::eeeee::::::ec::::::c     ccccccc
-        B::::B     B:::::Bo::::o     o::::o p:::::p     p:::::p       SSSSSS::::S e:::::::::::::::::e c:::::c
-        B::::B     B:::::Bo::::o     o::::o p:::::p     p:::::p            S:::::Se::::::eeeeeeeeeee  c:::::c
-        B::::B     B:::::Bo::::o     o::::o p:::::p    p::::::p            S:::::Se:::::::e           c::::::c     ccccccc
-      BB:::::BBBBBB::::::Bo:::::ooooo:::::o p:::::ppppp:::::::pSSSSSSS     S:::::Se::::::::e          c:::::::cccccc:::::c
-      B:::::::::::::::::B o:::::::::::::::o p::::::::::::::::p S::::::SSSSSS:::::S e::::::::eeeeeeee   c:::::::::::::::::c
-      B::::::::::::::::B   oo:::::::::::oo  p::::::::::::::pp  S:::::::::::::::SS   ee:::::::::::::e    cc:::::::::::::::c
-      BBBBBBBBBBBBBBBBB      ooooooooooo    p::::::pppppppp     SSSSSSSSSSSSSSS       eeeeeeeeeeeeee      cccccccccccccccc
-                                            p:::::p
-                                            p:::::p
-                                           p:::::::p
-                                           p:::::::p
-                                           p:::::::p
-                                           ppppppppp
-    ctf placeholder
-    </pre>
-    <div class="resources">
-      <a href="#" onclick="showResourceInfo(event, 'overthewire')">OverTheWire Wargames</a>
-      <div id="overthewire" class="resource-info">
-          A great resource for learning Linux basics and hacking. Visit: <a href="https://overthewire.org" target="_blank">https://overthewire.org</a>
-      </div>
-      <a href="#" onclick="showResourceInfo(event, 'ctftime')">CTFTime</a>
-      <div id="ctftime" class="resource-info">
-          Track CTF events and rankings. Visit: <a href="https://ctftime.org" target="_blank">https://ctftime.org</a>
-      </div>
-    </div>
-    <script>
-        function showResourceInfo(event, id) {
-            event.preventDefault();
-            const resourceInfo = document.getElementById(id);
-            if (resourceInfo) {
-                resourceInfo.style.display = resourceInfo.style.display === "none" ? "block" : "none";
-            }
-        }
-    </script>
+  <section class="hero">
+    <img class="logo" src="bopsec-banner.png" alt="BopSec Banner" />
+    <h1>ctf</h1>
+    <p class="subline">ctf stuff ..</p>
+  </section>
+  <section class="tool-grid">
+    <div class="tool"><a href="https://grep.app/" target="_blank">🔍 grep.app</a></div>
+    <div class="tool"><a href="https://lostsec.xyz/" target="_blank">🕵️‍♂️ lostsec.xyz</a></div>
+    <div class="tool"><a href="https://github.com/SandySekharan/CTF-tool" target="_blank">🧰 Sandy's CTF Toolkit</a></div>
+    <div class="tool"><a href="https://github.com/0xor0ne/awesome-list/tree/main" target="_blank">📚 Awesome List (0xor0ne)</a></div>
+  </section>
+  <div class="back">
+    <a href="index.html">← Return to main site</a>
+  </div>
 </body>
 </html>
