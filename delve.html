@@ -112,14 +112,97 @@ function updateChart() {
     const labels = [];
     const data = [];
     const highestWave = parseInt(document.getElementById("highestWave").value) || 20; // fallback
-    for (let maxWave=2; maxWave<=highestWave; maxWave++) {
+    for (let maxWave = 2; maxWave <= highestWave; maxWave++) {
         labels.push(`Wave ${maxWave}`);
-        data.push(getExpectedGP(maxWave));
+
+        // Use your new function here
+        const stats = getExpectedDropsStopOnUnique(maxWave);
+        data.push(stats.expectedGPPerHour);
     }
     gpChart.data.labels = labels;
     gpChart.data.datasets[0].data = data;
     gpChart.update();
 }
+
+
+function getExpectedDropsStopOnUnique(maxWave) {
+    const valCloth = parseFloat(document.getElementById("valCloth").value);
+    const valEye = parseFloat(document.getElementById("valEye").value);
+    const valTreads = parseFloat(document.getElementById("valTreads").value);
+    const deathRate = parseFloat(document.getElementById("deathRate").value) / 100;
+    const bankTime = parseFloat(document.getElementById("bankTime").value);
+
+    // Cumulative wave times for quick calculation
+    const waveTimes = [];
+    for (let wave=1; wave<=maxWave; wave++) {
+        waveTimes.push(parseFloat(document.getElementById(`wave${Math.min(wave,9)}`).value));
+    }
+
+    // Calculate per-wave drop probabilities (any unique)
+    // Probability per unique drop type per wave = 1/dropRate, if defined
+    // Sum to get total unique drop probability per wave
+    // Also keep weighted values for expected drop value if drop occurs on that wave
+
+    let probNoDropBefore = 1.0; // Probability no unique drop before wave w
+    let expectedRunTime = 0;
+    let expectedValuePerRun = 0;
+
+    for (let wave=1; wave<=maxWave; wave++) {
+        const w = Math.min(wave, 9);
+
+        // Prob of each unique drop on this wave
+        const pCloth = dropRates.cloth[w] ? 1 / dropRates.cloth[w] : 0;
+        const pEye = dropRates.eye[w] ? 1 / dropRates.eye[w] : 0;
+        const pTreads = dropRates.treads[w] ? 1 / dropRates.treads[w] : 0;
+
+        const pAnyDrop = pCloth + pEye + pTreads;
+
+        // Probability the run ends exactly at this wave:
+        // no drop on all previous waves * drop at this wave
+        const pStopAtWave = probNoDropBefore * pAnyDrop;
+
+        // Calculate expected value if drop at this wave (weighted by drop proportions)
+        let expectedValueAtWave = 0;
+        if (pAnyDrop > 0) {
+            expectedValueAtWave += (pCloth / pAnyDrop) * valCloth;
+            expectedValueAtWave += (pEye / pAnyDrop) * valEye;
+            expectedValueAtWave += (pTreads / pAnyDrop) * valTreads;
+        }
+
+        // Calculate total time up to this wave (sum waveTimes up to wave) + bankTime
+        const timeUpToWave = waveTimes.slice(0, wave).reduce((a,b) => a+b, 0) + bankTime;
+
+        // Add to expected run time weighted by pStopAtWave
+        expectedRunTime += pStopAtWave * timeUpToWave;
+
+        // Add to expected value weighted by pStopAtWave
+        expectedValuePerRun += pStopAtWave * expectedValueAtWave;
+
+        // Update probability of no drop before next wave
+        probNoDropBefore *= (1 - pAnyDrop);
+    }
+
+    // If no drop at all (run ends at maxWave), treat as no loot and time = full run
+    // So add the residual probability * full run time
+
+    const pNoDropAtAll = probNoDropBefore;
+    const totalTimeFullRun = waveTimes.reduce((a,b) => a+b, 0) + bankTime;
+    expectedRunTime += pNoDropAtAll * totalTimeFullRun;
+    // No additional loot on no-drop case
+
+    // Convert run time to hours
+    const hoursPerRun = expectedRunTime / 3600;
+
+    // Return expected drops per run (in value) and GP/hr
+    const gpPerHour = expectedValuePerRun / hoursPerRun;
+
+    return {
+        expectedGPPerRun: expectedValuePerRun,
+        expectedGPPerHour: gpPerHour,
+        expectedRunTimeSeconds: expectedRunTime
+    };
+}
+
 
 function getExpectedDrops(maxWave) {
     const valCloth = parseFloat(document.getElementById("valCloth").value);
@@ -172,7 +255,6 @@ function getExpectedDrops(maxWave) {
 
     return { expectedDropsPerRun, expectedDropsPerHour };
 }
-
 
 
 const ctx = document.getElementById('gpChart').getContext('2d');
@@ -234,4 +316,3 @@ updateChart();
 
 </body>
 </html>
-
