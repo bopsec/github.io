@@ -132,76 +132,76 @@ function getExpectedDropsStopOnUnique(maxWave) {
     const deathRate = parseFloat(document.getElementById("deathRate").value) / 100;
     const bankTime = parseFloat(document.getElementById("bankTime").value);
 
-    // Cumulative wave times for quick calculation
+    // Wave times array
     const waveTimes = [];
-    for (let wave=1; wave<=maxWave; wave++) {
-        waveTimes.push(parseFloat(document.getElementById(`wave${Math.min(wave,9)}`).value));
+    for (let wave = 1; wave <= maxWave; wave++) {
+        waveTimes.push(parseFloat(document.getElementById(`wave${Math.min(wave, 9)}`).value));
     }
 
-    // Calculate per-wave drop probabilities (any unique)
-    // Probability per unique drop type per wave = 1/dropRate, if defined
-    // Sum to get total unique drop probability per wave
-    // Also keep weighted values for expected drop value if drop occurs on that wave
-
-    let probNoDropBefore = 1.0; // Probability no unique drop before wave w
+    let probNoDropNoDeathBefore = 1.0; // Probability no unique drop AND no death before this wave
     let expectedRunTime = 0;
-    let expectedValuePerRun = 0;
+    // Track expected drops per item over the run
+    let expectedDropsRun = { cloth: 0, eye: 0, treads: 0 };
 
-    for (let wave=1; wave<=maxWave; wave++) {
+    for (let wave = 1; wave <= maxWave; wave++) {
         const w = Math.min(wave, 9);
 
-        // Prob of each unique drop on this wave
         const pCloth = dropRates.cloth[w] ? 1 / dropRates.cloth[w] : 0;
         const pEye = dropRates.eye[w] ? 1 / dropRates.eye[w] : 0;
         const pTreads = dropRates.treads[w] ? 1 / dropRates.treads[w] : 0;
-
         const pAnyDrop = pCloth + pEye + pTreads;
 
-        // Probability the run ends exactly at this wave:
-        // no drop on all previous waves * drop at this wave
-        const pStopAtWave = probNoDropBefore * pAnyDrop;
+        const pDeath = wave >= 8 ? deathRate : 0;
 
-        // Calculate expected value if drop at this wave (weighted by drop proportions)
-        let expectedValueAtWave = 0;
+        // Probability run ends here due to drop or death
+        const pStopDrop = probNoDropNoDeathBefore * pAnyDrop;
+        const pStopDeath = probNoDropNoDeathBefore * pDeath;
+
+        // Add expected drops weighted by stopping at this wave with a drop
         if (pAnyDrop > 0) {
-            expectedValueAtWave += (pCloth / pAnyDrop) * valCloth;
-            expectedValueAtWave += (pEye / pAnyDrop) * valEye;
-            expectedValueAtWave += (pTreads / pAnyDrop) * valTreads;
+            expectedDropsRun.cloth += pStopDrop * (pCloth / pAnyDrop);
+            expectedDropsRun.eye += pStopDrop * (pEye / pAnyDrop);
+            expectedDropsRun.treads += pStopDrop * (pTreads / pAnyDrop);
         }
 
-        // Calculate total time up to this wave (sum waveTimes up to wave) + bankTime
-        const timeUpToWave = waveTimes.slice(0, wave).reduce((a,b) => a+b, 0) + bankTime;
+        const timeUpToWave = waveTimes.slice(0, wave).reduce((a, b) => a + b, 0) + bankTime;
+        expectedRunTime += pStopDrop * timeUpToWave;
+        expectedRunTime += pStopDeath * timeUpToWave;
 
-        // Add to expected run time weighted by pStopAtWave
-        expectedRunTime += pStopAtWave * timeUpToWave;
-
-        // Add to expected value weighted by pStopAtWave
-        expectedValuePerRun += pStopAtWave * expectedValueAtWave;
-
-        // Update probability of no drop before next wave
-        probNoDropBefore *= (1 - pAnyDrop);
+        probNoDropNoDeathBefore *= (1 - pAnyDrop) * (1 - pDeath);
     }
 
-    // If no drop at all (run ends at maxWave), treat as no loot and time = full run
-    // So add the residual probability * full run time
+    // No drop or death at all until maxWave, full run time no loot
+    const pNoDropNoDeathAtAll = probNoDropNoDeathBefore;
+    const totalTimeFullRun = waveTimes.reduce((a, b) => a + b, 0) + bankTime;
+    expectedRunTime += pNoDropNoDeathAtAll * totalTimeFullRun;
 
-    const pNoDropAtAll = probNoDropBefore;
-    const totalTimeFullRun = waveTimes.reduce((a,b) => a+b, 0) + bankTime;
-    expectedRunTime += pNoDropAtAll * totalTimeFullRun;
-    // No additional loot on no-drop case
-
-    // Convert run time to hours
     const hoursPerRun = expectedRunTime / 3600;
 
-    // Return expected drops per run (in value) and GP/hr
-    const gpPerHour = expectedValuePerRun / hoursPerRun;
+    const expectedGPPerRun = expectedDropsRun.cloth * valCloth +
+                            expectedDropsRun.eye * valEye +
+                            expectedDropsRun.treads * valTreads;
+
+    const expectedGPPerHour = expectedGPPerRun / hoursPerRun;
+
+    // Return expected drops and gp/hr per item for display
+    const expectedGPPerHourByItem = {
+        cloth: expectedDropsRun.cloth / hoursPerRun,
+        eye: expectedDropsRun.eye / hoursPerRun,
+        treads: expectedDropsRun.treads / hoursPerRun
+    };
 
     return {
-        expectedGPPerRun: expectedValuePerRun,
-        expectedGPPerHour: gpPerHour,
+        expectedDropsPerRun: expectedDropsRun,
+        expectedGPPerRun,
+        expectedGPPerHour,
+        expectedGPPerHourByItem,
         expectedRunTimeSeconds: expectedRunTime
     };
 }
+
+
+
 
 
 function getExpectedDrops(maxWave) {
@@ -279,7 +279,7 @@ document.getElementById('gpChart').onclick = function(evt) {
     if (points.length) {
         const firstPoint = points[0];
         const wave = firstPoint.index + 2; // waves start from 2
-        const drops = getExpectedDrops(wave);
+        const drops = getExpectedDropsStopOnUnique(wave);
 
         const valCloth = parseFloat(document.getElementById("valCloth").value);
         const valEye = parseFloat(document.getElementById("valEye").value);
@@ -289,9 +289,9 @@ document.getElementById('gpChart').onclick = function(evt) {
         const gpPerRunEye = drops.expectedDropsPerRun.eye * valEye;
         const gpPerRunTreads = drops.expectedDropsPerRun.treads * valTreads;
 
-        const gpPerHourCloth = drops.expectedDropsPerHour.cloth * valCloth;
-        const gpPerHourEye = drops.expectedDropsPerHour.eye * valEye;
-        const gpPerHourTreads = drops.expectedDropsPerHour.treads * valTreads;
+        const gpPerHourCloth = drops.expectedGPPerHourByItem.cloth * valCloth;
+        const gpPerHourEye = drops.expectedGPPerHourByItem.eye * valEye;
+        const gpPerHourTreads = drops.expectedGPPerHourByItem.treads * valTreads;
 
         document.getElementById('details').innerHTML = `
             <b>Wave ${wave} stats:</b><br>
@@ -301,9 +301,9 @@ document.getElementById('gpChart').onclick = function(evt) {
             &nbsp; Avernic Treads: ${drops.expectedDropsPerRun.treads.toFixed(4)} (GP: ${gpPerRunTreads.toLocaleString()})<br><br>
 
             Expected drops <i>per hour</i>:<br>
-            &nbsp; Mokhaiotl Cloth: ${drops.expectedDropsPerHour.cloth.toFixed(4)} (GP/hr: ${gpPerHourCloth.toLocaleString()})<br>
-            &nbsp; Eye of Ayak: ${drops.expectedDropsPerHour.eye.toFixed(4)} (GP/hr: ${gpPerHourEye.toLocaleString()})<br>
-            &nbsp; Avernic Treads: ${drops.expectedDropsPerHour.treads.toFixed(4)} (GP/hr: ${gpPerHourTreads.toLocaleString()})
+            &nbsp; Mokhaiotl Cloth: ${drops.expectedGPPerHourByItem.cloth.toFixed(4)} (GP/hr: ${gpPerHourCloth.toLocaleString()})<br>
+            &nbsp; Eye of Ayak: ${drops.expectedGPPerHourByItem.eye.toFixed(4)} (GP/hr: ${gpPerHourEye.toLocaleString()})<br>
+            &nbsp; Avernic Treads: ${drops.expectedGPPerHourByItem.treads.toFixed(4)} (GP/hr: ${gpPerHourTreads.toLocaleString()})
         `;
     }
 };
