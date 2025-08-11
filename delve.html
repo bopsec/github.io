@@ -128,17 +128,20 @@ function getExpectedDrops(maxWave) {
     const deathRate = parseFloat(document.getElementById("deathRate").value) / 100;
     const bankTime = parseFloat(document.getElementById("bankTime").value);
 
+    // Calculate survival probability for waves 8+
     let survivalProb = 1.0;
     for (let wave = 8; wave <= maxWave; wave++) {
         survivalProb *= (1 - deathRate);
     }
 
+    // Calculate run time
     let runTime = 0;
     for (let wave = 1; wave <= maxWave; wave++) {
         runTime += parseFloat(document.getElementById(`wave${Math.min(wave, 9)}`).value);
     }
     runTime += bankTime;
 
+    // Sum raw drop probabilities (no death adjustment) - expected drops per run
     let drops = {
         cloth: 0,
         eye: 0,
@@ -152,23 +155,24 @@ function getExpectedDrops(maxWave) {
         if (dropRates.treads[w]) drops.treads += 1 / dropRates.treads[w];
     }
 
-    // Adjust for death chance: all-or-nothing, so multiply by survivalProb
+    // Expected drops per run (no death)
     const expectedDropsPerRun = {
-        cloth: drops.cloth * survivalProb,
-        eye: drops.eye * survivalProb,
-        treads: drops.treads * survivalProb,
+        cloth: drops.cloth,
+        eye: drops.eye,
+        treads: drops.treads,
     };
 
-    // Expected drops per hour
+    // Expected drops per hour (accounting for death chance)
     const hoursPerRun = runTime / 3600;
     const expectedDropsPerHour = {
-        cloth: expectedDropsPerRun.cloth / hoursPerRun,
-        eye: expectedDropsPerRun.eye / hoursPerRun,
-        treads: expectedDropsPerRun.treads / hoursPerRun,
+        cloth: (expectedDropsPerRun.cloth * survivalProb) / hoursPerRun,
+        eye: (expectedDropsPerRun.eye * survivalProb) / hoursPerRun,
+        treads: (expectedDropsPerRun.treads * survivalProb) / hoursPerRun,
     };
 
     return { expectedDropsPerRun, expectedDropsPerHour };
 }
+
 
 
 const ctx = document.getElementById('gpChart').getContext('2d');
@@ -230,3 +234,4 @@ updateChart();
 
 </body>
 </html>
+
