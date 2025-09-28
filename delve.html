@@ -253,9 +253,9 @@ async function fetchPrices() {
         if (Number.isFinite(guides.eye)) {
             document.getElementById("valEye").value = guides.eye;
         }
-        if (Number.isFinite(guides.confliction) && Number.isFinite(guides.tormented)) {
-            const clothValue = Math.max(0, Math.round(guides.confliction - guides.tormented));
-            document.getElementById("valCloth").value = clothValue;
+        const clothValueFromComponents = computeClothValue(guides.confliction, guides.tormented);
+        if (clothValueFromComponents !== null) {
+            document.getElementById("valCloth").value = clothValueFromComponents;
         }
         if (Number.isFinite(guides.treads)) {
             document.getElementById("valTreads").value = guides.treads;
@@ -263,11 +263,22 @@ async function fetchPrices() {
 
         const missing = wikiItems.filter(item => !latest.data?.[item.id]).map(item => item.name);
         const missingNote = missing.length ? ` Missing price data for: ${missing.join(", ")}.` : "";
-        statusEl.textContent = `Prices refreshed from the OSRS Wiki at ${new Date().toLocaleTimeString()}.${missingNote}`;
+        const clothNote = clothValueFromComponents !== null
+            ? " Mokhaiotl Cloth price derived from Confliction gauntlets minus Tormented bracelet."
+            : "";
+        statusEl.textContent = `Prices refreshed from the OSRS Wiki at ${new Date().toLocaleTimeString()}.${missingNote}${clothNote}`;
         updateChart();
     } catch (error) {
         statusEl.textContent = `Price update failed: ${error.message}`;
     }
+}
+
+function computeClothValue(conflictionValue, tormentedValue) {
+    if (!Number.isFinite(conflictionValue) || !Number.isFinite(tormentedValue)) {
+        return null;
+    }
+
+    return Math.max(0, Math.round(conflictionValue - tormentedValue));
 }
 
 function getExpectedGP(maxWave) {
@@ -599,25 +610,27 @@ function clearPinnedWave() {
     highlightWave(null);
 }
 
-function highlightWave(wave, evt) {
+function highlightWave(wave) {
     const index = typeof wave === 'number' ? wave - 2 : null;
     const activeElements = index !== null ? [{ datasetIndex: 0, index }] : [];
+
     if (typeof gpChart.setActiveElements === 'function') {
         gpChart.setActiveElements(activeElements);
     }
+
     if (gpChart.tooltip && typeof gpChart.tooltip.setActiveElements === 'function') {
         if (activeElements.length) {
-            const dataset = gpChart.data?.datasets?.[0]?.data;
-            const hasScales = gpChart.scales?.x && gpChart.scales?.y && Array.isArray(dataset);
-            const position = evt ? { x: evt.offsetX ?? evt.x, y: evt.offsetY ?? evt.y } : hasScales ? {
-                x: gpChart.scales.x.getPixelForValue(index),
-                y: gpChart.scales.y.getPixelForValue(dataset[index])
-            } : { x: 0, y: 0 };
-            gpChart.tooltip.setActiveElements(activeElements, position);
+            const meta = gpChart.getDatasetMeta(0);
+            const element = meta?.data?.[index];
+            if (element) {
+                const { x, y } = element.getProps(['x', 'y'], true);
+                gpChart.tooltip.setActiveElements(activeElements, { x, y });
+            }
         } else {
             gpChart.tooltip.setActiveElements([], { x: 0, y: 0 });
         }
     }
+
     gpChart.update('none');
 }
 
@@ -628,7 +641,7 @@ function updateDetailsForChartEvent(evt, { commitSelection } = { commitSelection
         const wave = index + 2;
         const stats = getExpectedDropsStopOnUnique(wave);
         renderWaveDetails(wave, stats);
-        highlightWave(wave, evt);
+        highlightWave(wave);
         if (commitSelection) {
             pinnedWave = wave;
             pinnedStats = stats;
