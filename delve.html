@@ -227,11 +227,8 @@ async function fetchPrices() {
     statusEl.textContent = "Fetching latest guide prices...";
 
     try {
-        const latestUrl = new URL("https://prices.runescape.wiki/api/v1/osrs/latest");
-        wikiItems.forEach(item => latestUrl.searchParams.append("id", item.id));
-
         const latestResponse = await fetch(
-            latestUrl,
+            "https://prices.runescape.wiki/api/v1/osrs/latest",
             {
                 headers: {
                     "Accept": "application/json",
