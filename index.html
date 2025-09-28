@@ -2,89 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BopSec</title>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
-
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0b0f14; /* Perfect match with banner edge */
-      font-family: 'Playfair Display', serif;
-      color: #e6d8a8;
-      text-align: center;
-    }
-
-    .hero {
-      padding: 80px 20px 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hero .logo {
-      max-width: 600px;
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 50px;
-      box-shadow: none;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-      color: #f0e6b2;
-      margin: 0;
-    }
-
-    .subline {
-      font-size: 1rem;
-      color: #c2b280;
-      font-style: italic;
-      margin-top: 0.3rem;
-      margin-bottom: 40px;
-    }
-
-    nav {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 60px;
-      padding: 30px 0;
-      border-top: 1px solid #2f2f2f;
-      border-bottom: 1px solid #2f2f2f;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    nav a {
-      color: #fdf5c7;
-      text-decoration: none;
-      font-size: 1.25rem;
-      font-weight: bold;
-      transition: 0.3s ease;
-    }
-
-    nav a:hover {
-      color: #ffffff;
-      text-shadow: 0 0 8px #d1b66f;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bopsec — home</title>
+  <link rel="stylesheet" href="assets/chillwave.css" />
 </head>
 <body>
-  <section class="hero">
-    <img class="logo" src="bopsec-banner.png" alt="BopSec Banner" />
-    <h1>yooo what is this</h1>
-    <p class="subline">do not take anything here seriously </p>
-  </section>
+  <main>
+    <nav class="nav-glass reveal-on-scroll" aria-label="Primary">
+      <a class="nav-link" href="/osint.html">osint</a>
+      <a class="nav-link" href="/ctf.html">ctf</a>
+      <a class="nav-link" href="/pentest.html">pentest</a>
+      <a class="nav-link" href="/ai.html">ai</a>
+      <a class="nav-link" href="/general.html">general</a>
+    </nav>
 
-  <nav>
-    <a href="/osint.html">osint tools</a>
-    <a href="/ctf.html">ctf tools</a>
-    <a href="/pentest.html">pentest tools</a>
-    <a href="/ai.html">ai tools</a>
-    <a href="/general.html">general</a>
-  </nav>
+    <section class="hero reveal-on-scroll">
+      <div class="floating-orb" style="top:-40px; right:80px;"></div>
+      <div class="floating-orb orb-pink orb-small" style="bottom:20px; left:60px;"></div>
+      <div class="floating-orb orb-pink" style="top:120px; left:-30px;"></div>
+      <div class="scanline" aria-hidden="true"></div>
+      <div class="hero-content">
+        <img class="logo" src="bopsec-banner.png" alt="BopSec banner" />
+        <h1 class="holo-title">bopsec</h1>
+        <p class="tagline">this is all for fun and i'm just messing around.</p>
+        <div class="cta-row">
+          <button class="cta-button" type="button">tools</button>
+          <button class="cta-button" type="button">vibes</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="orbital-strip reveal-on-scroll" aria-hidden="true"></div>
+
+    <section class="tool-section reveal-on-scroll">
+      <h2 class="section-title">pick a lane</h2>
+      <div class="tool-grid">
+        <a class="tool-link" href="/osint.html">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🔎</span> osint</span>
+          </article>
+        </a>
+        <a class="tool-link" href="/ctf.html">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🕹️</span> ctf</span>
+          </article>
+        </a>
+        <a class="tool-link" href="/pentest.html">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">💥</span> pentest</span>
+          </article>
+        </a>
+        <a class="tool-link" href="/ai.html">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🤖</span> ai</span>
+          </article>
+        </a>
+        <a class="tool-link" href="/general.html">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🧰</span> general</span>
+          </article>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/tilt.js" defer></script>
 </body>
 </html>
