@@ -2,58 +2,167 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Delve GP/hr</title>
+<title>Delve GP/hr Planner</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #111; color: #eee; }
-    label { display: block; margin-top: 8px; }
-    input { width: 100px; }
-    .section { border: 1px solid #444; padding: 10px; margin: 10px 0; }
-    canvas { background: #222; }
-    /* Add this: */
+    :root {
+        color-scheme: dark;
+    }
+    body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        padding: 24px;
+        background: #0c0c0f;
+        color: #f1f2f6;
+        max-width: 1100px;
+        margin: auto;
+        line-height: 1.6;
+    }
+    h1 {
+        margin-bottom: 8px;
+        font-size: 2.2rem;
+    }
+    h2 {
+        margin-top: 0;
+        font-size: 1.3rem;
+    }
+    p.lead {
+        margin-top: 0;
+        color: #c8cad0;
+    }
+    label {
+        display: block;
+        margin-top: 8px;
+    }
+    input {
+        width: 120px;
+        padding: 4px 6px;
+        border-radius: 4px;
+        border: 1px solid #3a3d45;
+        background: #16181f;
+        color: inherit;
+    }
+    input:focus {
+        outline: 2px solid #00bcd4;
+        outline-offset: 1px;
+    }
+    .grid {
+        display: grid;
+        gap: 16px;
+    }
+    .grid.two {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .section {
+        border: 1px solid #2a2d36;
+        border-radius: 8px;
+        padding: 16px;
+        background: #11131a;
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.35);
+    }
+    canvas {
+        background: #1b1d27;
+        border-radius: 8px;
+        margin-top: 24px;
+    }
     canvas#gpChart {
       width: 1200px !important;
       height: 600px !important;
-      max-width: 90vw;
-      margin: auto;
+      max-width: 100%;
       display: block;
+    }
+    #details {
+        border: 1px solid #2a2d36;
+        border-radius: 8px;
+        padding: 16px;
+        background: #0f1118;
+    }
+    .status {
+        margin-top: 8px;
+        font-size: 0.9rem;
+        color: #99a4c2;
+    }
+    button {
+        background: #1f9df1;
+        border: none;
+        padding: 8px 14px;
+        border-radius: 6px;
+        color: white;
+        cursor: pointer;
+        margin-top: 8px;
+        font-weight: 600;
+    }
+    button:hover {
+        background: #1b8ad6;
+    }
+    .wave-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 8px 16px;
+    }
+    .summary {
+        margin-top: 16px;
+        border-left: 4px solid #1f9df1;
+        padding-left: 12px;
+        color: #d2e3ff;
     }
 </style>
 </head>
 <body>
+<h1>Delve GP/hr planner</h1>
+<p class="lead">Tweak the timings, price data, and risk assumptions below to see how profitable different Delve waves are when you stop once you hit a unique drop.</p>
 
-<h1>Delve GP/hr calc</h1>
+<div class="summary" id="summary"></div>
 
-<div class="section">
-    <h2>Wave Times (seconds)</h2>
-    <div id="waveTimesInputs"></div>
-</div>
+<div class="grid two" style="margin-top: 20px;">
+    <div class="section">
+        <h2>Wave timings</h2>
+        <p style="margin-top: 0; font-size: 0.9rem; color: #b6bdcf;">Adjust the base time spent in each wave. "Wave 9+" is used for every wave beyond eight. The in-between timer is added to every wave to account for transitions.</p>
+        <div class="wave-grid" id="waveTimesInputs"></div>
+        <label style="margin-top: 12px;">In-between wave time (sec)
+            <input id="inBetweenTime" type="number" value="5" min="0">
+        </label>
+    </div>
 
-<div class="section">
-    <h2>Banking Time (seconds)</h2>
-    <input id="bankTime" type="number" value="120">
-</div>
+    <div class="grid" style="gap: 16px;">
+        <div class="section">
+            <h2>Run setup</h2>
+            <label>Banking &amp; reset time (sec)
+                <input id="bankTime" type="number" value="120" min="0">
+            </label>
+            <label>Death chance per wave (8+) %
+                <input id="deathRate" type="number" value="0.5" min="0" step="0.1">
+            </label>
+            <label>Death cost (gp)
+                <input id="deathCost" type="number" value="0" min="0">
+            </label>
+            <label>Highest wave to plot
+                <input id="highestWave" type="number" value="40" min="2">
+            </label>
+        </div>
 
-<div class="section">
-    <h2>Death Rate per wave (8+) (%)</h2>
-    <input id="deathRate" type="number" value="0.5">
-</div>
-
-<div class="section">
-    <h2>Highest wave to check</h2>
-    <input id="highestWave" type="number" value="40">
-</div>
-
-<div class="section">
-    <h2>Item Values (GP)</h2>
-    <label>Mokhaiotl Cloth: <input id="valCloth" type="number" value="75000000"></label>
-    <label>Eye of Ayak: <input id="valEye" type="number" value="65000000"></label>
-    <label>Avernic Treads: <input id="valTreads" type="number" value="280000000"></label>
+        <div class="section">
+            <h2>Item prices</h2>
+            <p style="margin-top: 0; font-size: 0.9rem; color: #b6bdcf;">Values default to the Old School RuneScape wiki price tracker. Update them manually or refresh from the wiki below.</p>
+            <label>Mokhaiotl Cloth
+                <input id="valCloth" type="number" value="75000000" min="0">
+            </label>
+            <label>Eye of Ayak
+                <input id="valEye" type="number" value="65000000" min="0">
+            </label>
+            <label>Avernic Treads
+                <input id="valTreads" type="number" value="280000000" min="0">
+            </label>
+            <button id="refreshPrices" type="button">Refresh from OSRS Wiki</button>
+            <div id="priceStatus" class="status"></div>
+        </div>
+    </div>
 </div>
 
 <canvas id="gpChart" width="1200" height="600"></canvas>
 
-<div id="details" style="margin-top: 20px; font-size: 0.9em; line-height: 1.4em;"></div>
+<div id="details" style="margin-top: 24px; font-size: 0.95em; line-height: 1.5em;">
+    Click any point on the chart to see a breakdown for that stopping wave.
+</div>
 <script>
 const dropRates = {
     cloth: {2: 2500, 3: 2000, 4: 1350, 5: 810, 6: 765, 7: 720, 8: 630, 9: 540},
@@ -61,17 +170,86 @@ const dropRates = {
     treads:{4: 1350, 5: 810, 6: 765, 7: 720, 8: 630, 9: 540}
 };
 
-// Create wave time inputs
+// Create wave time inputs with updated defaults
+const defaultWaveTimes = {
+    1: 35,
+    2: 36,
+    3: 50,
+    4: 50,
+    5: 65,
+    6: 65,
+    7: 70,
+    8: 75,
+    9: 70 // Waves 9+ reuse this entry
+};
+
 const waveTimesInputsDiv = document.getElementById("waveTimesInputs");
-for (let i=1;i<=9;i++) {
-    let label = document.createElement("label");
-    label.textContent = `Wave ${i} time: `;
-    let input = document.createElement("input");
+for (let i = 1; i <= 9; i++) {
+    const wrapper = document.createElement("label");
+    wrapper.innerHTML = `${i < 9 ? `Wave ${i}` : "Wave 9+"}<br>`;
+
+    const input = document.createElement("input");
     input.type = "number";
-    input.value = i <= 8 ? 60 : 80; // default values
+    input.min = "0";
+    input.value = defaultWaveTimes[i];
     input.id = `wave${i}`;
-    label.appendChild(input);
-    waveTimesInputsDiv.appendChild(label);
+
+    wrapper.appendChild(input);
+    waveTimesInputsDiv.appendChild(wrapper);
+}
+
+const wikiItems = [
+    { name: "Eye of Ayak (Uncharged)", key: "eye", id: 31115 },
+    { name: "Confliction gauntlets", key: "confliction", id: 31106 },
+    { name: "Tormented bracelet", key: "tormented", id: 19544 },
+    { name: "Avernic treads", key: "treads", id: 31088 }
+];
+
+async function fetchPrices() {
+    const statusEl = document.getElementById("priceStatus");
+    statusEl.textContent = "Fetching latest guide prices...";
+
+    try {
+        const latestResponse = await fetch(`https://prices.runescape.wiki/api/v1/osrs/latest?id=${wikiItems.map(i => i.id).join(",")}`);
+        if (!latestResponse.ok) {
+            throw new Error(`Latest price request failed (${latestResponse.status})`);
+        }
+        const latest = await latestResponse.json();
+
+        const guides = {};
+        wikiItems.forEach(item => {
+            const data = latest.data?.[item.id];
+            if (!data) {
+                return;
+            }
+            const high = Number(data.high);
+            const low = Number(data.low);
+            const guide = Number.isFinite(high) && Number.isFinite(low)
+                ? Math.round((high + low) / 2)
+                : (Number.isFinite(high) ? high : low);
+            if (Number.isFinite(guide)) {
+                guides[item.key] = guide;
+            }
+        });
+
+        if (Number.isFinite(guides.eye)) {
+            document.getElementById("valEye").value = guides.eye;
+        }
+        if (Number.isFinite(guides.confliction) && Number.isFinite(guides.tormented)) {
+            const clothValue = Math.max(0, Math.round(guides.confliction - guides.tormented));
+            document.getElementById("valCloth").value = clothValue;
+        }
+        if (Number.isFinite(guides.treads)) {
+            document.getElementById("valTreads").value = guides.treads;
+        }
+
+        const missing = wikiItems.filter(item => !latest.data?.[item.id]).map(item => item.name);
+        const missingNote = missing.length ? ` Missing price data for: ${missing.join(", ")}.` : "";
+        statusEl.textContent = `Prices refreshed from the OSRS Wiki at ${new Date().toLocaleTimeString()}.${missingNote}`;
+        updateChart();
+    } catch (error) {
+        statusEl.textContent = `Price update failed: ${error.message}`;
+    }
 }
 
 function getExpectedGP(maxWave) {
@@ -80,6 +258,7 @@ function getExpectedGP(maxWave) {
     const valTreads = parseFloat(document.getElementById("valTreads").value);
     const deathRate = parseFloat(document.getElementById("deathRate").value) / 100;
     const bankTime = parseFloat(document.getElementById("bankTime").value);
+    const betweenTime = parseFloat(document.getElementById("inBetweenTime").value) || 0;
 
     // Probability to survive all the way to maxWave (death rolls only 8+)
     let survivalProb = 1.0;
@@ -90,7 +269,7 @@ function getExpectedGP(maxWave) {
     // Time per run
     let runTime = 0;
     for (let wave=1; wave<=maxWave; wave++) {
-        runTime += parseFloat(document.getElementById(`wave${Math.min(wave,9)}`).value);
+        runTime += parseFloat(document.getElementById(`wave${Math.min(wave,9)}`).value) + betweenTime;
     }
     runTime += bankTime;
 
@@ -112,16 +291,95 @@ function updateChart() {
     const labels = [];
     const data = [];
     const highestWave = parseInt(document.getElementById("highestWave").value) || 20; // fallback
+    let bestStats = null;
+    let bestWave = null;
+
     for (let maxWave = 2; maxWave <= highestWave; maxWave++) {
         labels.push(`Wave ${maxWave}`);
 
-        // Use your new function here
         const stats = getExpectedDropsStopOnUnique(maxWave);
         data.push(stats.expectedGPPerHour);
+
+        if (!bestStats || stats.expectedGPPerHour > bestStats.expectedGPPerHour) {
+            bestStats = stats;
+            bestWave = maxWave;
+        }
     }
+
     gpChart.data.labels = labels;
     gpChart.data.datasets[0].data = data;
     gpChart.update();
+
+    renderSummary(bestWave, bestStats);
+    if (bestWave && bestStats) {
+        renderWaveDetails(bestWave, bestStats);
+    } else {
+        document.getElementById('details').textContent = 'Adjust the inputs above to generate results.';
+    }
+}
+
+function renderSummary(bestWave, bestStats) {
+    const summary = document.getElementById('summary');
+    if (!bestWave || !bestStats) {
+        summary.textContent = 'Set a highest wave above 2 to plot expected values.';
+        return;
+    }
+
+    const expectedMinutes = (bestStats.expectedRunTimeSeconds / 60).toFixed(1);
+    summary.innerHTML = `Stopping after wave <strong>${bestWave}</strong> yields an estimated net <strong>${bestStats.expectedGPPerHour.toLocaleString(undefined, { maximumFractionDigits: 0 })} gp/hr</strong> after death costs, with an average run lasting <strong>${expectedMinutes}</strong> minutes.`;
+}
+
+function renderWaveDetails(wave, stats) {
+    const valCloth = parseFloat(document.getElementById("valCloth").value);
+    const valEye = parseFloat(document.getElementById("valEye").value);
+    const valTreads = parseFloat(document.getElementById("valTreads").value);
+    const deathCost = parseFloat(document.getElementById("deathCost").value) || 0;
+    const formatGP = (value) => value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+
+    const gpPerRunCloth = stats.expectedDropsPerRun.cloth * valCloth;
+    const gpPerRunEye = stats.expectedDropsPerRun.eye * valEye;
+    const gpPerRunTreads = stats.expectedDropsPerRun.treads * valTreads;
+    const totalDropGPPerRun = gpPerRunCloth + gpPerRunEye + gpPerRunTreads;
+    const netGPPerRun = stats.expectedGPPerRun;
+
+    const gpPerHourCloth = stats.expectedGPPerHourByItem.cloth * valCloth;
+    const gpPerHourEye = stats.expectedGPPerHourByItem.eye * valEye;
+    const gpPerHourTreads = stats.expectedGPPerHourByItem.treads * valTreads;
+    const netGPPerHour = stats.expectedGPPerHour;
+
+    const expectedMinutes = (stats.expectedRunTimeSeconds / 60).toFixed(1);
+    const probabilityDrop = (stats.probabilityStopDrop * 100).toFixed(2);
+    const probabilityDeath = (stats.probabilityStopDeath * 100).toFixed(2);
+    const probabilityNoEvent = (stats.probabilityNoDropNoDeathAtAll * 100).toFixed(2);
+    const expectedDeathsPerRun = stats.expectedDeathsPerRun;
+    const deathCostPerRun = stats.expectedDeathCostPerRun;
+    const deathCostPerHour = stats.expectedDeathCostPerHour;
+    const expectedRunHours = stats.expectedRunTimeSeconds / 3600;
+    const expectedDeathsPerHour = expectedRunHours > 0 ? expectedDeathsPerRun / expectedRunHours : 0;
+
+    document.getElementById('details').innerHTML = `
+        <strong>Wave ${wave} stop:</strong><br>
+        Expected unique chance before stopping: <strong>${probabilityDrop}%</strong><br>
+        Chance of death before stopping: ${probabilityDeath}%<br>
+        Chance of a full run with no drop: ${probabilityNoEvent}%<br>
+        Average run time: ${expectedMinutes} minutes<br><br>
+        <strong>Expected drops per run</strong><br>
+        &nbsp; Mokhaiotl Cloth: ${stats.expectedDropsPerRun.cloth.toFixed(4)} (≈ ${formatGP(gpPerRunCloth)} gp)<br>
+        &nbsp; Eye of Ayak: ${stats.expectedDropsPerRun.eye.toFixed(4)} (≈ ${formatGP(gpPerRunEye)} gp)<br>
+        &nbsp; Avernic Treads: ${stats.expectedDropsPerRun.treads.toFixed(4)} (≈ ${formatGP(gpPerRunTreads)} gp)<br><br>
+        <strong>Expected drops per hour</strong><br>
+        &nbsp; Mokhaiotl Cloth: ${stats.expectedGPPerHourByItem.cloth.toFixed(4)} (≈ ${formatGP(gpPerHourCloth)} gp/hr)<br>
+        &nbsp; Eye of Ayak: ${stats.expectedGPPerHourByItem.eye.toFixed(4)} (≈ ${formatGP(gpPerHourEye)} gp/hr)<br>
+        &nbsp; Avernic Treads: ${stats.expectedGPPerHourByItem.treads.toFixed(4)} (≈ ${formatGP(gpPerHourTreads)} gp/hr)<br><br>
+        <strong>Death risk</strong><br>
+        &nbsp; Expected deaths per run: ${expectedDeathsPerRun.toFixed(4)} (costing ≈ ${formatGP(deathCostPerRun)} gp)<br>
+        &nbsp; Expected deaths per hour: ${expectedDeathsPerHour.toFixed(4)} (costing ≈ ${formatGP(deathCostPerHour)} gp/hr)<br>
+        &nbsp; Death cost setting: ${formatGP(deathCost)} gp<br><br>
+        <strong>Net value</strong><br>
+        &nbsp; Total drop value per run: ≈ ${formatGP(totalDropGPPerRun)} gp<br>
+        &nbsp; Net gp per run after deaths: ≈ ${formatGP(netGPPerRun)} gp<br>
+        &nbsp; Net gp per hour after deaths: ≈ ${formatGP(netGPPerHour)} gp/hr
+    `;
 }
 
 
@@ -130,18 +388,22 @@ function getExpectedDropsStopOnUnique(maxWave) {
     const valEye = parseFloat(document.getElementById("valEye").value);
     const valTreads = parseFloat(document.getElementById("valTreads").value);
     const deathRate = parseFloat(document.getElementById("deathRate").value) / 100;
+    const deathCost = parseFloat(document.getElementById("deathCost").value) || 0;
     const bankTime = parseFloat(document.getElementById("bankTime").value);
+    const betweenTime = parseFloat(document.getElementById("inBetweenTime").value) || 0;
 
     // Wave times array
     const waveTimes = [];
     for (let wave = 1; wave <= maxWave; wave++) {
-        waveTimes.push(parseFloat(document.getElementById(`wave${Math.min(wave, 9)}`).value));
+        waveTimes.push(parseFloat(document.getElementById(`wave${Math.min(wave, 9)}`).value) + betweenTime);
     }
 
     let probNoDropNoDeathBefore = 1.0; // Probability no unique drop AND no death before this wave
     let expectedRunTime = 0;
     // Track expected drops per item over the run
     let expectedDropsRun = { cloth: 0, eye: 0, treads: 0 };
+    let probabilityStopDrop = 0;
+    let probabilityStopDeath = 0;
 
     for (let wave = 1; wave <= maxWave; wave++) {
         const w = Math.min(wave, 9);
@@ -168,6 +430,9 @@ function getExpectedDropsStopOnUnique(maxWave) {
         expectedRunTime += pStopDrop * timeUpToWave;
         expectedRunTime += pStopDeath * timeUpToWave;
 
+        probabilityStopDrop += pStopDrop;
+        probabilityStopDeath += pStopDeath;
+
         probNoDropNoDeathBefore *= (1 - pAnyDrop) * (1 - pDeath);
     }
 
@@ -177,18 +442,20 @@ function getExpectedDropsStopOnUnique(maxWave) {
     expectedRunTime += pNoDropNoDeathAtAll * totalTimeFullRun;
 
     const hoursPerRun = expectedRunTime / 3600;
+    const safeHoursPerRun = hoursPerRun > 0 ? hoursPerRun : Infinity;
 
     const expectedGPPerRun = expectedDropsRun.cloth * valCloth +
                             expectedDropsRun.eye * valEye +
-                            expectedDropsRun.treads * valTreads;
+                            expectedDropsRun.treads * valTreads -
+                            (probabilityStopDeath * deathCost);
 
-    const expectedGPPerHour = expectedGPPerRun / hoursPerRun;
+    const expectedGPPerHour = hoursPerRun > 0 ? expectedGPPerRun / hoursPerRun : 0;
 
     // Return expected drops and gp/hr per item for display
     const expectedGPPerHourByItem = {
-        cloth: expectedDropsRun.cloth / hoursPerRun,
-        eye: expectedDropsRun.eye / hoursPerRun,
-        treads: expectedDropsRun.treads / hoursPerRun
+        cloth: expectedDropsRun.cloth / safeHoursPerRun,
+        eye: expectedDropsRun.eye / safeHoursPerRun,
+        treads: expectedDropsRun.treads / safeHoursPerRun
     };
 
     return {
@@ -196,7 +463,13 @@ function getExpectedDropsStopOnUnique(maxWave) {
         expectedGPPerRun,
         expectedGPPerHour,
         expectedGPPerHourByItem,
-        expectedRunTimeSeconds: expectedRunTime
+        expectedRunTimeSeconds: expectedRunTime,
+        probabilityStopDrop,
+        probabilityStopDeath,
+        probabilityNoDropNoDeathAtAll: pNoDropNoDeathAtAll,
+        expectedDeathsPerRun: probabilityStopDeath,
+        expectedDeathCostPerRun: probabilityStopDeath * deathCost,
+        expectedDeathCostPerHour: hoursPerRun > 0 ? (probabilityStopDeath * deathCost) / hoursPerRun : 0
     };
 }
 
@@ -210,6 +483,7 @@ function getExpectedDrops(maxWave) {
     const valTreads = parseFloat(document.getElementById("valTreads").value);
     const deathRate = parseFloat(document.getElementById("deathRate").value) / 100;
     const bankTime = parseFloat(document.getElementById("bankTime").value);
+    const betweenTime = parseFloat(document.getElementById("inBetweenTime").value) || 0;
 
     // Calculate survival probability for waves 8+
     let survivalProb = 1.0;
@@ -220,7 +494,7 @@ function getExpectedDrops(maxWave) {
     // Calculate run time
     let runTime = 0;
     for (let wave = 1; wave <= maxWave; wave++) {
-        runTime += parseFloat(document.getElementById(`wave${Math.min(wave, 9)}`).value);
+        runTime += parseFloat(document.getElementById(`wave${Math.min(wave, 9)}`).value) + betweenTime;
     }
     runTime += bankTime;
 
@@ -257,7 +531,8 @@ function getExpectedDrops(maxWave) {
 }
 
 
-const ctx = document.getElementById('gpChart').getContext('2d');
+const chartCanvas = document.getElementById('gpChart');
+const ctx = chartCanvas.getContext('2d');
 const gpChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -266,52 +541,57 @@ const gpChart = new Chart(ctx, {
             label: 'GP/hr',
             data: [],
             borderColor: 'rgb(75, 192, 192)',
-            tension: 0.1
+            backgroundColor: 'rgba(75, 192, 192, 0.15)',
+            tension: 0.1,
+            borderWidth: 2,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointHitRadius: 12,
+            pointBackgroundColor: 'rgb(75, 192, 192)',
+            pointBorderColor: '#0a2f2f'
         }]
     },
     options: {
-        scales: { y: { beginAtZero: true } }
+        scales: { y: { beginAtZero: true } },
+        interaction: { mode: 'nearest', intersect: false },
+        plugins: {
+            legend: { display: false },
+            tooltip: { enabled: true }
+        }
     }
 });
 
-document.getElementById('gpChart').onclick = function(evt) {
-    const points = gpChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, false);
+function updateDetailsForChartEvent(evt, requireIntersect = true) {
+    const points = gpChart.getElementsAtEventForMode(evt, 'nearest', { intersect: requireIntersect }, false);
     if (points.length) {
-        const firstPoint = points[0];
-        const wave = firstPoint.index + 2; // waves start from 2
+        const wave = points[0].index + 2;
         const drops = getExpectedDropsStopOnUnique(wave);
-
-        const valCloth = parseFloat(document.getElementById("valCloth").value);
-        const valEye = parseFloat(document.getElementById("valEye").value);
-        const valTreads = parseFloat(document.getElementById("valTreads").value);
-
-        const gpPerRunCloth = drops.expectedDropsPerRun.cloth * valCloth;
-        const gpPerRunEye = drops.expectedDropsPerRun.eye * valEye;
-        const gpPerRunTreads = drops.expectedDropsPerRun.treads * valTreads;
-
-        const gpPerHourCloth = drops.expectedGPPerHourByItem.cloth * valCloth;
-        const gpPerHourEye = drops.expectedGPPerHourByItem.eye * valEye;
-        const gpPerHourTreads = drops.expectedGPPerHourByItem.treads * valTreads;
-
-        document.getElementById('details').innerHTML = `
-            <b>Wave ${wave} stats:</b><br>
-            Expected drops <i>per run</i>:<br>
-            &nbsp; Mokhaiotl Cloth: ${drops.expectedDropsPerRun.cloth.toFixed(4)} (GP: ${gpPerRunCloth.toLocaleString()})<br>
-            &nbsp; Eye of Ayak: ${drops.expectedDropsPerRun.eye.toFixed(4)} (GP: ${gpPerRunEye.toLocaleString()})<br>
-            &nbsp; Avernic Treads: ${drops.expectedDropsPerRun.treads.toFixed(4)} (GP: ${gpPerRunTreads.toLocaleString()})<br><br>
-
-            Expected drops <i>per hour</i>:<br>
-            &nbsp; Mokhaiotl Cloth: ${drops.expectedGPPerHourByItem.cloth.toFixed(4)} (GP/hr: ${gpPerHourCloth.toLocaleString()})<br>
-            &nbsp; Eye of Ayak: ${drops.expectedGPPerHourByItem.eye.toFixed(4)} (GP/hr: ${gpPerHourEye.toLocaleString()})<br>
-            &nbsp; Avernic Treads: ${drops.expectedGPPerHourByItem.treads.toFixed(4)} (GP/hr: ${gpPerHourTreads.toLocaleString()})
-        `;
+        renderWaveDetails(wave, drops);
+        return true;
     }
-};
+    return false;
+}
+
+chartCanvas.addEventListener('click', evt => {
+    updateDetailsForChartEvent(evt, true);
+});
+
+chartCanvas.addEventListener('mousemove', evt => {
+    const hovering = updateDetailsForChartEvent(evt, true);
+    chartCanvas.style.cursor = hovering ? 'pointer' : 'default';
+});
+
+chartCanvas.addEventListener('mouseleave', () => {
+    chartCanvas.style.cursor = 'default';
+});
 
 
 
 document.querySelectorAll("input").forEach(inp => inp.addEventListener("input", updateChart));
+document.getElementById('refreshPrices').addEventListener('click', fetchPrices);
+
 updateChart();
+fetchPrices();
 </script>
 
 </body>
