@@ -1,98 +1,72 @@
-<!-- ai.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BopSec — AI Tools</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0b0f14;
-      font-family: 'Playfair Display', serif;
-      color: #e6d8a8;
-      text-align: center;
-    }
-    .hero {
-      padding: 60px 20px 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .logo {
-      max-width: 600px;
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 40px;
-    }
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-      color: #f0e6b2;
-    }
-    .subline {
-      font-size: 1rem;
-      color: #c2b280;
-      font-style: italic;
-      margin-bottom: 40px;
-    }
-    .tool-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 40px;
-      max-width: 1000px;
-      margin: 0 auto 60px;
-      padding: 0 20px;
-    }
-    .tool {
-      border: 1px solid #2f2f2f;
-      padding: 20px;
-      border-radius: 12px;
-      background-color: #0d1218;
-      transition: transform 0.2s ease;
-    }
-    .tool:hover {
-      transform: scale(1.03);
-    }
-    .tool a {
-      color: #fdf5c7;
-      text-decoration: none;
-      font-size: 1.1rem;
-      font-weight: bold;
-    }
-    .tool a:hover {
-      color: #ffffff;
-      text-shadow: 0 0 8px #d1b66f;
-    }
-    .back {
-      margin-bottom: 40px;
-    }
-    .back a {
-      color: #aaa;
-      text-decoration: none;
-      font-size: 0.95rem;
-    }
-    .back a:hover {
-      color: #ddd;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bopsec — ai</title>
+  <link rel="stylesheet" href="assets/chillwave.css" />
 </head>
 <body>
-  <section class="hero">
-    <img class="logo" src="bopsec-banner.png" alt="BopSec Banner" />
-    <h1>AI tools</h1>
-    <p class="subline">few diff ai tools</p>
-  </section>
-  <section class="tool-grid">
-    <div class="tool"><a href="https://chat.deepseek.com/" target="_blank">🧠 DeepSeek</a></div>
-    <div class="tool"><a href="https://claude.ai/new" target="_blank">🤖 Claude</a></div>
-    <div class="tool"><a href="https://www.readtheirlips.com/" target="_blank">👄 lipreader</a></div>
-    <div class="tool"><a href="https://app.suno.ai/" target="_blank">🎶 suno.ai</a></div>
-    <div class="tool"><a href="https://gamma.app/create" target="_blank">📊 gamma.app</a></div>
-  </section>
-  <div class="back">
-    <a href="index.html">← Return to main site</a>
-  </div>
+  <main>
+    <nav class="nav-glass reveal-on-scroll" aria-label="Primary">
+      <a class="nav-link" href="/index.html">home</a>
+      <a class="nav-link" href="/osint.html">osint</a>
+      <a class="nav-link" href="/ctf.html">ctf</a>
+      <a class="nav-link" href="/pentest.html">pentest</a>
+      <a class="nav-link" href="/general.html">general</a>
+    </nav>
+
+    <section class="hero reveal-on-scroll">
+      <div class="floating-orb" style="top:-30px; right:120px;"></div>
+      <div class="floating-orb orb-pink orb-small" style="bottom:30px; left:80px;"></div>
+      <div class="scanline" aria-hidden="true"></div>
+      <div class="hero-content">
+        <h1 class="holo-title">ai</h1>
+        <p class="tagline">just some ai links i mess with.</p>
+      </div>
+    </section>
+
+    <section class="tool-section reveal-on-scroll">
+      <h2 class="section-title">tools</h2>
+      <div class="tool-grid">
+        <a class="tool-link" href="https://chat.deepseek.com/" target="_blank" rel="noopener">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🧠</span> deepseek</span>
+          </article>
+        </a>
+        <a class="tool-link" href="https://claude.ai/new" target="_blank" rel="noopener">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🤖</span> claude</span>
+          </article>
+        </a>
+        <a class="tool-link" href="https://www.readtheirlips.com/" target="_blank" rel="noopener">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">👄</span> lipreader</span>
+          </article>
+        </a>
+        <a class="tool-link" href="https://app.suno.ai/" target="_blank" rel="noopener">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">🎶</span> suno.ai</span>
+          </article>
+        </a>
+        <a class="tool-link" href="https://gamma.app/create" target="_blank" rel="noopener">
+          <article class="tool-card">
+            <span class="tool-sparkles" aria-hidden="true"></span>
+            <span class="tool-label"><span class="emoji">📊</span> gamma.app</span>
+          </article>
+        </a>
+      </div>
+    </section>
+
+    <div class="back-link reveal-on-scroll">
+      <a href="index.html">← back</a>
+    </div>
+  </main>
+
+  <script src="assets/tilt.js" defer></script>
 </body>
 </html>
