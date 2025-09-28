@@ -228,7 +228,15 @@ async function fetchPrices() {
 
     try {
         const ids = wikiItems.map(item => item.id).join(",");
-        const latestResponse = await fetch(`https://prices.runescape.wiki/api/v1/osrs/latest?id=${ids}`);
+        const latestResponse = await fetch(
+            `https://prices.runescape.wiki/api/v1/osrs/latest?id=${ids}`,
+            {
+                headers: {
+                    "Accept": "application/json",
+                    "Api-User-Agent": "bopsec/delveprices"
+                }
+            }
+        );
         if (!latestResponse.ok) {
             throw new Error(`Latest price request failed (${latestResponse.status})`);
         }
