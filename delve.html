@@ -369,7 +369,8 @@ function renderSummary(bestWave, bestStats) {
     }
 
     const expectedMinutes = (bestStats.expectedRunTimeSeconds / 60).toFixed(1);
-    summary.innerHTML = `Stopping after wave <strong>${bestWave}</strong> yields an estimated net <strong>${bestStats.expectedGPPerHour.toLocaleString(undefined, { maximumFractionDigits: 0 })} gp/hr</strong> after death costs, with an average run lasting <strong>${expectedMinutes}</strong> minutes.`;
+    const fullRunMinutes = (bestStats.fullRunTimeSeconds / 60).toFixed(1);
+    summary.innerHTML = `Stopping after wave <strong>${bestWave}</strong> yields an estimated net <strong>${bestStats.expectedGPPerHour.toLocaleString(undefined, { maximumFractionDigits: 0 })} gp/hr</strong> after death costs, with an average run lasting <strong>${expectedMinutes}</strong> minutes (including the chance to end early). A full run to that wave with no drops or deaths would take about <strong>${fullRunMinutes}</strong> minutes.`;
 }
 
 function renderWaveDetails(wave, stats) {
@@ -391,6 +392,7 @@ function renderWaveDetails(wave, stats) {
     const netGPPerHour = stats.expectedGPPerHour;
 
     const expectedMinutes = (stats.expectedRunTimeSeconds / 60).toFixed(1);
+    const fullRunMinutes = (stats.fullRunTimeSeconds / 60).toFixed(1);
     const probabilityDrop = (stats.probabilityStopDrop * 100).toFixed(2);
     const probabilityDeath = (stats.probabilityStopDeath * 100).toFixed(2);
     const probabilityNoEvent = (stats.probabilityNoDropNoDeathAtAll * 100).toFixed(2);
@@ -405,7 +407,8 @@ function renderWaveDetails(wave, stats) {
         Expected unique chance before stopping: <strong>${probabilityDrop}%</strong><br>
         Chance of death before stopping: ${probabilityDeath}%<br>
         Chance of a full run with no drop: ${probabilityNoEvent}%<br>
-        Average run time: ${expectedMinutes} minutes<br><br>
+        Average run time (accounts for early stops): ${expectedMinutes} minutes<br>
+        Full run time with no drop or death: ${fullRunMinutes} minutes<br><br>
         <strong>Expected drops per run</strong><br>
         &nbsp; Mokhaiotl Cloth: ${stats.expectedDropsPerRun.cloth.toFixed(4)} (≈ ${formatGP(gpPerRunCloth)} gp)<br>
         &nbsp; Eye of Ayak: ${stats.expectedDropsPerRun.eye.toFixed(4)} (≈ ${formatGP(gpPerRunEye)} gp)<br>
@@ -512,7 +515,8 @@ function getExpectedDropsStopOnUnique(maxWave) {
         probabilityNoDropNoDeathAtAll: pNoDropNoDeathAtAll,
         expectedDeathsPerRun: probabilityStopDeath,
         expectedDeathCostPerRun: probabilityStopDeath * deathCost,
-        expectedDeathCostPerHour: hoursPerRun > 0 ? (probabilityStopDeath * deathCost) / hoursPerRun : 0
+        expectedDeathCostPerHour: hoursPerRun > 0 ? (probabilityStopDeath * deathCost) / hoursPerRun : 0,
+        fullRunTimeSeconds: totalTimeFullRun
     };
 }
 
