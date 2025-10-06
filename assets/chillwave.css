@@ -216,16 +216,6 @@ body.mode-modern .deadpan {
   color: var(--text-soft);
 }
 
-body.mode-modern .deadpan::before {
-  content: 'note:';
-  color: var(--text-soft);
-  opacity: 1;
-  margin-right: 6px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.7rem;
-}
-
 body.mode-modern .tagline {
   font-family: var(--font-body);
   font-size: 0.95rem;
@@ -279,17 +269,25 @@ body.mode-modern .section-title {
 }
 
 body.mode-modern .tool-grid {
-  display: block;
+  display: grid;
+  gap: 14px;
 }
 
 body.mode-modern .tool-link {
   display: block;
-  padding: 12px 0;
-  border-bottom: 1px solid #e2e2e2;
+  padding: 14px 18px;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ffffff, #f7f7f5);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease, border-color 0.2s ease;
 }
 
-body.mode-modern .tool-link:last-child {
-  border-bottom: none;
+body.mode-modern .tool-link:hover,
+body.mode-modern .tool-link:focus-visible {
+  background: #f0f0ee;
+  border-color: #d0d0ce;
 }
 
 body.mode-modern .tool-card {
@@ -548,12 +546,6 @@ body.mode-retro .section-note {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   box-shadow: 0 0 18px rgba(0, 255, 255, 0.35);
-}
-
-.deadpan::before {
-  content: 'status:';
-  color: var(--text-soft);
-  opacity: 0.8;
 }
 
 .section-note {
