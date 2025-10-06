@@ -6,61 +6,70 @@
   <title>bopsec — ctf</title>
   <link rel="stylesheet" href="assets/chillwave.css" />
 </head>
-<body>
-  <main>
-    <nav class="nav-glass reveal-on-scroll" aria-label="Primary">
-      <a class="nav-link" href="/index.html">home</a>
-      <a class="nav-link" href="/osint.html">osint</a>
-      <a class="nav-link" href="/pentest.html">pentest</a>
-      <a class="nav-link" href="/ai.html">ai</a>
-      <a class="nav-link" href="/general.html">general</a>
+<body class="mode-retro">
+  <main class="page-shell">
+    <nav class="site-nav" aria-label="Primary">
+      <div class="nav-links">
+        <a class="nav-link" href="/index.html">home</a>
+        <a class="nav-link" href="/osint.html">osint</a>
+        <a class="nav-link" href="/ctf.html" aria-current="page">ctf</a>
+        <a class="nav-link" href="/pentest.html">pentest</a>
+        <a class="nav-link" href="/ai.html">ai</a>
+        <a class="nav-link" href="/general.html">general</a>
+      </div>
+      <button class="mode-toggle" type="button" data-mode-toggle>Engage suspiciously minimal mode</button>
     </nav>
 
-    <section class="hero reveal-on-scroll">
-      <div class="floating-orb" style="top:-60px; left:120px;"></div>
-      <div class="floating-orb orb-pink orb-small" style="bottom:10px; right:100px;"></div>
-      <div class="scanline" aria-hidden="true"></div>
-      <div class="hero-content">
-        <h1 class="holo-title">ctf</h1>
-        <p class="tagline">just flag stuff i like.</p>
+    <section class="hero">
+      <div class="crt-panel">
+        <pre class="ascii-banner" aria-hidden="true">
+   ________ _______   ______
+  / ____/ // / ___/  / ____/
+ / /   / // /\__ \ / / __  
+/ /___/__  /___/ // /_/ /   
+\____/ /_/\____(_)\____/    
+        </pre>
+        <h1 class="page-title">ctf compliance arena</h1>
+        <p class="deadpan">flags are strictly hypothetical. please cheer internally.</p>
+        <p class="tagline">Disassemble puzzles with the quiet efficiency of a spreadsheet tutorial while lasers pretend not to flash.</p>
+        <div class="ticker" role="text">
+          <div class="ticker__inner">buffers padded ▒▒ scoreboard sanitized ▒▒ patch tuesday forever ▒▒ nothing is on fire</div>
+        </div>
       </div>
     </section>
 
-    <section class="tool-section reveal-on-scroll">
-      <h2 class="section-title">tools</h2>
+    <section class="tool-section">
+      <h2 class="section-title">approved exploit exercises</h2>
+      <p class="section-note">Celebrate captures with a reserved nod and perhaps a pastel donut.</p>
       <div class="tool-grid">
         <a class="tool-link" href="https://grep.app/" target="_blank" rel="noopener">
           <article class="tool-card">
-            <span class="tool-sparkles" aria-hidden="true"></span>
-            <span class="tool-label"><span class="emoji">🔍</span> grep.app</span>
+            <span class="tool-label"><span class="emoji">🔍</span> grep.app // codeword scavenger</span>
           </article>
         </a>
         <a class="tool-link" href="https://lostsec.xyz/" target="_blank" rel="noopener">
           <article class="tool-card">
-            <span class="tool-sparkles" aria-hidden="true"></span>
-            <span class="tool-label"><span class="emoji">🕵️‍♂️</span> lostsec.xyz</span>
+            <span class="tool-label"><span class="emoji">🕵️‍♂️</span> lostsec.xyz // clandestine-ish</span>
           </article>
         </a>
         <a class="tool-link" href="https://github.com/SandySekharan/CTF-tool" target="_blank" rel="noopener">
           <article class="tool-card">
-            <span class="tool-sparkles" aria-hidden="true"></span>
-            <span class="tool-label"><span class="emoji">🧰</span> sandy's ctf toolkit</span>
+            <span class="tool-label"><span class="emoji">🧰</span> sandy's ctf toolkit // meticulously tidy</span>
           </article>
         </a>
         <a class="tool-link" href="https://github.com/0xor0ne/awesome-list/tree/main" target="_blank" rel="noopener">
           <article class="tool-card">
-            <span class="tool-sparkles" aria-hidden="true"></span>
-            <span class="tool-label"><span class="emoji">📚</span> awesome list (0xor0ne)</span>
+            <span class="tool-label"><span class="emoji">📚</span> awesome list (0xor0ne) // light reading</span>
           </article>
         </a>
       </div>
     </section>
 
-    <div class="back-link reveal-on-scroll">
-      <a href="index.html">← back</a>
+    <div class="back-link">
+      <a href="index.html">← quietly exit to the lobby</a>
     </div>
   </main>
 
-  <script src="assets/tilt.js" defer></script>
+  <script src="assets/theme-toggle.js" defer></script>
 </body>
 </html>
