@@ -17,7 +17,7 @@
 
   const updateButton = () => {
     const isModern = body.classList.contains('mode-modern');
-    toggle.textContent = isModern ? 'retro' : 'minimal';
+    toggle.textContent = isModern ? 'dark' : 'light';
     toggle.setAttribute('aria-pressed', String(isModern));
   };
 
