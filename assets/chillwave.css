@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
 * {
@@ -22,52 +22,28 @@ body::after {
   display: none;
 }
 
-body.mode-retro {
-  --text-main: #e8edf5;
-  --text-soft: #9ca5b5;
-  --link: #b9d8ff;
-  --link-hover: #e0ecff;
+body.mode-minimal {
+  --text-main: #e4e9f2;
+  --text-soft: #97a3b5;
+  --link: #a6d5ff;
+  --link-hover: #d1e7ff;
   --accent: #7dd3fc;
   --accent-strong: #38bdf8;
   --panel-bg: #0f1724;
-  --panel-border: #1f2a3c;
-  --panel-border-secondary: #263349;
-  --panel-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
-  --page-background: radial-gradient(circle at 20% 20%, #0f172a, #0b1220 40%, #0b0f18 75%);
-  --card-bg: #111a28;
-  --card-border: #1f2a3c;
-  --card-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
-  --button-bg: #1f2a3c;
-  --button-text: #e8edf5;
-  --button-border: #2b3950;
+  --panel-border: #182335;
+  --panel-border-secondary: #223349;
+  --panel-shadow: 0 10px 26px rgba(0, 0, 0, 0.3);
+  --page-background: #0a0f1a;
+  --card-bg: #0f1826;
+  --card-border: #1b283b;
+  --card-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+  --button-bg: #182335;
+  --button-text: #e4e9f2;
+  --button-border: #223349;
   --button-shadow: none;
-  --nav-bg: rgba(12, 17, 26, 0.8);
-  --nav-border: #1b2535;
-  --nav-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-}
-
-body.mode-modern {
-  --text-main: #0e141b;
-  --text-soft: #5b6674;
-  --link: #0f172a;
-  --link-hover: #0f172a;
-  --accent: #0ea5e9;
-  --accent-strong: #0284c7;
-  --panel-bg: #f6f7fb;
-  --panel-border: #e1e6ef;
-  --panel-border-secondary: #c9d4e5;
-  --panel-shadow: none;
-  --page-background: #f8fafc;
-  --card-bg: #ffffff;
-  --card-border: #e5e9f0;
-  --card-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
-  --button-bg: #0f172a;
-  --button-text: #f8fafc;
-  --button-border: #0f172a;
-  --button-shadow: none;
-  --nav-bg: #f8fafc;
-  --nav-border: #e5e9f0;
-  --nav-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  --nav-bg: rgba(10, 15, 26, 0.85);
+  --nav-border: #1b273a;
+  --nav-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
 }
 
 .page-shell {
@@ -115,26 +91,6 @@ body.mode-modern {
   background: rgba(255, 255, 255, 0.04);
   border-color: var(--nav-border);
   color: var(--link-hover);
-}
-
-.mode-toggle {
-  margin-left: auto;
-  font-weight: 600;
-  font-size: 0.85rem;
-  letter-spacing: 0.01em;
-  background: var(--button-bg);
-  color: var(--button-text);
-  border: 1px solid var(--button-border);
-  border-radius: 12px;
-  padding: 8px 14px;
-  cursor: pointer;
-  box-shadow: var(--button-shadow);
-  transition: transform 0.2s ease, opacity 0.2s ease;
-}
-
-.mode-toggle:hover,
-.mode-toggle:focus-visible {
-  transform: translateY(-1px);
 }
 
 .hero {
@@ -307,9 +263,5 @@ footer {
     flex-direction: column;
     align-items: flex-start;
     position: static;
-  }
-
-  .mode-toggle {
-    align-self: flex-end;
   }
 }
