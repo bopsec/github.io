@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /api/*
+Disallow: /php/reverse_shell_hosted_here.php
+Disallow: /vulnerable/all_the_vulnerable_endpoints.txt
+Disallow: /php/*
+Disallow: /wait_stop_that.html
+Disallow: /private.txt
+Disallow: /dontlookhere.py
