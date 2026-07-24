@@ -41,6 +41,15 @@ tr:nth-child(even){background:#1c2024;}tr:hover{background:#242a30;}
 button{padding:6px 10px;background:#242930;color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer;font:inherit;}
 button:hover{background:#303741;}
 pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-wrap;word-break:break-word;font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;color:var(--text);}
+.sprite-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.sprite-card{border:1px solid var(--border);border-radius:6px;background:#181b1e;overflow:hidden;}
+.sprite-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--blue);display:flex;gap:8px;align-items:baseline;}
+.sprite-meta{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.sprite-frames{display:flex;flex-wrap:wrap;gap:8px;padding:10px;}
+.sprite-frame{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:54px;color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:11px;}
+.sprite-frame img{max-width:160px;max-height:160px;image-rendering:pixelated;background:#0f1113;border:1px solid #2c3238;border-radius:4px;padding:4px;}
+.sprite-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;}
+.sprite-side-title{margin:0 0 8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:650;}
 .empty{color:var(--muted);font-style:italic;margin:4px 0 12px;}
 </style>
 </head>
@@ -52,9 +61,9 @@ pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-w
 <div id='content'></div>
 <script>
 const data={
-  "timestamp": "2026-07-08 16:04:27",
-  "oldPath": "build\\libs\\old",
-  "newPath": "build\\libs\\new",
+  "timestamp": "2026-07-24 19:27:00",
+  "oldPath": ".\\cache-oldschool-239-3",
+  "newPath": ".\\cache-oldschool-239-5",
   "summary": {
     "Objects": {
       "added": 0,
@@ -69,12 +78,12 @@ const data={
     "NPCs": {
       "added": 0,
       "removed": 0,
-      "changed": 27
+      "changed": 28
     },
     "Items": {
       "added": 7,
       "removed": 0,
-      "changed": 50
+      "changed": 52
     },
     "Animations": {
       "added": 1,
@@ -87,7 +96,7 @@ const data={
       "changed": 0
     },
     "Varbits": {
-      "added": 39,
+      "added": 40,
       "removed": 0,
       "changed": 0
     },
@@ -4318,37 +4327,37 @@ const data={
         "15935": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_post_combat"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 150,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_post_combat"
           }
@@ -4356,35 +4365,35 @@ const data={
         "15997": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_cutscene"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_cutscene"
           }
@@ -4392,35 +4401,35 @@ const data={
         "15998": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_cutscene_booth"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_cutscene_booth"
           }
@@ -4428,35 +4437,35 @@ const data={
         "15999": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_cutscene"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_cutscene"
           }
@@ -4464,35 +4473,35 @@ const data={
         "16000": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_cutscene_injured"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_cutscene_injured"
           }
@@ -4500,35 +4509,35 @@ const data={
         "16001": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_cutscene_injured_inactive"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_cutscene_injured_inactive"
           }
@@ -4536,35 +4545,35 @@ const data={
         "16002": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_portal_cutscene"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_2_portal_cutscene"
           }
@@ -4572,35 +4581,35 @@ const data={
         "16003": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_3_cutscene_transition"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_3_cutscene_transition"
           }
@@ -4608,35 +4617,35 @@ const data={
         "16004": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 30,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_3_cutscene"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "8": 150,
-              "26": 0,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30
             },
             "gamevalName": "myq6_wyrd_stage_3_cutscene"
           }
@@ -4644,41 +4653,41 @@ const data={
         "16204": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_final_combat"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 150,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_final_combat"
           }
@@ -4686,41 +4695,41 @@ const data={
         "16209": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_combat_3"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 150,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_combat_3"
           }
@@ -4728,41 +4737,41 @@ const data={
         "16210": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_combat_2"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 150,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_combat_2"
           }
@@ -4770,41 +4779,41 @@ const data={
         "16211": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_combat_1"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 150,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 2,
-              "510": "Lowerniel Drakan"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Lowerniel Drakan",
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "myq6_lowerniel_combat_1"
           }
@@ -4812,41 +4821,41 @@ const data={
         "16212": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "1799": 1,
-              "8": 30,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1,
-              "26": 2,
-              "509": 2,
-              "510": "Wyrd"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Wyrd",
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 2,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 30,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "safalaan_wyrd"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 80,
-              "4": 80,
-              "5": 30,
-              "6": 30,
-              "7": 30,
-              "1799": 1,
-              "8": 150,
-              "10": 10,
-              "12": 10,
-              "14": 5,
-              "46": -1,
-              "26": 2,
-              "509": 2,
-              "510": "Wyrd"
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 5,
+              "BOSS?(509)": 2,
+              "BOSS_NAME(510)": "Wyrd",
+              "CRUSH_DEFENCE(7)": 30,
+              "DAMAGE_TYPE(26)": 2,
+              "MAGIC_ATTACK(3)": 80,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 10,
+              "RANGED_ATTACK(4)": 80,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 30,
+              "STAB_DEFENCE(5)": 30,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "safalaan_wyrd"
           }
@@ -4854,175 +4863,352 @@ const data={
         "16213": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator"
           }
         },
         "16214": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_2"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_2"
           }
         },
         "16215": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_3"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_3"
           }
         },
         "16216": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_4"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_4"
           }
         },
         "16217": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_5"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_5"
           }
         },
         "16218": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_cutscene"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_cutscene"
           }
         },
         "16219": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_2_cutscene"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_2_cutscene"
           }
         },
         "16220": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_3_cutscene"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_3_cutscene"
           }
         },
         "16221": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_4_cutscene"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_4_cutscene"
           }
         },
         "16222": {
           "before": {
             "combat": 200,
+            "stats": {
+              "attack": 200,
+              "strength": 120,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_5_cutscene"
           },
           "after": {
             "combat": 195,
+            "stats": {
+              "attack": 200,
+              "strength": 100,
+              "defence": 200,
+              "hitpoints": 160,
+              "magic": 75,
+              "ranged": 100
+            },
             "gamevalName": "castle_drakan_venator_5_cutscene"
           }
         },
         "16227": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 0
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 0,
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "sangvesti_drakan_pursuing"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "1799": 1,
-              "8": 150,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1,
-              "26": 0,
-              "509": 0
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "BOSS?(509)": 0,
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0,
+              "UNKNOWN_2(1799)": 1
             },
             "gamevalName": "sangvesti_drakan_pursuing"
+          }
+        },
+        "16233": {
+          "before": {
+            "stats": {},
+            "gamevalName": "sotfa_forest_maxilla_beast"
+          },
+          "after": {
+            "stats": {
+              "attack": 1,
+              "strength": 1,
+              "defence": 1,
+              "hitpoints": 200,
+              "magic": 1,
+              "ranged": 1
+            },
+            "gamevalName": "sotfa_forest_maxilla_beast"
           }
         },
         "16241": {
           "before": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "8": 0,
-              "26": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 0,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0
             },
             "gamevalName": "myq6_bridge_defence_lowerniel"
           },
           "after": {
             "params": {
-              "65": 10,
-              "3": 300,
-              "4": 60,
-              "5": 0,
-              "6": 0,
-              "7": 0,
-              "8": 150,
-              "26": 0,
-              "10": 70,
-              "12": 10,
-              "14": 4,
-              "46": -1
+              "ALWAYS_DROP_ID(46)": -1,
+              "ATTACK_SPEED(14)": 4,
+              "CRUSH_DEFENCE(7)": 0,
+              "DAMAGE_TYPE(26)": 0,
+              "MAGIC_ATTACK(3)": 300,
+              "MAGIC_DEFENCE(8)": 150,
+              "MAGIC_STRENGTH(65)": 10,
+              "MELEE_STRENGTH(10)": 70,
+              "RANGED_ATTACK(4)": 60,
+              "RANGED_STRENGTH_AMMO(12)": 10,
+              "SLASH_DEFENCE(6)": 0,
+              "STAB_DEFENCE(5)": 0
             },
             "gamevalName": "myq6_bridge_defence_lowerniel"
           }
@@ -5037,6 +5223,9 @@ const data={
           "cost": 30,
           "tradeable": false,
           "members": false,
+          "params": {
+            "NOT_ALCHABLE(295)": 1
+          },
           "gamevalName": "placeholder_stake"
         },
         "16494": {
@@ -5045,6 +5234,9 @@ const data={
           "cost": 300,
           "tradeable": false,
           "members": true,
+          "params": {
+            "NOT_ALCHABLE(295)": 1
+          },
           "gamevalName": "placeholder_pipkey_gold"
         },
         "16495": {
@@ -5053,6 +5245,9 @@ const data={
           "cost": 30,
           "tradeable": false,
           "members": true,
+          "params": {
+            "NOT_ALCHABLE(295)": 1
+          },
           "gamevalName": "placeholder_pipkey_iron"
         },
         "33827": {
@@ -5061,6 +5256,9 @@ const data={
           "cost": 211000,
           "tradeable": false,
           "members": true,
+          "params": {
+            "NOT_ALCHABLE(295)": 1
+          },
           "gamevalName": "ancient_sceptre_trouver_broken"
         },
         "33828": {
@@ -5069,6 +5267,7 @@ const data={
           "cost": 1,
           "tradeable": true,
           "members": false,
+          "params": {},
           "gamevalName": "placeholder_ancient_sceptre_trouver_broken"
         },
         "33829": {
@@ -5077,6 +5276,9 @@ const data={
           "cost": 211000,
           "tradeable": false,
           "members": true,
+          "params": {
+            "NOT_ALCHABLE(295)": 1
+          },
           "gamevalName": "ancient_sceptre_trouver_mangled"
         },
         "33830": {
@@ -5085,11 +5287,24 @@ const data={
           "cost": 1,
           "tradeable": true,
           "members": false,
+          "params": {},
           "gamevalName": "placeholder_ancient_sceptre_trouver_mangled"
         }
       },
       "removed": {},
       "changed": {
+        "32307": {
+          "before": {
+            "params": {
+              "SAILING_RELATED(2382)": 1
+            },
+            "gamevalName": "sailing_fine_fish_offcuts"
+          },
+          "after": {
+            "params": {},
+            "gamevalName": "sailing_fine_fish_offcuts"
+          }
+        },
         "33543": {
           "before": {
             "members": false,
@@ -5589,6 +5804,56 @@ const data={
             "name": "Tarnished bracelet",
             "gamevalName": "tarnished_bracelet"
           }
+        },
+        "33722": {
+          "before": {
+            "params": {
+              "ATTACK_RANGE(13)": 0,
+              "ATTACK_SPEED(14)": 5,
+              "CORPBANE(701)": 1,
+              "CRUSH_ATTACK(2)": 60,
+              "CRUSH_DEFENCE(7)": 28,
+              "ITEM_TYPE(1564)": 3,
+              "MAGIC_ATTACK(3)": 0,
+              "MELEE_STRENGTH(10)": 70,
+              "PRAYER_BONUS(11)": 7,
+              "RANGED_ATTACK(4)": 0,
+              "RANGED_DEFENCE(9)": 0,
+              "SARADOMIN(40)": 1,
+              "SILVER_STRENGTH(518)": 5,
+              "SLASH_ATTACK(1)": 21,
+              "SLASH_DEFENCE(6)": 42,
+              "STAB_ATTACK(0)": 100,
+              "STAB_DEFENCE(5)": 0,
+              "STAT_REQUIRED_LEVEL_2(436)": 50,
+              "STAT_REQUIRED_TYPE_2(434)": 0
+            },
+            "gamevalName": "sunspear"
+          },
+          "after": {
+            "params": {
+              "ATTACK_RANGE(13)": 0,
+              "ATTACK_SPEED(14)": 5,
+              "CORPBANE(701)": 1,
+              "CRUSH_ATTACK(2)": 60,
+              "CRUSH_DEFENCE(7)": 28,
+              "ITEM_TYPE(1564)": 3,
+              "MAGIC_ATTACK(3)": 0,
+              "MELEE_STRENGTH(10)": 70,
+              "PRAYER_BONUS(11)": 7,
+              "RANGED_ATTACK(4)": 0,
+              "RANGED_DEFENCE(9)": 0,
+              "SARADOMIN(40)": 1,
+              "SILVER_STRENGTH(518)": 6,
+              "SLASH_ATTACK(1)": 21,
+              "SLASH_DEFENCE(6)": 42,
+              "STAB_ATTACK(0)": 100,
+              "STAB_DEFENCE(5)": 0,
+              "STAT_REQUIRED_LEVEL_2(436)": 50,
+              "STAT_REQUIRED_TYPE_2(434)": 0
+            },
+            "gamevalName": "sunspear"
+          }
         }
       }
     },
@@ -5774,6 +6039,14 @@ const data={
     },
     "Varbits": {
       "added": {
+        "15624": {
+          "id": 15624,
+          "gamevalName": "vampyre_aggression_darkmeyer",
+          "varplayerDisplay": "myq6_noprotect(5620)",
+          "startBit": 7,
+          "endBit": 7,
+          "bitCount": 1
+        },
         "15625": {
           "id": 15625,
           "gamevalName": "vampyrium_agility_flavour_dialogue",
@@ -6094,15 +6367,15 @@ const data={
       "added": {
         "5668": {
           "id": 5668,
-          "name": "sangvesti_general_3"
+          "gamevalName": "sangvesti_general_3"
         },
         "5669": {
           "id": 5669,
-          "name": "sangvesti_player_pos"
+          "gamevalName": "sangvesti_player_pos"
         },
         "5670": {
           "id": 5670,
-          "name": "sangvesti_player_last_death_pos"
+          "gamevalName": "sangvesti_player_last_death_pos"
         }
       },
       "removed": {},
@@ -6112,18 +6385,55 @@ const data={
       "added": {},
       "removed": {
         "1190": {
-          "689": "Venators",
-          "690": 2774,
-          "id": 1190
+          "id": 1190,
+          "paramCount": 2,
+          "params": {
+            "COLLECTION_LOG_IDX(690)": 2774,
+            "COLLECTION_LOG_NAME(689)": "Venators"
+          }
         }
       },
       "changed": {
         "375": {
           "before": {
-            "1319": "The Tombs of Amascut can be found in an ancient tomb south of Sophanem.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut is a raid for 1-8 players.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut can scale in difficulty through the use of Invocations. These Invocations change the Raid Level, with a Raid Level of less then 150 considered an Entry raid.\u003cbr\u003e\u003cbr\u003eAttack Styles - Magic, Ranged, Melee, Special\u003cbr\u003eImmunities - Poison, Venom\u003cbr\u003eSlayer Categories - None"
+            "params": {
+              "1317": 55020183,
+              "1318": 12,
+              "1324": 0,
+              "1325": 174,
+              "1327": 188,
+              "CA_BOSS_ANIMATION_ID(1323)": 9653,
+              "CA_BOSS_COMBAT_LEVEL(1314)": 544,
+              "CA_BOSS_DESCRIPTION(1319)": "The Tombs of Amascut can be found in an ancient tomb south of Sophanem.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut is a raid for 1-8 players.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut can scale in difficulty through the use of Invocations. These Invocations change the Raid Level, with a Raid Level of less then 150 considered an Entry raid.\u003cbr\u003e\u003cbr\u003eAttack Styles - Magic, Ranged, Melee, Special\u003cbr\u003eImmunities - Poison, Venom\u003cbr\u003eSlayer Categories - None",
+              "CA_BOSS_MODELZOOM(1329)": 1350,
+              "CA_BOSS_MODEL_ID(1322)": 46337,
+              "CA_BOSS_MODEL_ROTATION_X(1326)": 79,
+              "CA_BOSS_MODEL_ROTATION_Y(1328)": 0,
+              "CA_BOSS_NAME(1313)": "Tombs of Amascut: Entry Mode",
+              "CA_BOSS_NUMBER(1315)": 56,
+              "CA_BOSS_REQUIREMENTS(1320)": "Mandatory requirements:\u003cbr\u003e - Beneath Cursed Sands\u003cbr\u003e\u003cbr\u003eCombat Achievement task difficulty:\u003cbr\u003e - Medium\u003cbr\u003e - Hard\u003cbr\u003e - Elite",
+              "CA_BOSS_TASK_COUNT(675)": 5
+            }
           },
           "after": {
-            "1319": "The Tombs of Amascut can be found in an ancient tomb south of Sophanem.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut is a raid for 1-8 players.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut can scale in difficulty through the use of Invocations. These Invocations change the Raid Level, with a Raid Level of less than 150 considered an Entry raid.\u003cbr\u003e\u003cbr\u003eAttack Styles - Magic, Ranged, Melee, Special\u003cbr\u003eImmunities - Poison, Venom\u003cbr\u003eSlayer Categories - None"
+            "params": {
+              "1317": 55020183,
+              "1318": 12,
+              "1324": 0,
+              "1325": 174,
+              "1327": 188,
+              "CA_BOSS_ANIMATION_ID(1323)": 9653,
+              "CA_BOSS_COMBAT_LEVEL(1314)": 544,
+              "CA_BOSS_DESCRIPTION(1319)": "The Tombs of Amascut can be found in an ancient tomb south of Sophanem.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut is a raid for 1-8 players.\u003cbr\u003e\u003cbr\u003eThe Tombs of Amascut can scale in difficulty through the use of Invocations. These Invocations change the Raid Level, with a Raid Level of less than 150 considered an Entry raid.\u003cbr\u003e\u003cbr\u003eAttack Styles - Magic, Ranged, Melee, Special\u003cbr\u003eImmunities - Poison, Venom\u003cbr\u003eSlayer Categories - None",
+              "CA_BOSS_MODELZOOM(1329)": 1350,
+              "CA_BOSS_MODEL_ID(1322)": 46337,
+              "CA_BOSS_MODEL_ROTATION_X(1326)": 79,
+              "CA_BOSS_MODEL_ROTATION_Y(1328)": 0,
+              "CA_BOSS_NAME(1313)": "Tombs of Amascut: Entry Mode",
+              "CA_BOSS_NUMBER(1315)": 56,
+              "CA_BOSS_REQUIREMENTS(1320)": "Mandatory requirements:\u003cbr\u003e - Beneath Cursed Sands\u003cbr\u003e\u003cbr\u003eCombat Achievement task difficulty:\u003cbr\u003e - Medium\u003cbr\u003e - Hard\u003cbr\u003e - Elite",
+              "CA_BOSS_TASK_COUNT(675)": 5
+            }
           }
         }
       }
@@ -6177,7 +6487,8 @@ const data={
             null,
             null,
             null
-          ]
+          ],
+          "gamevalName": "skill_feature_crafting_necklace_of_rupture"
         }
       },
       "changed": {
@@ -110984,7 +111295,7 @@ const data={
                 "toa_wardens_melee_sword_strike_01",
                 6053,
                 "toa_wardens_melee_sword_strike_02 ",
-                11993,
+                11991,
                 "toa_wardens_melee_whoosh_01",
                 6154,
                 "toa_wardens_melee_whoosh_02",
@@ -111752,7 +112063,7 @@ const data={
                 "toa_zebak_attack_jaw_shut_01",
                 5863,
                 "toa_zebak_attack_jaw_shut_02 ",
-                11994,
+                11992,
                 "toa_zebak_attack_melee_enranged_jaw_snap_01",
                 5850,
                 "toa_zebak_attack_melee_enranged_roar_01",
@@ -123843,11 +124154,29 @@ const data={
       "added": {
         "8514": {
           "id": 8514,
-          "gamevalName": "castle_drakan_room_icons,4"
+          "gamevalName": "castle_drakan_room_icons,4",
+          "spriteCount": 1,
+          "frames": [
+            {
+              "frame": 0,
+              "width": 15,
+              "height": 15,
+              "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAAlUlEQVR4Xn2QQQ6AMAgE65d9hEef4N2LrzAx8VMaRGBLARIO3e5sKa0NNT15p2Wm87q192P7ughhkUwI+oA+BGC59KCHLQDgZZ3DAA+Sr4SrdjD/gURsD2DDv3m7vWiTRDr5FZYX0CR6pJn+C+NII4xfUji6lCA8+3DdN74Wwf0UYfHycAoJgSVlZSOJ2aDyVSw059ALInJtR0Ayoz0AAAAASUVORK5CYII\u003d"
+            }
+          ]
         },
         "8515": {
           "id": 8515,
-          "gamevalName": "sangvesti"
+          "gamevalName": "sangvesti",
+          "spriteCount": 1,
+          "frames": [
+            {
+              "frame": 0,
+              "width": 438,
+              "height": 308,
+              "image": "data:image/png;base64,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\u003d"
+            }
+          ]
         }
       },
       "removed": {},
@@ -123879,12 +124208,22 @@ function renderValue(v,other,side){
  if(other===undefined)return `<span class='${side==='before'?'diff-del':'diff-ins'}'>${escapeHtml(text)}</span>`;
  const d=diffTokens(text,valueText(other));
  return renderParts(d.before,side==='before'?'diff-del':'diff-ins');}
+function isPlainObject(v){return v&&typeof v==='object'&&!Array.isArray(v);}
+function renderChangedField(k,before,after){
+ const bv=before[k],av=after[k];
+ if(isPlainObject(bv)||isPlainObject(av)){
+   const bobj=isPlainObject(bv)?bv:{},aobj=isPlainObject(av)?av:{};
+   const subKeys=Array.from(new Set([...Object.keys(bobj),...Object.keys(aobj)])).sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true})).filter(sk=>valueText(bobj[sk])!==valueText(aobj[sk]));
+   if(subKeys.length===0)return '';
+   return subKeys.map(sk=>`<tr><td class='field-name'>${escapeHtml(k+'.'+sk)}</td><td><pre>${renderValue(bobj[sk],aobj[sk],'before')}</pre></td><td><pre>${renderValue(aobj[sk],bobj[sk],'after')}</pre></td></tr>`).join('');
+ }
+ return `<tr><td class='field-name'>${escapeHtml(k)}</td><td><pre>${renderValue(bv,av,'before')}</pre></td><td><pre>${renderValue(av,bv,'after')}</pre></td></tr>`;}
 function createChangedTable(diff){
  const before=diff.before||{},after=diff.after||{};
- const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>k!=='gamevalName'&&k!=='gameval');
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>(k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k]));
  if(keys.length===0)return '<p class="empty">Metadata only</p>';
  let html='<div class="table-wrap"><table class="changed-table"><tr><th>Field</th><th>Before</th><th>After</th></tr>';
- for(const k of keys){html+=`<tr><td class='field-name'>${escapeHtml(k)}</td><td><pre>${renderValue(before[k],after[k],'before')}</pre></td><td><pre>${renderValue(after[k],before[k],'after')}</pre></td></tr>`;}
+ for(const k of keys){html+=renderChangedField(k,before,after);}
  return html+'</table></div>';}
 function createChangedBlock(id,diff){
  const before=diff.before||{},after=diff.after||{};
@@ -123895,7 +124234,7 @@ function createChangedBlock(id,diff){
 function createWidgetChangedRows(id,diff){
  const before=diff.before||{},after=diff.after||{};
  const gv=after.gameval||before.gameval||after.gamevalName||before.gamevalName||'';
- const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>k!=='gamevalName'&&k!=='gameval'&&k!=='id');
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>k!=='id'&&((k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k])));
  return keys.map(k=>`<tr><td><pre>${escapeHtml(id)}</pre></td><td><pre>${escapeHtml(gv)}</pre></td><td class='field-name'>${escapeHtml(k)}</td><td><pre>${renderValue(before[k],after[k],'before')}</pre></td><td><pre>${renderValue(after[k],before[k],'after')}</pre></td></tr>`).join('');}
 function createWidgetChangedTable(ch){
  if(Object.keys(ch).length===0)return '<p class="empty">None</p>';
@@ -123910,6 +124249,22 @@ function createTable(rows){
    html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
  }
  html+='</table></div>';return html;}
+function spriteName(id,r){return (r&&(r.gamevalName||r.name))||`Sprite ${id}`;}
+function createSpriteFrames(r){
+ const frames=(r&&r.frames)||[];if(!frames.length)return '<p class="empty">No decoded frames</p>';
+ return '<div class="sprite-frames">'+frames.map(f=>`<div class='sprite-frame'><img src='${escapeHtml(f.image)}' alt='frame ${escapeHtml(f.frame)}'><span>#${escapeHtml(f.frame)} ${escapeHtml(f.width)}x${escapeHtml(f.height)}</span></div>`).join('')+'</div>';}
+function createSpriteCard(id,r){
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(spriteName(id,r))}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml((r&&r.spriteCount)||0)} frame(s)</span></div>${createSpriteFrames(r)}</div>`;}
+function createSpriteTable(rows){
+ if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(rows).map(([id,r])=>createSpriteCard(id,r)).join('')+'</div>';}
+function createSpriteChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};const title=spriteName(id,after.gamevalName?after:before);
+ const count=((before.spriteCount!==undefined?before.spriteCount:'?')+' -> '+(after.spriteCount!==undefined?after.spriteCount:'?'));
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(title)}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml(count)} frame(s)</span></div><div class='sprite-pair'><div><p class='sprite-side-title'>Before</p>${createSpriteFrames(before)}</div><div><p class='sprite-side-title'>After</p>${createSpriteFrames(after)}</div></div></div>`;}
+function createSpriteChangedTable(ch){
+ if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(ch).map(([id,diff])=>createSpriteChangedBlock(id,diff)).join('')+'</div>';}
 function createBucket(title,cls,count,content){
  if(!count)return '';
  return `<details class='bucket'><summary class='section-summary'><span class='section-title ${cls}'>${title}</span><span class='badge ${cls}'>${count}</span></summary><div class='body'>${content}</div></details>`;}
@@ -123934,9 +124289,12 @@ function build(){const c=document.getElementById('content');for(const [section,d
    }
  }
  if(section==='Widgets'){changedBody=createWidgetChangedTable(ch);}
+ if(section==='Sprites'){changedBody=createSpriteChangedTable(ch);}
+ const addedBody=section==='Sprites'?createSpriteTable(add):createTable(add);
+ const removedBody=section==='Sprites'?createSpriteTable(rem):createTable(rem);
  const body='<div class="body">'+
-   createBucket('Added','added',summary.added||0,createTable(add))+
-   createBucket('Removed','removed',summary.removed||0,createTable(rem))+
+   createBucket('Added','added',summary.added||0,addedBody)+
+   createBucket('Removed','removed',summary.removed||0,removedBody)+
    createBucket('Changed','changed',summary.changed||0,changedBody)+
    '</div>';detailsEl.innerHTML+=body;
  sec.appendChild(detailsEl);c.appendChild(sec);}}

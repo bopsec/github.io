@@ -1,0 +1,4465 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>OSRS Cache Diff Report</title>
+<style>
+:root{color-scheme:dark;--bg:#151719;--panel:#202326;--panel2:#262a2e;--border:#343a40;--text:#d8dde3;--muted:#8d99a6;--blue:#7cc7ff;--green:#91d18b;--red:#f28b82;--amber:#f7c873;}
+*{box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:0;font-size:14px;line-height:1.35;}
+header{position:sticky;top:0;z-index:10;background:#1b1e21;border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px #0004;}
+h1{margin:0;color:#f2f6fb;font-size:20px;font-weight:650;}
+.actions{margin-left:auto;display:flex;gap:8px;}
+#content{max-width:1500px;margin:0 auto;padding:14px 18px 28px;}
+section{background:var(--panel);border:1px solid var(--border);border-radius:8px;margin:0 0 12px;overflow:hidden;}
+summary{cursor:pointer;font-weight:650;color:var(--blue);list-style:none;}
+summary::-webkit-details-marker{display:none;}
+.section-summary{display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.section-summary:before{content:'+';color:var(--muted);font-family:Consolas,monospace;width:14px;}
+details[open]>.section-summary:before{content:'-';}
+.section-title{min-width:190px;}
+.badge{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:999px;padding:2px 8px;background:#15181b;color:var(--muted);font-size:12px;font-weight:600;}
+.body{border-top:1px solid var(--border);padding:12px 14px 16px;}
+.bucket{border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 8px;overflow:hidden;}
+.bucket>.section-summary{padding:8px 10px;}
+.bucket>.body{padding:10px;border-top:1px solid var(--border);}
+.subhead{margin:14px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 12px;}
+table{border-collapse:collapse;width:100%;min-width:640px;}
+th,td{border-bottom:1px solid #2c3238;padding:6px 9px;text-align:left;vertical-align:top;}
+th{position:sticky;top:0;background:var(--panel2);color:#f2f6fb;font-size:12px;font-weight:650;z-index:1;}
+tr:nth-child(even){background:#1c2024;}tr:hover{background:#242a30;}
+.added{color:var(--green);}.removed{color:var(--red);}.changed{color:var(--amber);}
+.diff-ins{background:#173d24;color:#c7f7ce;border-radius:3px;padding:0 2px;}
+.diff-del{background:#4a1f22;color:#ffc5c0;border-radius:3px;padding:0 2px;text-decoration:line-through;}
+.changed-table pre{white-space:pre-wrap;word-break:break-word;}
+.changed-entry{border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 10px;overflow:hidden;}
+.changed-entry-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--amber);display:flex;gap:8px;align-items:baseline;}
+.changed-entry-id{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.changed-entry .table-wrap{border:0;border-radius:0;margin:0;}
+.field-name{color:var(--blue);font-family:Consolas,monospace;}
+button{padding:6px 10px;background:#242930;color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer;font:inherit;}
+button:hover{background:#303741;}
+pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-wrap;word-break:break-word;font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;color:var(--text);}
+.sprite-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.sprite-card{border:1px solid var(--border);border-radius:6px;background:#181b1e;overflow:hidden;}
+.sprite-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--blue);display:flex;gap:8px;align-items:baseline;}
+.sprite-meta{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.sprite-frames{display:flex;flex-wrap:wrap;gap:8px;padding:10px;}
+.sprite-frame{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:54px;color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:11px;}
+.sprite-frame img{max-width:160px;max-height:160px;image-rendering:pixelated;background:#0f1113;border:1px solid #2c3238;border-radius:4px;padding:4px;}
+.sprite-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;}
+.sprite-side-title{margin:0 0 8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:650;}
+.empty{color:var(--muted);font-style:italic;margin:4px 0 12px;}
+</style>
+</head>
+<body>
+<header><h1>OSRS Cache Diff</h1><div class='actions'>
+<button onclick="toggleAll(true)">Expand All</button>
+<button onclick="toggleAll(false)">Collapse All</button>
+</div></header>
+<div id='content'></div>
+<script>
+const data={
+  "timestamp": "2026-07-24 18:57:38",
+  "oldPath": ".\\cache-oldschool-237-4",
+  "newPath": ".\\cache-oldschool-237-5",
+  "summary": {
+    "Varbits": {
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    "Database Rows": {
+      "added": 0,
+      "removed": 0,
+      "changed": 6
+    },
+    "Jingles": {
+      "added": 0,
+      "removed": 0,
+      "changed": 314
+    }
+  },
+  "details": {
+    "Varbits": {
+      "added": {
+        "11621": {
+          "id": 11621,
+          "gamevalName": "league_culling_spree_rolled_master",
+          "varplayerDisplay": "league_combat_mastery_points_extra(4568)",
+          "startBit": 20,
+          "endBit": 23,
+          "bitCount": 4
+        }
+      },
+      "removed": {},
+      "changed": {}
+    },
+    "Database Rows": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "1905": {
+          "before": {
+            "columnValues": [
+              [
+                947
+              ],
+              [
+                3
+              ],
+              [
+                "B J R 1 1 2 3"
+              ],
+              [
+                332
+              ],
+              [
+                1,
+                1,
+                2,
+                3
+              ],
+              [
+                678
+              ],
+              null,
+              [
+                2,
+                4
+              ],
+              null,
+              null
+            ],
+            "gamevalName": "cluehelper_fairyring_hard_4"
+          },
+          "after": {
+            "columnValues": [
+              [
+                947
+              ],
+              [
+                3
+              ],
+              [
+                "B J R 1 1 2 3"
+              ],
+              [
+                332
+              ],
+              [
+                1,
+                1,
+                2,
+                3
+              ],
+              [
+                678
+              ],
+              null,
+              [
+                2,
+                4,
+                3
+              ],
+              null,
+              null
+            ],
+            "gamevalName": "cluehelper_fairyring_hard_4"
+          }
+        },
+        "2288": {
+          "before": {
+            "columnValues": [
+              [
+                748
+              ],
+              [
+                2
+              ],
+              [
+                "You\u0027ll need to look for a town with a central fountain. Look for a locked chest in the town\u0027s chapel."
+              ],
+              [
+                1922
+              ],
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              [
+                4
+              ],
+              null,
+              null,
+              null,
+              null
+            ],
+            "gamevalName": "cluehelper_cryptic_medium_monk_chestclosed"
+          },
+          "after": {
+            "columnValues": [
+              [
+                748
+              ],
+              [
+                2
+              ],
+              [
+                "You\u0027ll need to look for a town with a central fountain. Look for a locked chest in the town\u0027s chapel."
+              ],
+              [
+                1922
+              ],
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              [
+                4,
+                1
+              ],
+              null,
+              null,
+              null,
+              null
+            ],
+            "gamevalName": "cluehelper_cryptic_medium_monk_chestclosed"
+          }
+        },
+        "4911": {
+          "before": {
+            "columnValues": [
+              [
+                "wardensboss"
+              ],
+              null,
+              [
+                "toa_wardens_4_square_thunder_01",
+                6266,
+                "toa_wardens_amascut_despawn_01",
+                6098,
+                "toa_wardens_amascut_despawn_02",
+                6063,
+                "toa_wardens_amascut_despawn_03",
+                6051,
+                "toa_wardens_amascut_despawn_04",
+                6253,
+                "toa_wardens_amascut_despawn_05",
+                6173,
+                "toa_wardens_attackcentre_arm_impact_01",
+                6235,
+                "toa_wardens_attackcentre_chargeup_01",
+                6069,
+                "toa_wardens_attackcentre_quicker_chargeup_01",
+                6112,
+                "toa_wardens_attackcentre_quicker_whoosh_01",
+                6105,
+                "toa_wardens_attackcentre_quikcer_chargeup_01",
+                6108,
+                "toa_wardens_attackcentre_whoosh_01",
+                6099,
+                "toa_wardens_attackleft_charge_up_01",
+                6046,
+                "toa_wardens_attackleft_charge_up_quicker_02",
+                6192,
+                "toa_wardens_attack_centre_bass_01",
+                6134,
+                "toa_wardens_attack_throw_whoosh_01",
+                6181,
+                "toa_wardens_attack_throw_whoosh_02",
+                6093,
+                "toa_wardens_attack_throw_whoosh_03",
+                6118,
+                "toa_wardens_big_red_projectile_impact_01",
+                6073,
+                "toa_wardens_big_red_projectile_spawn_and_travel_01",
+                6119,
+                "toa_wardens_blue_orb_landing_01",
+                6159,
+                "toa_wardens_charge_arm_spread_01",
+                6213,
+                "toa_wardens_charge_engage_01",
+                6100,
+                "toa_wardens_charge_engage_high_pitch_01",
+                6176,
+                "toa_wardens_charge_engage_high_pitch_02",
+                6034,
+                "toa_wardens_charge_engage_whoosh_01",
+                6072,
+                "toa_wardens_charge_particles_movement_01",
+                6168,
+                "toa_wardens_charge_particles_movement_02",
+                6207,
+                "toa_wardens_core_heartbeat_01",
+                6225,
+                "toa_wardens_core_land_impact_01",
+                6201,
+                "toa_wardens_death_arm_crumble_01",
+                6047,
+                "toa_wardens_death_arm_crumble_02",
+                6187,
+                "toa_wardens_death_arm_crumble_03",
+                6125,
+                "toa_wardens_death_body_breaks_from_hand_01",
+                6211,
+                "toa_wardens_death_body_crumbling_01",
+                6232,
+                "toa_wardens_death_body_crumbling_02",
+                6059,
+                "toa_wardens_death_body_fall_01",
+                6090,
+                "toa_wardens_death_body_fall_02",
+                6060,
+                "toa_wardens_death_failed_arm_thrust_01",
+                6149,
+                "toa_wardens_death_failed_powerup_01",
+                6240,
+                "toa_wardens_death_failed_punch_01",
+                6068,
+                "toa_wardens_death_failed_punch_02",
+                6074,
+                "toa_wardens_death_falls_to_knees_01",
+                6113,
+                "toa_wardens_death_final_rock_crumble_01",
+                6127,
+                "toa_wardens_death_final_rock_crumble_02",
+                6171,
+                "toa_wardens_death_first_footstep_01",
+                6080,
+                "toa_wardens_death_first_grab_floor_01",
+                6094,
+                "toa_wardens_death_fly_back_01",
+                6251,
+                "toa_wardens_death_full_body_impact_01",
+                6049,
+                "toa_wardens_death_grab_floor_01",
+                6082,
+                "toa_wardens_death_head_falling_sweep_01",
+                6035,
+                "toa_wardens_death_head_falling_to_knees_01",
+                6265,
+                "toa_wardens_death_head_fall_impact_01",
+                6064,
+                "toa_wardens_death_head_slides_off",
+                6245,
+                "toa_wardens_death_high_wind_01",
+                6262,
+                "toa_wardens_death_second_fly_back_01",
+                6058,
+                "toa_wardens_death_second_footstep_01",
+                6209,
+                "toa_wardens_death_standup_step_01",
+                6214,
+                "toa_wardens_death_strong_fourth_wind_01",
+                6229,
+                "toa_wardens_death_strong_second_wind_01",
+                6054,
+                "toa_wardens_death_strong_third_wind_01",
+                6137,
+                "toa_wardens_death_strong_wind_01",
+                6199,
+                "toa_wardens_defend_01",
+                6591,
+                "toa_wardens_destroy_core_from_warnden_01",
+                6083,
+                "toa_wardens_enraged_strong_wind1_01",
+                6160,
+                "toa_wardens_enraged_strong_wind2_01",
+                6216,
+                "toa_wardens_enraged_strong_wind3_01",
+                6107,
+                "toa_wardens_enraged_tile_swoosh_01",
+                6247,
+                "toa_wardens_enraged_tile_swoosh_02",
+                6153,
+                "toa_wardens_enraged_tile_swoosh_03",
+                6124,
+                "toa_wardens_enraged_tile_swoosh_04",
+                6219,
+                "toa_wardens_enrage_lightning_01",
+                6116,
+                "toa_wardens_enranged_shaking_01",
+                6193,
+                "toa_wardens_enranged_shaking_02",
+                6042,
+                "toa_wardens_enranging_charge_01",
+                6162,
+                "toa_wardens_enranging_power_up_01",
+                6189,
+                "toa_wardens_explosion01_body_debris_01",
+                6184,
+                "toa_wardens_explosion01_body_debris_02",
+                6206,
+                "toa_wardens_explosion01_body_debris_03",
+                6172,
+                "toa_wardens_explosion01_body_final_debris_01",
+                6117,
+                "toa_wardens_explosion01_body_final_debris_02",
+                6122,
+                "toa_wardens_explosion01_body_first_debris_01",
+                6040,
+                "toa_wardens_explosion01_final_body_impact_01",
+                6141,
+                "toa_wardens_explosion01_rocks_falling_01",
+                6180,
+                "toa_wardens_explosion01_rocks_falling_02",
+                6227,
+                "toa_wardens_explosion01_rocks_falling_03",
+                6218,
+                "toa_wardens_explosion01_rocks_falling_04",
+                6252,
+                "toa_wardens_explosion01_rocks_falling_05",
+                6212,
+                "toa_wardens_explosion_arm_throw_back_01",
+                6084,
+                "toa_wardens_full_wind1_01",
+                6143,
+                "toa_wardens_full_wind2_01",
+                6044,
+                "toa_wardens_ground_tile_fly_01",
+                6152,
+                "toa_wardens_ground_tile_fly_02",
+                6062,
+                "toa_wardens_head_falls_off_01",
+                6188,
+                "toa_wardens_high_whish_01",
+                6039,
+                "toa_wardens_impact_body_movement_01",
+                6161,
+                "toa_wardens_kneel_core_projectile_01",
+                6222,
+                "toa_wardens_kneel_core_projectile_02",
+                6250,
+                "toa_wardens_kneel_first_hit_floor_01",
+                6104,
+                "toa_wardens_kneel_movement1_01",
+                6194,
+                "toa_wardens_kneel_movement2_01",
+                6248,
+                "toa_wardens_kneel_shake_01",
+                6264,
+                "toa_wardens_low_whoosh_01",
+                6048,
+                "toa_wardens_magic_ceiling_lights_01",
+                6097,
+                "toa_wardens_magic_ceiling_lights_despawn_01",
+                6077,
+                "toa_wardens_magic_ceiling_lights_spawn_\u0026_rotate_01",
+                6132,
+                "toa_wardens_magic_charge_up_01",
+                6236,
+                "toa_wardens_magic_projectile_01",
+                6138,
+                "toa_wardens_magic_shot_01",
+                6242,
+                "toa_wardens_melee_footstep_01",
+                6177,
+                "toa_wardens_melee_swoosh_high_impact_02",
+                6095,
+                "toa_wardens_melee_swoosh_impact_01",
+                6231,
+                "toa_wardens_melee_swoosh_impact_02",
+                6076,
+                "toa_wardens_melee_swoosh_impact_04",
+                6123,
+                "toa_wardens_melee_sword_strike_01",
+                6053,
+                "toa_wardens_melee_sword_strike_02 ",
+                11495,
+                "toa_wardens_melee_whoosh_01",
+                6154,
+                "toa_wardens_melee_whoosh_02",
+                6088,
+                "toa_wardens_melee_whoosh_03",
+                6111,
+                "toa_wardens_nice_rock_debris_sound_explosion",
+                6109,
+                "toa_wardens_obelisk_destroyed_01",
+                6195,
+                "toa_wardens_obelisk_hit_01",
+                6595,
+                "toa_wardens_obelisk_ignite_01",
+                6081,
+                "toa_wardens_obelisk_power_down_phase1_end_01",
+                6131,
+                "toa_wardens_obelisk_red_thunder_projectile_falling_01",
+                6260,
+                "toa_wardens_obelisk_red_thunder_projectile_fall_impact_01",
+                6121,
+                "toa_wardens_obelisk_red_thunder_projectile_fall_impact_02",
+                6055,
+                "toa_wardens_phase3_red_projectiles_01",
+                6230,
+                "toa_wardens_range_high_whiish_01",
+                6136,
+                "toa_wardens_range_high_whish_01",
+                6221,
+                "toa_wardens_range_low_whoosh_01",
+                6146,
+                "toa_wardens_range_prep_01",
+                6268,
+                "toa_wardens_range_prep_02",
+                6139,
+                "toa_wardens_range_prep_03",
+                6126,
+                "toa_wardens_range_prep_04",
+                6263,
+                "toa_wardens_range_prep_05",
+                6239,
+                "toa_wardens_range_prep_06",
+                6238,
+                "toa_wardens_range_projectile_01",
+                6156,
+                "toa_wardens_range_projectile_02",
+                6165,
+                "toa_wardens_range_projectile_03",
+                6163,
+                "toa_wardens_range_projectile_04",
+                6103,
+                "toa_wardens_range_projectile_impact_01",
+                6257,
+                "toa_wardens_range_slash_01",
+                6067,
+                "toa_wardens_range_smack_01",
+                6144,
+                "toa_wardens_range_start_01",
+                6224,
+                "toa_wardens_red_projectiles_01",
+                6070,
+                "toa_wardens_red_thunder_01",
+                6203,
+                "toa_wardens_red_thunder_02",
+                6174,
+                "toa_wardens_red_thunder_03",
+                6102,
+                "toa_wardens_red_thunder_04",
+                6079,
+                "toa_wardens_red_thunder_05",
+                6106,
+                "toa_wardens_red_thunder_06",
+                6158,
+                "toa_wardens_red_thunder_07",
+                6223,
+                "toa_wardens_red_thunder_08",
+                6164,
+                "toa_wardens_red_thunder_09",
+                6147,
+                "toa_wardens_red_thunder_10",
+                6233,
+                "toa_wardens_red_thunder_11",
+                6186,
+                "toa_wardens_red_tille_quarter_whoosh_01",
+                6092,
+                "toa_wardens_red_waves_01",
+                6258,
+                "toa_wardens_release_movement_01",
+                6202,
+                "toa_wardens_release_movement_02",
+                6200,
+                "toa_wardens_release_particles_appear_01",
+                6078,
+                "toa_wardens_release_particles_appear_02",
+                6157,
+                "toa_wardens_release_upwards_thurst_01",
+                6241,
+                "toa_wardens_release_whoosh_movement_01",
+                6036,
+                "toa_wardens_release_whoosh_movement_02",
+                6217,
+                "toa_wardens_release_whoosh_movement_03",
+                6208,
+                "toa_wardens_single_tile_sweep_01",
+                6128,
+                "toa_wardens_single_tile_sweep_impact_thunder_01",
+                6145,
+                "toa_wardens_skulls_travel_01",
+                6087,
+                "toa_wardens_small_red_projectile_falling_01",
+                6148,
+                "toa_wardens_square_thunder1_01",
+                6182,
+                "toa_wardens_square_thunder2_01",
+                6256,
+                "toa_wardens_square_thunder3_01",
+                6234,
+                "toa_wardens_square_thunder4_01",
+                6135,
+                "toa_wardens_staggered_impact_01",
+                6243,
+                "toa_wardens_staggered_orb_hit_warden_01",
+                6183,
+                "toa_wardens_staggers_dizzy_01",
+                6215,
+                "toa_wardens_staggers_fall_back_impact_01",
+                6110,
+                "toa_wardens_staggers_particles_appear_01",
+                6115,
+                "toa_wardens_staggers_whoosh_01",
+                6038,
+                "toa_wardens_standup_movement_01",
+                6210,
+                "toa_wardens_standup_movement_02",
+                6114,
+                "toa_wardens_standup_weapons_prep_01",
+                6267,
+                "toa_wardens_standup_weapons_prep_02",
+                6246,
+                "toa_wardens_stomp_01",
+                6254,
+                "toa_wardens_stomp_body_movement_01",
+                6086,
+                "toa_wardens_thunder_impact_01",
+                6065,
+                "toa_wardens_thunder_travelling_warden_01",
+                6191,
+                "toa_wardens_tiles_central_ripple_01",
+                6179,
+                "toa_wardens_tiles_clicks_01",
+                6120,
+                "toa_wardens_tiles_clicks_02",
+                6197,
+                "toa_wardens_tiles_impact_centre_01",
+                6057,
+                "toa_wardens_tiles_impact_centre_02",
+                6066,
+                "toa_wardens_tiles_impact_left_01",
+                6255,
+                "toa_wardens_tiles_impact_left_02",
+                6151,
+                "toa_wardens_tiles_impact_right_01",
+                6237,
+                "toa_wardens_tiles_impact_right_02",
+                6129,
+                "toa_wardens_wake02_slow_rising_01",
+                6244,
+                "toa_wardens_wake02_slow_rising_head_shake_01",
+                6175,
+                "toa_wardens_wake2_body_rising_01",
+                6228,
+                "toa_wardens_wake2_impact_magic_spotanim_whoosh_01",
+                6142,
+                "toa_wardens_wake2_magic_spotanim_particles_combined_01",
+                6226,
+                "toa_wardens_wake2_magic_spotanim_particles_combined_percussive_01",
+                6061,
+                "toa_wardens_wake2_magic_spotanim_particles_fly_away_01",
+                6261,
+                "toa_wardens_wake2_magic_spotanim_particles_shot_01",
+                6220,
+                "toa_wardens_wake2_magic_spotanim_particle_movement1_01",
+                6085,
+                "toa_wardens_wake2_magic_spotanim_particle_movement2_01",
+                6043,
+                "toa_wardens_wake2_magic_spotanim_particle_movement3_01",
+                6155,
+                "toa_wardens_wake2_shaking_scream_01",
+                6196,
+                "toa_wardens_wake_staccato_01",
+                6052,
+                "toa_wardens_wake_up_first_footstep_01",
+                6037,
+                "toa_wardens_wake_up_first_leg_break_free_01",
+                6045,
+                "toa_wardens_wake_up_first_leg_break_free_02",
+                6198,
+                "toa_wardens_wake_up_last_leg_movement_01",
+                6101,
+                "toa_wardens_wake_up_leg_break_free_01",
+                6167,
+                "toa_wardens_wake_up_leg_jerk_01",
+                6130,
+                "toa_wardens_wake_up_leg_jerk_02",
+                6204,
+                "toa_wardens_wake_up_leg_jerk_03",
+                6259,
+                "toa_wardens_wake_up_leg_jerk_04",
+                6071,
+                "toa_wardens_wake_up_leg_jerk_05",
+                6170,
+                "toa_wardens_wake_up_leg_jerk_06",
+                6089,
+                "toa_wardens_wake_up_leg_jerk_07",
+                6190,
+                "toa_wardens_wake_up_leg_stuck_01",
+                6249,
+                "toa_wardens_wake_up_power_01",
+                6205,
+                "toa_wardens_wake_up_second_footstep_01",
+                6178,
+                "toa_wardens_wake_up_second_leg_break_free_01",
+                6091,
+                "toa_wardens_wake_up_third_footstep_01",
+                6150,
+                "toa_wardens_walk_ste1_01",
+                6096,
+                "toa_wardens_walk_step1_01",
+                6041,
+                "toa_wardens_walk_step1_02",
+                6166,
+                "toa_wardens_walk_step1_03",
+                6056,
+                "toa_wardens_walk_step2_01",
+                6140,
+                "toa_wardens_walk_step2_02",
+                6050,
+                "toa_wardens_woke_awakening_01",
+                6185,
+                "toa_wardens_woke_rock_movement_1_01",
+                6169,
+                "toa_wardens_woke_rock_movement_2_01",
+                6133
+              ],
+              [
+                4899
+              ]
+            ],
+            "gamevalName": "synth_wardensboss"
+          },
+          "after": {
+            "columnValues": [
+              [
+                "wardensboss"
+              ],
+              null,
+              [
+                "toa_wardens_4_square_thunder_01",
+                6266,
+                "toa_wardens_amascut_despawn_01",
+                6098,
+                "toa_wardens_amascut_despawn_02",
+                6063,
+                "toa_wardens_amascut_despawn_03",
+                6051,
+                "toa_wardens_amascut_despawn_04",
+                6253,
+                "toa_wardens_amascut_despawn_05",
+                6173,
+                "toa_wardens_attackcentre_arm_impact_01",
+                6235,
+                "toa_wardens_attackcentre_chargeup_01",
+                6069,
+                "toa_wardens_attackcentre_quicker_chargeup_01",
+                6112,
+                "toa_wardens_attackcentre_quicker_whoosh_01",
+                6105,
+                "toa_wardens_attackcentre_quikcer_chargeup_01",
+                6108,
+                "toa_wardens_attackcentre_whoosh_01",
+                6099,
+                "toa_wardens_attackleft_charge_up_01",
+                6046,
+                "toa_wardens_attackleft_charge_up_quicker_02",
+                6192,
+                "toa_wardens_attack_centre_bass_01",
+                6134,
+                "toa_wardens_attack_throw_whoosh_01",
+                6181,
+                "toa_wardens_attack_throw_whoosh_02",
+                6093,
+                "toa_wardens_attack_throw_whoosh_03",
+                6118,
+                "toa_wardens_big_red_projectile_impact_01",
+                6073,
+                "toa_wardens_big_red_projectile_spawn_and_travel_01",
+                6119,
+                "toa_wardens_blue_orb_landing_01",
+                6159,
+                "toa_wardens_charge_arm_spread_01",
+                6213,
+                "toa_wardens_charge_engage_01",
+                6100,
+                "toa_wardens_charge_engage_high_pitch_01",
+                6176,
+                "toa_wardens_charge_engage_high_pitch_02",
+                6034,
+                "toa_wardens_charge_engage_whoosh_01",
+                6072,
+                "toa_wardens_charge_particles_movement_01",
+                6168,
+                "toa_wardens_charge_particles_movement_02",
+                6207,
+                "toa_wardens_core_heartbeat_01",
+                6225,
+                "toa_wardens_core_land_impact_01",
+                6201,
+                "toa_wardens_death_arm_crumble_01",
+                6047,
+                "toa_wardens_death_arm_crumble_02",
+                6187,
+                "toa_wardens_death_arm_crumble_03",
+                6125,
+                "toa_wardens_death_body_breaks_from_hand_01",
+                6211,
+                "toa_wardens_death_body_crumbling_01",
+                6232,
+                "toa_wardens_death_body_crumbling_02",
+                6059,
+                "toa_wardens_death_body_fall_01",
+                6090,
+                "toa_wardens_death_body_fall_02",
+                6060,
+                "toa_wardens_death_failed_arm_thrust_01",
+                6149,
+                "toa_wardens_death_failed_powerup_01",
+                6240,
+                "toa_wardens_death_failed_punch_01",
+                6068,
+                "toa_wardens_death_failed_punch_02",
+                6074,
+                "toa_wardens_death_falls_to_knees_01",
+                6113,
+                "toa_wardens_death_final_rock_crumble_01",
+                6127,
+                "toa_wardens_death_final_rock_crumble_02",
+                6171,
+                "toa_wardens_death_first_footstep_01",
+                6080,
+                "toa_wardens_death_first_grab_floor_01",
+                6094,
+                "toa_wardens_death_fly_back_01",
+                6251,
+                "toa_wardens_death_full_body_impact_01",
+                6049,
+                "toa_wardens_death_grab_floor_01",
+                6082,
+                "toa_wardens_death_head_falling_sweep_01",
+                6035,
+                "toa_wardens_death_head_falling_to_knees_01",
+                6265,
+                "toa_wardens_death_head_fall_impact_01",
+                6064,
+                "toa_wardens_death_head_slides_off",
+                6245,
+                "toa_wardens_death_high_wind_01",
+                6262,
+                "toa_wardens_death_second_fly_back_01",
+                6058,
+                "toa_wardens_death_second_footstep_01",
+                6209,
+                "toa_wardens_death_standup_step_01",
+                6214,
+                "toa_wardens_death_strong_fourth_wind_01",
+                6229,
+                "toa_wardens_death_strong_second_wind_01",
+                6054,
+                "toa_wardens_death_strong_third_wind_01",
+                6137,
+                "toa_wardens_death_strong_wind_01",
+                6199,
+                "toa_wardens_defend_01",
+                6591,
+                "toa_wardens_destroy_core_from_warnden_01",
+                6083,
+                "toa_wardens_enraged_strong_wind1_01",
+                6160,
+                "toa_wardens_enraged_strong_wind2_01",
+                6216,
+                "toa_wardens_enraged_strong_wind3_01",
+                6107,
+                "toa_wardens_enraged_tile_swoosh_01",
+                6247,
+                "toa_wardens_enraged_tile_swoosh_02",
+                6153,
+                "toa_wardens_enraged_tile_swoosh_03",
+                6124,
+                "toa_wardens_enraged_tile_swoosh_04",
+                6219,
+                "toa_wardens_enrage_lightning_01",
+                6116,
+                "toa_wardens_enranged_shaking_01",
+                6193,
+                "toa_wardens_enranged_shaking_02",
+                6042,
+                "toa_wardens_enranging_charge_01",
+                6162,
+                "toa_wardens_enranging_power_up_01",
+                6189,
+                "toa_wardens_explosion01_body_debris_01",
+                6184,
+                "toa_wardens_explosion01_body_debris_02",
+                6206,
+                "toa_wardens_explosion01_body_debris_03",
+                6172,
+                "toa_wardens_explosion01_body_final_debris_01",
+                6117,
+                "toa_wardens_explosion01_body_final_debris_02",
+                6122,
+                "toa_wardens_explosion01_body_first_debris_01",
+                6040,
+                "toa_wardens_explosion01_final_body_impact_01",
+                6141,
+                "toa_wardens_explosion01_rocks_falling_01",
+                6180,
+                "toa_wardens_explosion01_rocks_falling_02",
+                6227,
+                "toa_wardens_explosion01_rocks_falling_03",
+                6218,
+                "toa_wardens_explosion01_rocks_falling_04",
+                6252,
+                "toa_wardens_explosion01_rocks_falling_05",
+                6212,
+                "toa_wardens_explosion_arm_throw_back_01",
+                6084,
+                "toa_wardens_full_wind1_01",
+                6143,
+                "toa_wardens_full_wind2_01",
+                6044,
+                "toa_wardens_ground_tile_fly_01",
+                6152,
+                "toa_wardens_ground_tile_fly_02",
+                6062,
+                "toa_wardens_head_falls_off_01",
+                6188,
+                "toa_wardens_high_whish_01",
+                6039,
+                "toa_wardens_impact_body_movement_01",
+                6161,
+                "toa_wardens_kneel_core_projectile_01",
+                6222,
+                "toa_wardens_kneel_core_projectile_02",
+                6250,
+                "toa_wardens_kneel_first_hit_floor_01",
+                6104,
+                "toa_wardens_kneel_movement1_01",
+                6194,
+                "toa_wardens_kneel_movement2_01",
+                6248,
+                "toa_wardens_kneel_shake_01",
+                6264,
+                "toa_wardens_low_whoosh_01",
+                6048,
+                "toa_wardens_magic_ceiling_lights_01",
+                6097,
+                "toa_wardens_magic_ceiling_lights_despawn_01",
+                6077,
+                "toa_wardens_magic_ceiling_lights_spawn_\u0026_rotate_01",
+                6132,
+                "toa_wardens_magic_charge_up_01",
+                6236,
+                "toa_wardens_magic_projectile_01",
+                6138,
+                "toa_wardens_magic_shot_01",
+                6242,
+                "toa_wardens_melee_footstep_01",
+                6177,
+                "toa_wardens_melee_swoosh_high_impact_02",
+                6095,
+                "toa_wardens_melee_swoosh_impact_01",
+                6231,
+                "toa_wardens_melee_swoosh_impact_02",
+                6076,
+                "toa_wardens_melee_swoosh_impact_04",
+                6123,
+                "toa_wardens_melee_sword_strike_01",
+                6053,
+                "toa_wardens_melee_sword_strike_02 ",
+                11503,
+                "toa_wardens_melee_whoosh_01",
+                6154,
+                "toa_wardens_melee_whoosh_02",
+                6088,
+                "toa_wardens_melee_whoosh_03",
+                6111,
+                "toa_wardens_nice_rock_debris_sound_explosion",
+                6109,
+                "toa_wardens_obelisk_destroyed_01",
+                6195,
+                "toa_wardens_obelisk_hit_01",
+                6595,
+                "toa_wardens_obelisk_ignite_01",
+                6081,
+                "toa_wardens_obelisk_power_down_phase1_end_01",
+                6131,
+                "toa_wardens_obelisk_red_thunder_projectile_falling_01",
+                6260,
+                "toa_wardens_obelisk_red_thunder_projectile_fall_impact_01",
+                6121,
+                "toa_wardens_obelisk_red_thunder_projectile_fall_impact_02",
+                6055,
+                "toa_wardens_phase3_red_projectiles_01",
+                6230,
+                "toa_wardens_range_high_whiish_01",
+                6136,
+                "toa_wardens_range_high_whish_01",
+                6221,
+                "toa_wardens_range_low_whoosh_01",
+                6146,
+                "toa_wardens_range_prep_01",
+                6268,
+                "toa_wardens_range_prep_02",
+                6139,
+                "toa_wardens_range_prep_03",
+                6126,
+                "toa_wardens_range_prep_04",
+                6263,
+                "toa_wardens_range_prep_05",
+                6239,
+                "toa_wardens_range_prep_06",
+                6238,
+                "toa_wardens_range_projectile_01",
+                6156,
+                "toa_wardens_range_projectile_02",
+                6165,
+                "toa_wardens_range_projectile_03",
+                6163,
+                "toa_wardens_range_projectile_04",
+                6103,
+                "toa_wardens_range_projectile_impact_01",
+                6257,
+                "toa_wardens_range_slash_01",
+                6067,
+                "toa_wardens_range_smack_01",
+                6144,
+                "toa_wardens_range_start_01",
+                6224,
+                "toa_wardens_red_projectiles_01",
+                6070,
+                "toa_wardens_red_thunder_01",
+                6203,
+                "toa_wardens_red_thunder_02",
+                6174,
+                "toa_wardens_red_thunder_03",
+                6102,
+                "toa_wardens_red_thunder_04",
+                6079,
+                "toa_wardens_red_thunder_05",
+                6106,
+                "toa_wardens_red_thunder_06",
+                6158,
+                "toa_wardens_red_thunder_07",
+                6223,
+                "toa_wardens_red_thunder_08",
+                6164,
+                "toa_wardens_red_thunder_09",
+                6147,
+                "toa_wardens_red_thunder_10",
+                6233,
+                "toa_wardens_red_thunder_11",
+                6186,
+                "toa_wardens_red_tille_quarter_whoosh_01",
+                6092,
+                "toa_wardens_red_waves_01",
+                6258,
+                "toa_wardens_release_movement_01",
+                6202,
+                "toa_wardens_release_movement_02",
+                6200,
+                "toa_wardens_release_particles_appear_01",
+                6078,
+                "toa_wardens_release_particles_appear_02",
+                6157,
+                "toa_wardens_release_upwards_thurst_01",
+                6241,
+                "toa_wardens_release_whoosh_movement_01",
+                6036,
+                "toa_wardens_release_whoosh_movement_02",
+                6217,
+                "toa_wardens_release_whoosh_movement_03",
+                6208,
+                "toa_wardens_single_tile_sweep_01",
+                6128,
+                "toa_wardens_single_tile_sweep_impact_thunder_01",
+                6145,
+                "toa_wardens_skulls_travel_01",
+                6087,
+                "toa_wardens_small_red_projectile_falling_01",
+                6148,
+                "toa_wardens_square_thunder1_01",
+                6182,
+                "toa_wardens_square_thunder2_01",
+                6256,
+                "toa_wardens_square_thunder3_01",
+                6234,
+                "toa_wardens_square_thunder4_01",
+                6135,
+                "toa_wardens_staggered_impact_01",
+                6243,
+                "toa_wardens_staggered_orb_hit_warden_01",
+                6183,
+                "toa_wardens_staggers_dizzy_01",
+                6215,
+                "toa_wardens_staggers_fall_back_impact_01",
+                6110,
+                "toa_wardens_staggers_particles_appear_01",
+                6115,
+                "toa_wardens_staggers_whoosh_01",
+                6038,
+                "toa_wardens_standup_movement_01",
+                6210,
+                "toa_wardens_standup_movement_02",
+                6114,
+                "toa_wardens_standup_weapons_prep_01",
+                6267,
+                "toa_wardens_standup_weapons_prep_02",
+                6246,
+                "toa_wardens_stomp_01",
+                6254,
+                "toa_wardens_stomp_body_movement_01",
+                6086,
+                "toa_wardens_thunder_impact_01",
+                6065,
+                "toa_wardens_thunder_travelling_warden_01",
+                6191,
+                "toa_wardens_tiles_central_ripple_01",
+                6179,
+                "toa_wardens_tiles_clicks_01",
+                6120,
+                "toa_wardens_tiles_clicks_02",
+                6197,
+                "toa_wardens_tiles_impact_centre_01",
+                6057,
+                "toa_wardens_tiles_impact_centre_02",
+                6066,
+                "toa_wardens_tiles_impact_left_01",
+                6255,
+                "toa_wardens_tiles_impact_left_02",
+                6151,
+                "toa_wardens_tiles_impact_right_01",
+                6237,
+                "toa_wardens_tiles_impact_right_02",
+                6129,
+                "toa_wardens_wake02_slow_rising_01",
+                6244,
+                "toa_wardens_wake02_slow_rising_head_shake_01",
+                6175,
+                "toa_wardens_wake2_body_rising_01",
+                6228,
+                "toa_wardens_wake2_impact_magic_spotanim_whoosh_01",
+                6142,
+                "toa_wardens_wake2_magic_spotanim_particles_combined_01",
+                6226,
+                "toa_wardens_wake2_magic_spotanim_particles_combined_percussive_01",
+                6061,
+                "toa_wardens_wake2_magic_spotanim_particles_fly_away_01",
+                6261,
+                "toa_wardens_wake2_magic_spotanim_particles_shot_01",
+                6220,
+                "toa_wardens_wake2_magic_spotanim_particle_movement1_01",
+                6085,
+                "toa_wardens_wake2_magic_spotanim_particle_movement2_01",
+                6043,
+                "toa_wardens_wake2_magic_spotanim_particle_movement3_01",
+                6155,
+                "toa_wardens_wake2_shaking_scream_01",
+                6196,
+                "toa_wardens_wake_staccato_01",
+                6052,
+                "toa_wardens_wake_up_first_footstep_01",
+                6037,
+                "toa_wardens_wake_up_first_leg_break_free_01",
+                6045,
+                "toa_wardens_wake_up_first_leg_break_free_02",
+                6198,
+                "toa_wardens_wake_up_last_leg_movement_01",
+                6101,
+                "toa_wardens_wake_up_leg_break_free_01",
+                6167,
+                "toa_wardens_wake_up_leg_jerk_01",
+                6130,
+                "toa_wardens_wake_up_leg_jerk_02",
+                6204,
+                "toa_wardens_wake_up_leg_jerk_03",
+                6259,
+                "toa_wardens_wake_up_leg_jerk_04",
+                6071,
+                "toa_wardens_wake_up_leg_jerk_05",
+                6170,
+                "toa_wardens_wake_up_leg_jerk_06",
+                6089,
+                "toa_wardens_wake_up_leg_jerk_07",
+                6190,
+                "toa_wardens_wake_up_leg_stuck_01",
+                6249,
+                "toa_wardens_wake_up_power_01",
+                6205,
+                "toa_wardens_wake_up_second_footstep_01",
+                6178,
+                "toa_wardens_wake_up_second_leg_break_free_01",
+                6091,
+                "toa_wardens_wake_up_third_footstep_01",
+                6150,
+                "toa_wardens_walk_ste1_01",
+                6096,
+                "toa_wardens_walk_step1_01",
+                6041,
+                "toa_wardens_walk_step1_02",
+                6166,
+                "toa_wardens_walk_step1_03",
+                6056,
+                "toa_wardens_walk_step2_01",
+                6140,
+                "toa_wardens_walk_step2_02",
+                6050,
+                "toa_wardens_woke_awakening_01",
+                6185,
+                "toa_wardens_woke_rock_movement_1_01",
+                6169,
+                "toa_wardens_woke_rock_movement_2_01",
+                6133
+              ],
+              [
+                4899
+              ]
+            ],
+            "gamevalName": "synth_wardensboss"
+          }
+        },
+        "4912": {
+          "before": {
+            "columnValues": [
+              [
+                "zabakboss"
+              ],
+              null,
+              [
+                "toa_zebak02_final_tail_swing_01",
+                5889,
+                "toa_zebak02_tail_impact_01",
+                5859,
+                "toa_zebak02_tail_impact_02",
+                5834,
+                "toa_zebak02_tail_swing_01",
+                5847,
+                "toa_zebak02_tail_swing_02",
+                5921,
+                "toa_zebak_attack_hand_stomp_01",
+                5845,
+                "toa_zebak_attack_hand_stomp_final_01",
+                5851,
+                "toa_zebak_attack_hand_stomp_first_01",
+                5860,
+                "toa_zebak_attack_hand_stomp_left_01",
+                5835,
+                "toa_zebak_attack_jaw_shut_01",
+                5863,
+                "toa_zebak_attack_jaw_shut_02 ",
+                11496,
+                "toa_zebak_attack_melee_enranged_jaw_snap_01",
+                5850,
+                "toa_zebak_attack_melee_enranged_roar_01",
+                5857,
+                "toa_zebak_attack_melee_enranged_roar_02",
+                5917,
+                "toa_zebak_attack_melee_high_hand_hit_01",
+                5895,
+                "toa_zebak_attack_melee_high_hand_hit_02",
+                5846,
+                "toa_zebak_attack_melee_high_hand_hit_03",
+                5903,
+                "toa_zebak_attack_melee_high_hand_hit_high_pitch_01",
+                5916,
+                "toa_zebak_attack_melee_high_roar_01",
+                5915,
+                "toa_zebak_attack_melee_high_roar_02",
+                5844,
+                "toa_zebak_attack_melee_jaw_snap_shut_01",
+                5822,
+                "toa_zebak_attack_melee_jaw_snap_shut_02",
+                5853,
+                "toa_zebak_attack_melee_roar_01",
+                5876,
+                "toa_zebak_attack_roar_01",
+                5894,
+                "toa_zebak_attack_roar_02",
+                5902,
+                "toa_zebak_attack_roar_03",
+                5910,
+                "toa_zebak_attack_roar_04",
+                5900,
+                "toa_zebak_attack_roar_05",
+                5836,
+                "toa_zebak_attack_roar_bass_01",
+                5923,
+                "toa_zebak_attack_roar_bass_02",
+                5838,
+                "toa_zebak_attack_roar_high_01",
+                5870,
+                "toa_zebak_attack_roar_high_02",
+                5904,
+                "toa_zebak_attack_roar_impact_01",
+                5854,
+                "toa_zebak_attack_special_final_hand_impact_01",
+                5821,
+                "toa_zebak_attack_special_intro_growl_01",
+                5858,
+                "toa_zebak_attack_special_roar_01",
+                5861,
+                "toa_zebak_attack_tail_growl_01",
+                5866,
+                "toa_zebak_attack_tail_roar_01",
+                5922,
+                "toa_zebak_death_first_floor_hit_01",
+                5893,
+                "toa_zebak_death_first_floor_hit_02",
+                5824,
+                "toa_zebak_death_first_roar_01",
+                5907,
+                "toa_zebak_death_roar_05",
+                5879,
+                "toa_zebak_death_roar_06",
+                5841,
+                "toa_zebak_death_second_floor_hit_01",
+                5868,
+                "toa_zebak_death_second_floor_hit_02",
+                5898,
+                "toa_zebak_death_second_roar_01",
+                5827,
+                "toa_zebak_death_stutter_roar_01",
+                5856,
+                "toa_zebak_death_stutter_roar_02",
+                5918,
+                "toa_zebak_death_stutter_roar_03",
+                5833,
+                "toa_zebak_death_stutter_roar_04",
+                5873,
+                "toa_zebak_debris_impact_01",
+                5913,
+                "toa_zebak_defend_01",
+                6590,
+                "toa_zebak_enraged_projectile_01",
+                5820,
+                "toa_zebak_falling_rocks_sweep_01",
+                5882,
+                "toa_zebak_fallling_rocks_01",
+                5855,
+                "toa_zebak_fallling_rocks_water_impact_01",
+                5843,
+                "toa_zebak_fallling_rocks_water_splash_01",
+                5880,
+                "toa_zebak_jug_break_01",
+                5865,
+                "toa_zebak_jug_break_02",
+                5869,
+                "toa_zebak_neutral_projectile_01",
+                5871,
+                "toa_zebak_neutral_projectile_02",
+                5890,
+                "toa_zebak_object_land_01",
+                5867,
+                "toa_zebak_object_land_02",
+                5905,
+                "toa_zebak_projectile_impact_01",
+                5884,
+                "toa_zebak_purple_projectile_01",
+                5825,
+                "toa_zebak_purple_projectile_02",
+                5849,
+                "toa_zebak_ranged_enranged_gulp_01",
+                5897,
+                "toa_zebak_ranged_enranged_gulp_02",
+                5885,
+                "toa_zebak_ranged_enranged_roar_01",
+                5818,
+                "toa_zebak_ranged_projectile_01",
+                5875,
+                "toa_zebak_ranged_projectile_02",
+                5906,
+                "toa_zebak_ranged_roar_01",
+                5872,
+                "toa_zebak_ranged_roar_02",
+                5862,
+                "toa_zebak_ranged_swallow_01",
+                5919,
+                "toa_zebak_redirected_jug_break_01",
+                5878,
+                "toa_zebak_redirected_projectile_01",
+                5901,
+                "toa_zebak_redirected_projectile_02",
+                5896,
+                "toa_zebak_red_projectile_01",
+                5828,
+                "toa_zebak_red_projectile_02",
+                5886,
+                "toa_zebak_red_projectile_03",
+                5892,
+                "toa_zebak_red_projectile_04",
+                5823,
+                "toa_zebak_roar_single_tremor_01",
+                5829,
+                "toa_zebak_roar_single_tremor_02",
+                5881,
+                "toa_zebak_roar_single_tremor_03",
+                5888,
+                "toa_zebak_roar_tremor_01",
+                5911,
+                "toa_zebak_roar_tremor_02",
+                5912,
+                "toa_zebak_roar_tremor_03",
+                5842,
+                "toa_zebak_tidal_wave_01",
+                5832,
+                "toa_zebak_tidal_wave_10s_02",
+                5920,
+                "toa_zebak_tidal_wave_10s_03",
+                5839,
+                "toa_zebak_tidal_wave_10s_04",
+                5864,
+                "toa_zebak_tidal_wave_7600ms_01",
+                5852,
+                "toa_zebak_vomit_colours_projectile_01",
+                5831,
+                "toa_zebak_vomit_colours_projectile_02",
+                5877,
+                "toa_zebak_vomit_colours_projectile_03",
+                5874,
+                "toa_zebak_vomit_colours_projectile_04",
+                5891,
+                "toa_zebak_vomit_colours_projectile_05",
+                5914,
+                "toa_zebak_vomit_colours_projectile_06",
+                5840,
+                "toa_zebak_vomit_colours_projectile_08",
+                5848,
+                "toa_zebak_vomit_colours_projectile_09",
+                5883,
+                "toa_zebak_vomit_colours_projectile_10",
+                5908,
+                "toa_zebak_vomit_colours_projectile_splat_01",
+                5899,
+                "toa_zebak_vomit_colours_projectile_splat_02",
+                5887,
+                "toa_zebak_vomit_colours_projectile_splat_03",
+                5909,
+                "toa_zebak_whoosh_projectile_01",
+                5826,
+                "toa_zebak_whoosh_projectile_02",
+                5819
+              ],
+              [
+                4899
+              ]
+            ],
+            "gamevalName": "synth_zabakboss"
+          },
+          "after": {
+            "columnValues": [
+              [
+                "zabakboss"
+              ],
+              null,
+              [
+                "toa_zebak02_final_tail_swing_01",
+                5889,
+                "toa_zebak02_tail_impact_01",
+                5859,
+                "toa_zebak02_tail_impact_02",
+                5834,
+                "toa_zebak02_tail_swing_01",
+                5847,
+                "toa_zebak02_tail_swing_02",
+                5921,
+                "toa_zebak_attack_hand_stomp_01",
+                5845,
+                "toa_zebak_attack_hand_stomp_final_01",
+                5851,
+                "toa_zebak_attack_hand_stomp_first_01",
+                5860,
+                "toa_zebak_attack_hand_stomp_left_01",
+                5835,
+                "toa_zebak_attack_jaw_shut_01",
+                5863,
+                "toa_zebak_attack_jaw_shut_02 ",
+                11504,
+                "toa_zebak_attack_melee_enranged_jaw_snap_01",
+                5850,
+                "toa_zebak_attack_melee_enranged_roar_01",
+                5857,
+                "toa_zebak_attack_melee_enranged_roar_02",
+                5917,
+                "toa_zebak_attack_melee_high_hand_hit_01",
+                5895,
+                "toa_zebak_attack_melee_high_hand_hit_02",
+                5846,
+                "toa_zebak_attack_melee_high_hand_hit_03",
+                5903,
+                "toa_zebak_attack_melee_high_hand_hit_high_pitch_01",
+                5916,
+                "toa_zebak_attack_melee_high_roar_01",
+                5915,
+                "toa_zebak_attack_melee_high_roar_02",
+                5844,
+                "toa_zebak_attack_melee_jaw_snap_shut_01",
+                5822,
+                "toa_zebak_attack_melee_jaw_snap_shut_02",
+                5853,
+                "toa_zebak_attack_melee_roar_01",
+                5876,
+                "toa_zebak_attack_roar_01",
+                5894,
+                "toa_zebak_attack_roar_02",
+                5902,
+                "toa_zebak_attack_roar_03",
+                5910,
+                "toa_zebak_attack_roar_04",
+                5900,
+                "toa_zebak_attack_roar_05",
+                5836,
+                "toa_zebak_attack_roar_bass_01",
+                5923,
+                "toa_zebak_attack_roar_bass_02",
+                5838,
+                "toa_zebak_attack_roar_high_01",
+                5870,
+                "toa_zebak_attack_roar_high_02",
+                5904,
+                "toa_zebak_attack_roar_impact_01",
+                5854,
+                "toa_zebak_attack_special_final_hand_impact_01",
+                5821,
+                "toa_zebak_attack_special_intro_growl_01",
+                5858,
+                "toa_zebak_attack_special_roar_01",
+                5861,
+                "toa_zebak_attack_tail_growl_01",
+                5866,
+                "toa_zebak_attack_tail_roar_01",
+                5922,
+                "toa_zebak_death_first_floor_hit_01",
+                5893,
+                "toa_zebak_death_first_floor_hit_02",
+                5824,
+                "toa_zebak_death_first_roar_01",
+                5907,
+                "toa_zebak_death_roar_05",
+                5879,
+                "toa_zebak_death_roar_06",
+                5841,
+                "toa_zebak_death_second_floor_hit_01",
+                5868,
+                "toa_zebak_death_second_floor_hit_02",
+                5898,
+                "toa_zebak_death_second_roar_01",
+                5827,
+                "toa_zebak_death_stutter_roar_01",
+                5856,
+                "toa_zebak_death_stutter_roar_02",
+                5918,
+                "toa_zebak_death_stutter_roar_03",
+                5833,
+                "toa_zebak_death_stutter_roar_04",
+                5873,
+                "toa_zebak_debris_impact_01",
+                5913,
+                "toa_zebak_defend_01",
+                6590,
+                "toa_zebak_enraged_projectile_01",
+                5820,
+                "toa_zebak_falling_rocks_sweep_01",
+                5882,
+                "toa_zebak_fallling_rocks_01",
+                5855,
+                "toa_zebak_fallling_rocks_water_impact_01",
+                5843,
+                "toa_zebak_fallling_rocks_water_splash_01",
+                5880,
+                "toa_zebak_jug_break_01",
+                5865,
+                "toa_zebak_jug_break_02",
+                5869,
+                "toa_zebak_neutral_projectile_01",
+                5871,
+                "toa_zebak_neutral_projectile_02",
+                5890,
+                "toa_zebak_object_land_01",
+                5867,
+                "toa_zebak_object_land_02",
+                5905,
+                "toa_zebak_projectile_impact_01",
+                5884,
+                "toa_zebak_purple_projectile_01",
+                5825,
+                "toa_zebak_purple_projectile_02",
+                5849,
+                "toa_zebak_ranged_enranged_gulp_01",
+                5897,
+                "toa_zebak_ranged_enranged_gulp_02",
+                5885,
+                "toa_zebak_ranged_enranged_roar_01",
+                5818,
+                "toa_zebak_ranged_projectile_01",
+                5875,
+                "toa_zebak_ranged_projectile_02",
+                5906,
+                "toa_zebak_ranged_roar_01",
+                5872,
+                "toa_zebak_ranged_roar_02",
+                5862,
+                "toa_zebak_ranged_swallow_01",
+                5919,
+                "toa_zebak_redirected_jug_break_01",
+                5878,
+                "toa_zebak_redirected_projectile_01",
+                5901,
+                "toa_zebak_redirected_projectile_02",
+                5896,
+                "toa_zebak_red_projectile_01",
+                5828,
+                "toa_zebak_red_projectile_02",
+                5886,
+                "toa_zebak_red_projectile_03",
+                5892,
+                "toa_zebak_red_projectile_04",
+                5823,
+                "toa_zebak_roar_single_tremor_01",
+                5829,
+                "toa_zebak_roar_single_tremor_02",
+                5881,
+                "toa_zebak_roar_single_tremor_03",
+                5888,
+                "toa_zebak_roar_tremor_01",
+                5911,
+                "toa_zebak_roar_tremor_02",
+                5912,
+                "toa_zebak_roar_tremor_03",
+                5842,
+                "toa_zebak_tidal_wave_01",
+                5832,
+                "toa_zebak_tidal_wave_10s_02",
+                5920,
+                "toa_zebak_tidal_wave_10s_03",
+                5839,
+                "toa_zebak_tidal_wave_10s_04",
+                5864,
+                "toa_zebak_tidal_wave_7600ms_01",
+                5852,
+                "toa_zebak_vomit_colours_projectile_01",
+                5831,
+                "toa_zebak_vomit_colours_projectile_02",
+                5877,
+                "toa_zebak_vomit_colours_projectile_03",
+                5874,
+                "toa_zebak_vomit_colours_projectile_04",
+                5891,
+                "toa_zebak_vomit_colours_projectile_05",
+                5914,
+                "toa_zebak_vomit_colours_projectile_06",
+                5840,
+                "toa_zebak_vomit_colours_projectile_08",
+                5848,
+                "toa_zebak_vomit_colours_projectile_09",
+                5883,
+                "toa_zebak_vomit_colours_projectile_10",
+                5908,
+                "toa_zebak_vomit_colours_projectile_splat_01",
+                5899,
+                "toa_zebak_vomit_colours_projectile_splat_02",
+                5887,
+                "toa_zebak_vomit_colours_projectile_splat_03",
+                5909,
+                "toa_zebak_whoosh_projectile_01",
+                5826,
+                "toa_zebak_whoosh_projectile_02",
+                5819
+              ],
+              [
+                4899
+              ]
+            ],
+            "gamevalName": "synth_zabakboss"
+          }
+        },
+        "15378": {
+          "before": {
+            "columnValues": [
+              [
+                "Chop a dense jungle"
+              ],
+              [
+                "Fully clear a dense jungle in the Tai Bwo Wannai Cleanup"
+              ],
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              [
+                2
+              ],
+              null,
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ],
+            "gamevalName": "league_task_chop_dense_jungle"
+          },
+          "after": {
+            "columnValues": [
+              [
+                "Fully clear a dense jungle"
+              ],
+              [
+                "Fully clear a dense jungle in the Tai Bwo Wannai Cleanup"
+              ],
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              [
+                2
+              ],
+              null,
+              [
+                1
+              ],
+              [
+                1
+              ],
+              [
+                2
+              ]
+            ],
+            "gamevalName": "league_task_chop_dense_jungle"
+          }
+        },
+        "16190": {
+          "before": {
+            "columnValues": [
+              [
+                5305,
+                5305,
+                5307,
+                5307,
+                5996,
+                5996,
+                5306,
+                5306,
+                5998,
+                5998,
+                6000,
+                6000,
+                6002,
+                6002
+              ],
+              [
+                "Seeds (Hops)"
+              ]
+            ],
+            "gamevalName": "transmute_seeds_hops"
+          },
+          "after": {
+            "columnValues": [
+              [
+                5305,
+                5305,
+                5307,
+                5307,
+                5308,
+                5308,
+                5306,
+                5306,
+                5309,
+                5309,
+                5310,
+                5310,
+                5311,
+                5311
+              ],
+              [
+                "Seeds (Hops)"
+              ]
+            ],
+            "gamevalName": "transmute_seeds_hops"
+          }
+        }
+      }
+    },
+    "Jingles": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "0": {
+          "before": {
+            "gamevalName": "the_cellar_dwellers"
+          },
+          "after": {
+            "gamevalName": "fanfare"
+          }
+        },
+        "1": {
+          "before": {
+            "gamevalName": "have_an_ice_day"
+          },
+          "after": {
+            "gamevalName": "dangerous_islands"
+          }
+        },
+        "2": {
+          "before": {
+            "gamevalName": "claustrophobia"
+          },
+          "after": {
+            "gamevalName": "northern_ocean"
+          }
+        },
+        "3": {
+          "before": {
+            "gamevalName": "rat_hunt"
+          },
+          "after": {
+            "gamevalName": "ardent_ocean_2"
+          }
+        },
+        "4": {
+          "before": {
+            "gamevalName": "jungly1"
+          },
+          "after": {
+            "gamevalName": "yo_ho_ho"
+          }
+        },
+        "5": {
+          "before": {
+            "gamevalName": "zombie_invasion"
+          },
+          "after": {
+            "gamevalName": "gryphon_boss"
+          }
+        },
+        "6": {
+          "before": {
+            "gamevalName": "dream_theatre"
+          },
+          "after": {
+            "gamevalName": "great_conch_underground"
+          }
+        },
+        "7": {
+          "before": {
+            "gamevalName": "undead_army"
+          },
+          "after": {
+            "gamevalName": "shrouded_ocean"
+          }
+        },
+        "8": {
+          "before": {
+            "gamevalName": "shadowland"
+          },
+          "after": {
+            "gamevalName": "industrial_islands"
+          }
+        },
+        "9": {
+          "before": {
+            "gamevalName": "brimstail_s_scales"
+          },
+          "after": {
+            "gamevalName": "sunset_ocean_2"
+          }
+        },
+        "10": {
+          "before": {
+            "gamevalName": "way_of_the_enchanter"
+          },
+          "after": {
+            "gamevalName": "charting_complete"
+          }
+        },
+        "11": {
+          "before": {
+            "gamevalName": "jester_minute"
+          },
+          "after": {
+            "gamevalName": "great_conch_2"
+          }
+        },
+        "12": {
+          "before": {
+            "gamevalName": "artistry"
+          },
+          "after": {
+            "gamevalName": "great_conch"
+          }
+        },
+        "13": {
+          "before": {
+            "gamevalName": "dark"
+          },
+          "after": {
+            "gamevalName": "sunset_ocean"
+          }
+        },
+        "14": {
+          "before": {
+            "gamevalName": "davy_jones_locker"
+          },
+          "after": {
+            "gamevalName": "calm_islands"
+          }
+        },
+        "15": {
+          "before": {
+            "gamevalName": "vanstrom"
+          },
+          "after": {
+            "gamevalName": "western_ocean"
+          }
+        },
+        "16": {
+          "before": {
+            "gamevalName": "army_of_darkness"
+          },
+          "after": {
+            "gamevalName": "unquiet_ocean_2"
+          }
+        },
+        "17": {
+          "before": {
+            "gamevalName": "impetuous"
+          },
+          "after": {
+            "gamevalName": "northern_ocean_2"
+          }
+        },
+        "18": {
+          "before": {
+            "gamevalName": "sigmunds_showdown"
+          },
+          "after": {
+            "gamevalName": "honkytonky_sea_shanty_2"
+          }
+        },
+        "19": {
+          "before": {
+            "gamevalName": "lament_of_meiyerditch"
+          },
+          "after": {
+            "gamevalName": "unquiet_ocean"
+          }
+        },
+        "20": {
+          "before": {
+            "gamevalName": "wet_and_wild"
+          },
+          "after": {
+            "gamevalName": "western_ocean_2"
+          }
+        },
+        "21": {
+          "before": {
+            "gamevalName": "sea_minor_shanty"
+          },
+          "after": {
+            "gamevalName": "ardent_ocean"
+          }
+        },
+        "22": {
+          "before": {
+            "gamevalName": "wonderous"
+          },
+          "after": {
+            "gamevalName": "scape_sail"
+          }
+        },
+        "23": {
+          "before": {
+            "gamevalName": "isle_of_everywhere"
+          },
+          "after": {
+            "gamevalName": "mysterious_islands"
+          }
+        },
+        "24": {
+          "before": {
+            "gamevalName": "attention"
+          },
+          "after": {
+            "gamevalName": "barracuda_trials"
+          }
+        },
+        "25": {
+          "before": {
+            "gamevalName": "upass"
+          },
+          "after": {
+            "gamevalName": "shrouded_ocean_2"
+          }
+        },
+        "26": {
+          "before": {
+            "gamevalName": "scape_cave"
+          },
+          "after": {
+            "gamevalName": "frogland"
+          }
+        },
+        "27": {
+          "before": {
+            "gamevalName": "os_anniversary_medley_v3"
+          },
+          "after": {
+            "gamevalName": "pinball_wizard"
+          }
+        },
+        "28": {
+          "before": {
+            "gamevalName": "distillery_hilarity"
+          },
+          "after": {
+            "gamevalName": "goblin_village"
+          }
+        },
+        "29": {
+          "before": {
+            "gamevalName": "dream"
+          },
+          "after": {
+            "gamevalName": "vision"
+          }
+        },
+        "30": {
+          "before": {
+            "gamevalName": "ham_attack"
+          },
+          "after": {
+            "gamevalName": "corporal_punishment"
+          }
+        },
+        "31": {
+          "before": {
+            "gamevalName": "tribal2"
+          },
+          "after": {
+            "gamevalName": "aye_car_rum_ba"
+          }
+        },
+        "32": {
+          "before": {
+            "gamevalName": "the_chosen"
+          },
+          "after": {
+            "gamevalName": "altar_ego"
+          }
+        },
+        "33": {
+          "before": {
+            "gamevalName": "cavern"
+          },
+          "after": {
+            "gamevalName": "tomorrow"
+          }
+        },
+        "34": {
+          "before": {
+            "gamevalName": "evil_bobs_island"
+          },
+          "after": {
+            "gamevalName": "long_ago"
+          }
+        },
+        "35": {
+          "before": {
+            "gamevalName": "frogland"
+          },
+          "after": {
+            "gamevalName": "looking_back"
+          }
+        },
+        "36": {
+          "before": {
+            "gamevalName": "medieval"
+          },
+          "after": {
+            "gamevalName": "fenkenstrain_s_refrain"
+          }
+        },
+        "37": {
+          "before": {
+            "gamevalName": "gnome_village2"
+          },
+          "after": {
+            "gamevalName": "attack1"
+          }
+        },
+        "38": {
+          "before": {
+            "gamevalName": "faerie"
+          },
+          "after": {
+            "gamevalName": "fruits_de_mer"
+          }
+        },
+        "39": {
+          "before": {
+            "gamevalName": "mage_arena"
+          },
+          "after": {
+            "gamevalName": "crystal_cave"
+          }
+        },
+        "40": {
+          "before": {
+            "gamevalName": "jungle_bells"
+          },
+          "after": {
+            "gamevalName": "magical_journey"
+          }
+        },
+        "41": {
+          "before": {
+            "gamevalName": "the_galleon"
+          },
+          "after": {
+            "gamevalName": "lighthouse"
+          }
+        },
+        "42": {
+          "before": {
+            "gamevalName": "reggae2"
+          },
+          "after": {
+            "gamevalName": "frostbite"
+          }
+        },
+        "43": {
+          "before": {
+            "gamevalName": "time_to_mine"
+          },
+          "after": {
+            "gamevalName": "masquerade"
+          }
+        },
+        "44": {
+          "before": {
+            "gamevalName": "elven_mist"
+          },
+          "after": {
+            "gamevalName": "shadows_bouncer_jingle"
+          }
+        },
+        "45": {
+          "before": {
+            "gamevalName": "complication"
+          },
+          "after": {
+            "gamevalName": "on_the_wing"
+          }
+        },
+        "46": {
+          "before": {
+            "gamevalName": "food_for_thought"
+          },
+          "after": {
+            "gamevalName": "mudskipper_melody"
+          }
+        },
+        "47": {
+          "before": {
+            "gamevalName": "parade"
+          },
+          "after": {
+            "gamevalName": "storm_brew"
+          }
+        },
+        "48": {
+          "before": {
+            "gamevalName": "still_night"
+          },
+          "after": {
+            "gamevalName": "araxxor_combat"
+          }
+        },
+        "49": {
+          "before": {
+            "gamevalName": "pick_and_shovel"
+          },
+          "after": {
+            "gamevalName": "hypnotized"
+          }
+        },
+        "50": {
+          "before": {
+            "gamevalName": "beneath_the_stronghold"
+          },
+          "after": {
+            "gamevalName": "desert_voyage"
+          }
+        },
+        "51": {
+          "before": {
+            "gamevalName": "bubble_and_squeak"
+          },
+          "after": {
+            "gamevalName": "pharoah_s_tomb"
+          }
+        },
+        "52": {
+          "before": {
+            "gamevalName": "barbarian_assault_tutorial"
+          },
+          "after": {
+            "gamevalName": "spymaster"
+          }
+        },
+        "53": {
+          "before": {
+            "gamevalName": "la_mort"
+          },
+          "after": {
+            "gamevalName": "insect_queen"
+          }
+        },
+        "54": {
+          "before": {
+            "gamevalName": "faithless"
+          },
+          "after": {
+            "gamevalName": "scarab"
+          }
+        },
+        "55": {
+          "before": {
+            "gamevalName": "high_spirits"
+          },
+          "after": {
+            "gamevalName": "gates_of_menaphos"
+          }
+        },
+        "56": {
+          "before": {
+            "gamevalName": "7th_realm"
+          },
+          "after": {
+            "gamevalName": "incantation"
+          }
+        },
+        "57": {
+          "before": {
+            "gamevalName": "jaws_of_the_basilisk"
+          },
+          "after": {
+            "gamevalName": "sunburn"
+          }
+        },
+        "58": {
+          "before": {
+            "gamevalName": "fight_of_the_basilisk"
+          },
+          "after": {
+            "gamevalName": "arabian"
+          }
+        },
+        "59": {
+          "before": {
+            "gamevalName": "jormungand_fight"
+          },
+          "after": {
+            "gamevalName": "al_kharid"
+          }
+        },
+        "60": {
+          "before": {
+            "gamevalName": "lair_of_the_basilisk"
+          },
+          "after": {
+            "gamevalName": "lament"
+          }
+        },
+        "61": {
+          "before": {
+            "gamevalName": "ballad_of_the_basilisk"
+          },
+          "after": {
+            "gamevalName": "over_to_nardah"
+          }
+        },
+        "62": {
+          "before": {
+            "gamevalName": "overture"
+          },
+          "after": {
+            "gamevalName": "arabian2"
+          }
+        },
+        "63": {
+          "before": {
+            "gamevalName": "wilderness"
+          },
+          "after": {
+            "gamevalName": "arabian3"
+          }
+        },
+        "64": {
+          "before": {
+            "gamevalName": "yesteryear"
+          },
+          "after": {
+            "gamevalName": "labyrinth"
+          }
+        },
+        "65": {
+          "before": {
+            "gamevalName": "harmony"
+          },
+          "after": {
+            "gamevalName": "beetle_juice"
+          }
+        },
+        "66": {
+          "before": {
+            "gamevalName": "barking_mad"
+          },
+          "after": {
+            "gamevalName": "lonesome"
+          }
+        },
+        "67": {
+          "before": {
+            "gamevalName": "trawler"
+          },
+          "after": {
+            "gamevalName": "the_golem"
+          }
+        },
+        "68": {
+          "before": {
+            "gamevalName": "everlasting"
+          },
+          "after": {
+            "gamevalName": "desert_heat"
+          }
+        },
+        "69": {
+          "before": {
+            "gamevalName": "pest_control"
+          },
+          "after": {
+            "gamevalName": "sphinx"
+          }
+        },
+        "70": {
+          "before": {
+            "gamevalName": "legend"
+          },
+          "after": {
+            "gamevalName": "duel_arena"
+          }
+        },
+        "71": {
+          "before": {
+            "gamevalName": "emotion"
+          },
+          "after": {
+            "gamevalName": "tomb_raider"
+          }
+        },
+        "72": {
+          "before": {
+            "gamevalName": "long_way_home"
+          },
+          "after": {
+            "gamevalName": "shine"
+          }
+        },
+        "73": {
+          "before": {
+            "gamevalName": "slice_of_silent_movie"
+          },
+          "after": {
+            "gamevalName": "grip_of_the_talon"
+          }
+        },
+        "74": {
+          "before": {
+            "gamevalName": "garden_of_autumn"
+          },
+          "after": {
+            "gamevalName": "spirits_of_elid"
+          }
+        },
+        "75": {
+          "before": {
+            "gamevalName": "grumpy"
+          },
+          "after": {
+            "gamevalName": "forgotten"
+          }
+        },
+        "76": {
+          "before": {
+            "gamevalName": "forever"
+          },
+          "after": {
+            "gamevalName": "throne_of_the_demon"
+          }
+        },
+        "77": {
+          "before": {
+            "gamevalName": "sad_meadow"
+          },
+          "after": {
+            "gamevalName": "the_desert"
+          }
+        },
+        "78": {
+          "before": {
+            "gamevalName": "goblin_game"
+          },
+          "after": {
+            "gamevalName": "nomad"
+          }
+        },
+        "79": {
+          "before": {
+            "gamevalName": "stranded"
+          },
+          "after": {
+            "gamevalName": "egypt"
+          }
+        },
+        "80": {
+          "before": {
+            "gamevalName": "expedition"
+          },
+          "after": {
+            "gamevalName": "the_depths"
+          }
+        },
+        "81": {
+          "before": {
+            "gamevalName": "arboretum"
+          },
+          "after": {
+            "gamevalName": "dynasty"
+          }
+        },
+        "82": {
+          "before": {
+            "gamevalName": "hallowed_sepulchre"
+          },
+          "after": {
+            "gamevalName": "mirage"
+          }
+        },
+        "83": {
+          "before": {
+            "gamevalName": "well_hallowed_air"
+          },
+          "after": {
+            "gamevalName": "back_to_life"
+          }
+        },
+        "84": {
+          "before": {
+            "gamevalName": "the_terrible_tunnels"
+          },
+          "after": {
+            "gamevalName": "city_of_the_dead"
+          }
+        },
+        "85": {
+          "before": {
+            "gamevalName": "lord_drakan_reveal_combi_1"
+          },
+          "after": {
+            "gamevalName": "sarcophagus"
+          }
+        },
+        "86": {
+          "before": {
+            "gamevalName": "lord_drakan_reveal_part_2"
+          },
+          "after": {
+            "gamevalName": "the_genie"
+          }
+        },
+        "87": {
+          "before": {
+            "gamevalName": "iceyene_1"
+          },
+          "after": {
+            "gamevalName": "bone_dry"
+          }
+        },
+        "88": {
+          "before": {
+            "gamevalName": "the_terrible_caverns"
+          },
+          "after": {
+            "gamevalName": "bandit_camp"
+          }
+        },
+        "89": {
+          "before": {
+            "gamevalName": "lord_drakan_reveal_part_1"
+          },
+          "after": {
+            "gamevalName": "zealot"
+          }
+        },
+        "90": {
+          "before": {
+            "gamevalName": "upir_likhyi"
+          },
+          "after": {
+            "gamevalName": "wolf_mountain"
+          }
+        },
+        "91": {
+          "before": {
+            "gamevalName": "darkmeyer"
+          },
+          "after": {
+            "gamevalName": "stalker_dungeon"
+          }
+        },
+        "92": {
+          "before": {
+            "gamevalName": "xmas_2021"
+          },
+          "after": {
+            "gamevalName": "mistrock"
+          }
+        },
+        "93": {
+          "before": {
+            "gamevalName": "down_to_earth"
+          },
+          "after": {
+            "gamevalName": "hailstorm_mountains"
+          }
+        },
+        "94": {
+          "before": {
+            "gamevalName": "eves_epinette"
+          },
+          "after": {
+            "gamevalName": "vmq1_cs4_01"
+          }
+        },
+        "95": {
+          "before": {
+            "gamevalName": "thrall_of_the_serpent"
+          },
+          "after": {
+            "gamevalName": "final_dawn_combat_2"
+          }
+        },
+        "96": {
+          "before": {
+            "gamevalName": "tale_of_keldagrim"
+          },
+          "after": {
+            "gamevalName": "doom_boss"
+          }
+        },
+        "97": {
+          "before": {
+            "gamevalName": "corporealbeast"
+          },
+          "after": {
+            "gamevalName": "neypotzli"
+          }
+        },
+        "98": {
+          "before": {
+            "gamevalName": "upcoming"
+          },
+          "after": {
+            "gamevalName": "civitas_illa_fortis"
+          }
+        },
+        "99": {
+          "before": {
+            "gamevalName": "spy_games"
+          },
+          "after": {
+            "gamevalName": "sunset_coast"
+          }
+        },
+        "100": {
+          "before": {
+            "gamevalName": "lightness"
+          },
+          "after": {
+            "gamevalName": "twilight_temple"
+          }
+        },
+        "101": {
+          "before": {
+            "gamevalName": "deep_wildy"
+          },
+          "after": {
+            "gamevalName": "avium_savannah"
+          }
+        },
+        "102": {
+          "before": {
+            "gamevalName": "zogre_dance"
+          },
+          "after": {
+            "gamevalName": "civitas_illa_fortis_2"
+          }
+        },
+        "103": {
+          "before": {
+            "gamevalName": "sea_shanty2"
+          },
+          "after": {
+            "gamevalName": "vmq1_cs2_01"
+          }
+        },
+        "104": {
+          "before": {
+            "gamevalName": "woodland"
+          },
+          "after": {
+            "gamevalName": "tlati_rainforest"
+          }
+        },
+        "105": {
+          "before": {
+            "gamevalName": "peng_plans_jingle"
+          },
+          "after": {
+            "gamevalName": "mokhaiotl"
+          }
+        },
+        "106": {
+          "before": {
+            "gamevalName": "the_monsters_below"
+          },
+          "after": {
+            "gamevalName": "ralos_rise"
+          }
+        },
+        "107": {
+          "before": {
+            "gamevalName": "observatory_telescope_cutscene"
+          },
+          "after": {
+            "gamevalName": "hunter_guild"
+          }
+        },
+        "108": {
+          "before": {
+            "gamevalName": "scrubfoots_descent"
+          },
+          "after": {
+            "gamevalName": "final_dawn_combat_1"
+          }
+        },
+        "109": {
+          "before": {
+            "gamevalName": "chain_of_command"
+          },
+          "after": {
+            "gamevalName": "tal_teklan"
+          }
+        },
+        "110": {
+          "before": {
+            "gamevalName": "on_the_shore"
+          },
+          "after": {
+            "gamevalName": "avium_savannah_2"
+          }
+        },
+        "111": {
+          "before": {
+            "gamevalName": "the_lost_melody"
+          },
+          "after": {
+            "gamevalName": "cam_torum"
+          }
+        },
+        "112": {
+          "before": {
+            "gamevalName": "wally_cutscene"
+          },
+          "after": {
+            "gamevalName": "quetzacalli_gorge"
+          }
+        },
+        "113": {
+          "before": {
+            "gamevalName": "dragontooth_island"
+          },
+          "after": {
+            "gamevalName": "amoxliatl"
+          }
+        },
+        "114": {
+          "before": {
+            "gamevalName": "pirates_of_penance"
+          },
+          "after": {
+            "gamevalName": "auburn_valley"
+          }
+        },
+        "115": {
+          "before": {
+            "gamevalName": "araxyte"
+          },
+          "after": {
+            "gamevalName": "hueycoatl"
+          }
+        },
+        "116": {
+          "before": {
+            "gamevalName": "blistering_barnacles"
+          },
+          "after": {
+            "gamevalName": "aldarin_2"
+          }
+        },
+        "117": {
+          "before": {
+            "gamevalName": "ambient_jungle"
+          },
+          "after": {
+            "gamevalName": "aldarin"
+          }
+        },
+        "118": {
+          "before": {
+            "gamevalName": "arabique"
+          },
+          "after": {
+            "gamevalName": "vmq1_cs1_01"
+          }
+        },
+        "119": {
+          "before": {
+            "gamevalName": "soul_wars"
+          },
+          "after": {
+            "gamevalName": "auburn_valley_2"
+          }
+        },
+        "120": {
+          "before": {
+            "gamevalName": "the_waiting_game"
+          },
+          "after": {
+            "gamevalName": "vmq1_cs3_01"
+          }
+        },
+        "121": {
+          "before": {
+            "gamevalName": "fairy_dragon_cutscene"
+          },
+          "after": {
+            "gamevalName": "kastori"
+          }
+        },
+        "122": {
+          "before": {
+            "gamevalName": "nether_realm"
+          },
+          "after": {
+            "gamevalName": "custodia_mountains"
+          }
+        },
+        "123": {
+          "before": {
+            "gamevalName": "close_quarters"
+          },
+          "after": {
+            "gamevalName": "avium_savannah_3"
+          }
+        },
+        "124": {
+          "before": {
+            "gamevalName": "dance_of_death"
+          },
+          "after": {
+            "gamevalName": "perilous_moons"
+          }
+        },
+        "125": {
+          "before": {
+            "gamevalName": "aye_car_rum_ba"
+          },
+          "after": {
+            "gamevalName": "metzli_boss"
+          }
+        },
+        "126": {
+          "before": {
+            "gamevalName": "heart_and_mind"
+          },
+          "after": {
+            "gamevalName": "fortis_colosseum"
+          }
+        },
+        "127": {
+          "before": {
+            "gamevalName": "breeze"
+          },
+          "after": {
+            "gamevalName": "sea_shanty2"
+          }
+        },
+        "128": {
+          "before": {
+            "gamevalName": "venture2"
+          },
+          "after": {
+            "gamevalName": "dead_quiet"
+          }
+        },
+        "129": {
+          "before": {
+            "gamevalName": "into_the_abyss"
+          },
+          "after": {
+            "gamevalName": "trawler"
+          }
+        },
+        "130": {
+          "before": {
+            "gamevalName": "gnomeball"
+          },
+          "after": {
+            "gamevalName": "voodoo_cult"
+          }
+        },
+        "131": {
+          "before": {
+            "gamevalName": "camelot"
+          },
+          "after": {
+            "gamevalName": "right_on_track"
+          }
+        },
+        "132": {
+          "before": {
+            "gamevalName": "waterlogged"
+          },
+          "after": {
+            "gamevalName": "melzars_maze"
+          }
+        },
+        "133": {
+          "before": {
+            "gamevalName": "yuletide_eve"
+          },
+          "after": {
+            "gamevalName": "ambient_jungle"
+          }
+        },
+        "134": {
+          "before": {
+            "gamevalName": "devils_may_care"
+          },
+          "after": {
+            "gamevalName": "jungly3"
+          }
+        },
+        "135": {
+          "before": {
+            "gamevalName": "dagannoth_dawn"
+          },
+          "after": {
+            "gamevalName": "slice_of_silent_movie"
+          }
+        },
+        "136": {
+          "before": {
+            "gamevalName": "zanik_s_theme"
+          },
+          "after": {
+            "gamevalName": "meridian"
+          }
+        },
+        "137": {
+          "before": {
+            "gamevalName": "dusk_in_yu_biusk"
+          },
+          "after": {
+            "gamevalName": "bubble_and_squeak"
+          }
+        },
+        "138": {
+          "before": {
+            "gamevalName": "catacombs_and_tombs"
+          },
+          "after": {
+            "gamevalName": "principality"
+          }
+        },
+        "139": {
+          "before": {
+            "gamevalName": "temple_of_tribes"
+          },
+          "after": {
+            "gamevalName": "venomous"
+          }
+        },
+        "140": {
+          "before": {
+            "gamevalName": "don_t_panic_zanik"
+          },
+          "after": {
+            "gamevalName": "righteousness"
+          }
+        },
+        "141": {
+          "before": {
+            "gamevalName": "work_work_work"
+          },
+          "after": {
+            "gamevalName": "troubled_waters"
+          }
+        },
+        "142": {
+          "before": {
+            "gamevalName": "easter_2024"
+          },
+          "after": {
+            "gamevalName": "overture"
+          }
+        },
+        "143": {
+          "before": {
+            "gamevalName": "the_desolate_isle"
+          },
+          "after": {
+            "gamevalName": "soul_wars"
+          }
+        },
+        "144": {
+          "before": {
+            "gamevalName": "moody"
+          },
+          "after": {
+            "gamevalName": "the_waiting_game"
+          }
+        },
+        "145": {
+          "before": {
+            "gamevalName": "the_mad_mole"
+          },
+          "after": {
+            "gamevalName": "technology"
+          }
+        },
+        "146": {
+          "before": {
+            "gamevalName": "scape_hunter"
+          },
+          "after": {
+            "gamevalName": "down_to_earth"
+          }
+        },
+        "147": {
+          "before": {
+            "gamevalName": "wild_side"
+          },
+          "after": {
+            "gamevalName": "distant_land"
+          }
+        },
+        "148": {
+          "before": {
+            "gamevalName": "slice_of_station"
+          },
+          "after": {
+            "gamevalName": "title_fight"
+          }
+        },
+        "149": {
+          "before": {
+            "gamevalName": "gnome_village_party"
+          },
+          "after": {
+            "gamevalName": "mor_ul_rek"
+          }
+        },
+        "150": {
+          "before": {
+            "gamevalName": "clanliness"
+          },
+          "after": {
+            "gamevalName": "inferno"
+          }
+        },
+        "151": {
+          "before": {
+            "gamevalName": "mastermindless"
+          },
+          "after": {
+            "gamevalName": "shining"
+          }
+        },
+        "152": {
+          "before": {
+            "gamevalName": "gaol"
+          },
+          "after": {
+            "gamevalName": "arrival"
+          }
+        },
+        "153": {
+          "before": {
+            "gamevalName": "high_seas"
+          },
+          "after": {
+            "gamevalName": "jester_minute"
+          }
+        },
+        "154": {
+          "before": {
+            "gamevalName": "autumn_voyage"
+          },
+          "after": {
+            "gamevalName": "mellow"
+          }
+        },
+        "155": {
+          "before": {
+            "gamevalName": "spooky"
+          },
+          "after": {
+            "gamevalName": "dangerous"
+          }
+        },
+        "156": {
+          "before": {
+            "gamevalName": "gnome_village"
+          },
+          "after": {
+            "gamevalName": "aztec"
+          }
+        },
+        "157": {
+          "before": {
+            "gamevalName": "reggae"
+          },
+          "after": {
+            "gamevalName": "gnome_village_party"
+          }
+        },
+        "158": {
+          "before": {
+            "gamevalName": "theme"
+          },
+          "after": {
+            "gamevalName": "silence"
+          }
+        },
+        "159": {
+          "before": {
+            "gamevalName": "zealot"
+          },
+          "after": {
+            "gamevalName": "gnome_village2"
+          }
+        },
+        "160": {
+          "before": {
+            "gamevalName": "start"
+          },
+          "after": {
+            "gamevalName": "the_adventurer"
+          }
+        },
+        "161": {
+          "before": {
+            "gamevalName": "deadlands"
+          },
+          "after": {
+            "gamevalName": "gnomeball"
+          }
+        },
+        "162": {
+          "before": {
+            "gamevalName": "showdown"
+          },
+          "after": {
+            "gamevalName": "malady"
+          }
+        },
+        "163": {
+          "before": {
+            "gamevalName": "last_man_standing"
+          },
+          "after": {
+            "gamevalName": "davy_jones_locker"
+          }
+        },
+        "164": {
+          "before": {
+            "gamevalName": "cave_of_the_goblins"
+          },
+          "after": {
+            "gamevalName": "warriors_guild"
+          }
+        },
+        "165": {
+          "before": {
+            "gamevalName": "training_montage"
+          },
+          "after": {
+            "gamevalName": "ice_melody"
+          }
+        },
+        "166": {
+          "before": {
+            "gamevalName": "camdozaal_vault"
+          },
+          "after": {
+            "gamevalName": "pheasant_peasant"
+          }
+        },
+        "167": {
+          "before": {
+            "gamevalName": "camdozaal_ruins_2021"
+          },
+          "after": {
+            "gamevalName": "land_of_the_dwarves"
+          }
+        },
+        "168": {
+          "before": {
+            "gamevalName": "making_waves"
+          },
+          "after": {
+            "gamevalName": "tzhaar"
+          }
+        },
+        "169": {
+          "before": {
+            "gamevalName": "bone_dance"
+          },
+          "after": {
+            "gamevalName": "everywhere"
+          }
+        },
+        "170": {
+          "before": {
+            "gamevalName": "body_parts"
+          },
+          "after": {
+            "gamevalName": "time_to_mine"
+          }
+        },
+        "171": {
+          "before": {
+            "gamevalName": "contest"
+          },
+          "after": {
+            "gamevalName": "undead_dungeon"
+          }
+        },
+        "172": {
+          "before": {
+            "gamevalName": "chef_surprize"
+          },
+          "after": {
+            "gamevalName": "leagues_iii_cutscene"
+          }
+        },
+        "173": {
+          "before": {
+            "gamevalName": "warpath"
+          },
+          "after": {
+            "gamevalName": "hermit"
+          }
+        },
+        "174": {
+          "before": {
+            "gamevalName": "charting_complete"
+          },
+          "after": {
+            "gamevalName": "last_stand"
+          }
+        },
+        "175": {
+          "before": {
+            "gamevalName": "sunset_ocean_2"
+          },
+          "after": {
+            "gamevalName": "head_to_head"
+          }
+        },
+        "176": {
+          "before": {
+            "gamevalName": "great_conch_2"
+          },
+          "after": {
+            "gamevalName": "workshop"
+          }
+        },
+        "177": {
+          "before": {
+            "gamevalName": "mysterious_islands"
+          },
+          "after": {
+            "gamevalName": "miles_away"
+          }
+        },
+        "178": {
+          "before": {
+            "gamevalName": "western_ocean_2"
+          },
+          "after": {
+            "gamevalName": "roc_and_roll"
+          }
+        },
+        "179": {
+          "before": {
+            "gamevalName": "honkytonky_sea_shanty_2"
+          },
+          "after": {
+            "gamevalName": "the_enchanter"
+          }
+        },
+        "180": {
+          "before": {
+            "gamevalName": "western_ocean"
+          },
+          "after": {
+            "gamevalName": "competition"
+          }
+        },
+        "181": {
+          "before": {
+            "gamevalName": "industrial_islands"
+          },
+          "after": {
+            "gamevalName": "espionage"
+          }
+        },
+        "182": {
+          "before": {
+            "gamevalName": "shrouded_ocean_2"
+          },
+          "after": {
+            "gamevalName": "dagannoth_dawn"
+          }
+        },
+        "183": {
+          "before": {
+            "gamevalName": "unquiet_ocean"
+          },
+          "after": {
+            "gamevalName": "fairy_dragon_cutscene"
+          }
+        },
+        "184": {
+          "before": {
+            "gamevalName": "dangerous_islands"
+          },
+          "after": {
+            "gamevalName": "serene"
+          }
+        },
+        "185": {
+          "before": {
+            "gamevalName": "great_conch_underground"
+          },
+          "after": {
+            "gamevalName": "tremble"
+          }
+        },
+        "186": {
+          "before": {
+            "gamevalName": "northern_ocean"
+          },
+          "after": {
+            "gamevalName": "xenophobe"
+          }
+        },
+        "187": {
+          "before": {
+            "gamevalName": "ardent_ocean_2"
+          },
+          "after": {
+            "gamevalName": "arboretum"
+          }
+        },
+        "188": {
+          "before": {
+            "gamevalName": "great_conch"
+          },
+          "after": {
+            "gamevalName": "hallowed_sepulchre"
+          }
+        },
+        "189": {
+          "before": {
+            "gamevalName": "ardent_ocean"
+          },
+          "after": {
+            "gamevalName": "lord_drakan_reveal_part_2"
+          }
+        },
+        "190": {
+          "before": {
+            "gamevalName": "unquiet_ocean_2"
+          },
+          "after": {
+            "gamevalName": "upir_likhyi"
+          }
+        },
+        "191": {
+          "before": {
+            "gamevalName": "northern_ocean_2"
+          },
+          "after": {
+            "gamevalName": "the_terrible_tunnels"
+          }
+        },
+        "192": {
+          "before": {
+            "gamevalName": "yo_ho_ho"
+          },
+          "after": {
+            "gamevalName": "the_terrible_caverns"
+          }
+        },
+        "193": {
+          "before": {
+            "gamevalName": "calm_islands"
+          },
+          "after": {
+            "gamevalName": "lord_drakan_reveal_part_1"
+          }
+        },
+        "194": {
+          "before": {
+            "gamevalName": "barracuda_trials"
+          },
+          "after": {
+            "gamevalName": "well_hallowed_air"
+          }
+        },
+        "195": {
+          "before": {
+            "gamevalName": "shrouded_ocean"
+          },
+          "after": {
+            "gamevalName": "lord_drakan_reveal_combi_1"
+          }
+        },
+        "196": {
+          "before": {
+            "gamevalName": "scape_sail"
+          },
+          "after": {
+            "gamevalName": "darkmeyer"
+          }
+        },
+        "197": {
+          "before": {
+            "gamevalName": "sunset_ocean"
+          },
+          "after": {
+            "gamevalName": "iceyene_1"
+          }
+        },
+        "198": {
+          "before": {
+            "gamevalName": "gryphon_boss"
+          },
+          "after": {
+            "gamevalName": "unknown_land"
+          }
+        },
+        "199": {
+          "before": {
+            "gamevalName": "dangerous"
+          },
+          "after": {
+            "gamevalName": "into_the_abyss"
+          }
+        },
+        "200": {
+          "before": {
+            "gamevalName": "little_cave_of_horrors"
+          },
+          "after": {
+            "gamevalName": "barren_land"
+          }
+        },
+        "201": {
+          "before": {
+            "gamevalName": "crest_of_a_wave"
+          },
+          "after": {
+            "gamevalName": "have_an_ice_day"
+          }
+        },
+        "202": {
+          "before": {
+            "gamevalName": "suspicious"
+          },
+          "after": {
+            "gamevalName": "lightwalk"
+          }
+        },
+        "203": {
+          "before": {
+            "gamevalName": "fight_or_flight"
+          },
+          "after": {
+            "gamevalName": "zombie_invasion"
+          }
+        },
+        "204": {
+          "before": {
+            "gamevalName": "workshop"
+          },
+          "after": {
+            "gamevalName": "dream_theatre"
+          }
+        },
+        "205": {
+          "before": {
+            "gamevalName": "null"
+          },
+          "after": {
+            "gamevalName": "undead_army"
+          }
+        },
+        "206": {
+          "before": {
+            "gamevalName": "warriors_guild"
+          },
+          "after": {
+            "gamevalName": "rhapsody"
+          }
+        },
+        "207": {
+          "before": {
+            "gamevalName": "zeah_magic"
+          },
+          "after": {
+            "gamevalName": "toa_path_het"
+          }
+        },
+        "208": {
+          "before": {
+            "gamevalName": "box_of_delights"
+          },
+          "after": {
+            "gamevalName": "toa_boss_wardens"
+          }
+        },
+        "209": {
+          "before": {
+            "gamevalName": "hosidius_outskirts"
+          },
+          "after": {
+            "gamevalName": "toa_boss_akkha"
+          }
+        },
+        "210": {
+          "before": {
+            "gamevalName": "lovakengj_outskirts"
+          },
+          "after": {
+            "gamevalName": "toa_victory"
+          }
+        },
+        "211": {
+          "before": {
+            "gamevalName": "wintertodt_boss"
+          },
+          "after": {
+            "gamevalName": "toa_path_crondis"
+          }
+        },
+        "212": {
+          "before": {
+            "gamevalName": "rugged_terrain"
+          },
+          "after": {
+            "gamevalName": "toa_boss_zebak"
+          }
+        },
+        "213": {
+          "before": {
+            "gamevalName": "darkly_altared"
+          },
+          "after": {
+            "gamevalName": "toa_boss_kephri"
+          }
+        },
+        "214": {
+          "before": {
+            "gamevalName": "darkness_in_the_depths"
+          },
+          "after": {
+            "gamevalName": "toa_path_scabaras"
+          }
+        },
+        "215": {
+          "before": {
+            "gamevalName": "woodland_walk"
+          },
+          "after": {
+            "gamevalName": "toa_path_apmeken"
+          }
+        },
+        "216": {
+          "before": {
+            "gamevalName": "shayzienforces"
+          },
+          "after": {
+            "gamevalName": "toa_lobby"
+          }
+        },
+        "217": {
+          "before": {
+            "gamevalName": "yama_combat"
+          },
+          "after": {
+            "gamevalName": "toa_ambience"
+          }
+        },
+        "218": {
+          "before": {
+            "gamevalName": "soulfall"
+          },
+          "after": {
+            "gamevalName": "toa_boss_baba"
+          }
+        },
+        "219": {
+          "before": {
+            "gamevalName": "sarachnis_lair"
+          },
+          "after": {
+            "gamevalName": "lullaby"
+          }
+        },
+        "220": {
+          "before": {
+            "gamevalName": "wasteland"
+          },
+          "after": {
+            "gamevalName": "forgettable_melody"
+          }
+        },
+        "221": {
+          "before": {
+            "gamevalName": "warrens"
+          },
+          "after": {
+            "gamevalName": "chompy_hunt"
+          }
+        },
+        "222": {
+          "before": {
+            "gamevalName": "zeah_mining"
+          },
+          "after": {
+            "gamevalName": "miracle_dance"
+          }
+        },
+        "223": {
+          "before": {
+            "gamevalName": "kourend_the_magnificent"
+          },
+          "after": {
+            "gamevalName": "night_of_the_vampiyre"
+          }
+        },
+        "224": {
+          "before": {
+            "gamevalName": "catacombsofkourend"
+          },
+          "after": {
+            "gamevalName": "homescape"
+          }
+        },
+        "225": {
+          "before": {
+            "gamevalName": "zeah_farming"
+          },
+          "after": {
+            "gamevalName": "wilderness"
+          }
+        },
+        "226": {
+          "before": {
+            "gamevalName": "forthos_dungeon"
+          },
+          "after": {
+            "gamevalName": "attack3"
+          }
+        },
+        "227": {
+          "before": {
+            "gamevalName": "zeah_fishing"
+          },
+          "after": {
+            "gamevalName": "shadowland"
+          }
+        },
+        "228": {
+          "before": {
+            "gamevalName": "forlorn_homestead"
+          },
+          "after": {
+            "gamevalName": "attention"
+          }
+        },
+        "229": {
+          "before": {
+            "gamevalName": "arceuus_outskirts"
+          },
+          "after": {
+            "gamevalName": "vanstrom"
+          }
+        },
+        "230": {
+          "before": {
+            "gamevalName": "shayzien_crypt"
+          },
+          "after": {
+            "gamevalName": "stagnant"
+          }
+        },
+        "231": {
+          "before": {
+            "gamevalName": "zeah_combat"
+          },
+          "after": {
+            "gamevalName": "escape"
+          }
+        },
+        "232": {
+          "before": {
+            "gamevalName": "shayzien_outskirts"
+          },
+          "after": {
+            "gamevalName": "borderland"
+          }
+        },
+        "233": {
+          "before": {
+            "gamevalName": "courage"
+          },
+          "after": {
+            "gamevalName": "dimension_x"
+          }
+        },
+        "234": {
+          "before": {
+            "gamevalName": "surok_king_battle_music"
+          },
+          "after": {
+            "gamevalName": "moody"
+          }
+        },
+        "235": {
+          "before": {
+            "gamevalName": "miscellania"
+          },
+          "after": {
+            "gamevalName": "time_out"
+          }
+        },
+        "236": {
+          "before": {
+            "gamevalName": "the_slayer"
+          },
+          "after": {
+            "gamevalName": "riverside"
+          }
+        },
+        "237": {
+          "before": {
+            "gamevalName": "attack1"
+          },
+          "after": {
+            "gamevalName": "cavern"
+          }
+        },
+        "238": {
+          "before": {
+            "gamevalName": "ground_scape"
+          },
+          "after": {
+            "gamevalName": "pick_and_shovel"
+          }
+        },
+        "239": {
+          "before": {
+            "gamevalName": "time_out"
+          },
+          "after": {
+            "gamevalName": "wander"
+          }
+        },
+        "240": {
+          "before": {
+            "gamevalName": "garden"
+          },
+          "after": {
+            "gamevalName": "wilderness3"
+          }
+        },
+        "241": {
+          "before": {
+            "gamevalName": "storm_brew"
+          },
+          "after": {
+            "gamevalName": "land_down_under"
+          }
+        },
+        "242": {
+          "before": {
+            "gamevalName": "voyage"
+          },
+          "after": {
+            "gamevalName": "grimly_fiendish"
+          }
+        },
+        "243": {
+          "before": {
+            "gamevalName": "xamphur"
+          },
+          "after": {
+            "gamevalName": "etcetera_theme"
+          }
+        },
+        "244": {
+          "before": {
+            "gamevalName": "coronation"
+          },
+          "after": {
+            "gamevalName": "prime_time"
+          }
+        },
+        "245": {
+          "before": {
+            "gamevalName": "housesofkourend"
+          },
+          "after": {
+            "gamevalName": "nylocas_combat"
+          }
+        },
+        "246": {
+          "before": {
+            "gamevalName": "judgeofyama"
+          },
+          "after": {
+            "gamevalName": "pestilent_bloat_combat"
+          }
+        },
+        "247": {
+          "before": {
+            "gamevalName": "rose"
+          },
+          "after": {
+            "gamevalName": "maiden_ambience"
+          }
+        },
+        "248": {
+          "before": {
+            "gamevalName": "confrontation"
+          },
+          "after": {
+            "gamevalName": "verzik_defeated"
+          }
+        },
+        "249": {
+          "before": {
+            "gamevalName": "barb_wire"
+          },
+          "after": {
+            "gamevalName": "nylocas_ambience"
+          }
+        },
+        "250": {
+          "before": {
+            "gamevalName": "island_life"
+          },
+          "after": {
+            "gamevalName": "welcome_to_the_theatre_6"
+          }
+        },
+        "251": {
+          "before": {
+            "gamevalName": "fanfare3"
+          },
+          "after": {
+            "gamevalName": "verzik_ambience"
+          }
+        },
+        "252": {
+          "before": {
+            "gamevalName": "the_power_of_tears"
+          },
+          "after": {
+            "gamevalName": "sotetseg_ambience"
+          }
+        },
+        "253": {
+          "before": {
+            "gamevalName": "xenophobe"
+          },
+          "after": {
+            "gamevalName": "xarpus_ambience"
+          }
+        },
+        "254": {
+          "before": {
+            "gamevalName": "fangs_for_the_memory"
+          },
+          "after": {
+            "gamevalName": "pestilent_bloat_ambience"
+          }
+        },
+        "255": {
+          "before": {
+            "gamevalName": "silence"
+          },
+          "after": {
+            "gamevalName": "sotetseg_combat"
+          }
+        },
+        "256": {
+          "before": {
+            "gamevalName": "attack3"
+          },
+          "after": {
+            "gamevalName": "maiden_combat"
+          }
+        },
+        "257": {
+          "before": {
+            "gamevalName": "intrepid"
+          },
+          "after": {
+            "gamevalName": "xarpus_combat"
+          }
+        },
+        "258": {
+          "before": {
+            "gamevalName": "schools_out"
+          },
+          "after": {
+            "gamevalName": "verzik_combat"
+          }
+        },
+        "259": {
+          "before": {
+            "gamevalName": "scape_sad"
+          },
+          "after": {
+            "gamevalName": "monkey_badness"
+          }
+        },
+        "260": {
+          "before": {
+            "gamevalName": "head_to_head"
+          },
+          "after": {
+            "gamevalName": "monkey_trouble"
+          }
+        },
+        "261": {
+          "before": {
+            "gamevalName": "the_quizmaster"
+          },
+          "after": {
+            "gamevalName": "monkey_sadness"
+          }
+        },
+        "262": {
+          "before": {
+            "gamevalName": "dead_can_dance"
+          },
+          "after": {
+            "gamevalName": "scape_ape"
+          }
+        },
+        "263": {
+          "before": {
+            "gamevalName": "dt2_horn_part_3"
+          },
+          "after": {
+            "gamevalName": "monkey_business"
+          }
+        },
+        "264": {
+          "before": {
+            "gamevalName": "dt2_horn_part_1"
+          },
+          "after": {
+            "gamevalName": "beneath_the_stronghold"
+          }
+        },
+        "265": {
+          "before": {
+            "gamevalName": "dt2_horn_part_5"
+          },
+          "after": {
+            "gamevalName": "quest"
+          }
+        },
+        "266": {
+          "before": {
+            "gamevalName": "dt2_lassar_silent"
+          },
+          "after": {
+            "gamevalName": "fire_and_brimstone"
+          }
+        },
+        "267": {
+          "before": {
+            "gamevalName": "dt2_wights"
+          },
+          "after": {
+            "gamevalName": "understanding"
+          }
+        },
+        "268": {
+          "before": {
+            "gamevalName": "dt2_vardorvis"
+          },
+          "after": {
+            "gamevalName": "alls_fairy_in_love_n_war"
+          }
+        },
+        "269": {
+          "before": {
+            "gamevalName": "dt2_horn_part_4"
+          },
+          "after": {
+            "gamevalName": "werewolves"
+          }
+        },
+        "270": {
+          "before": {
+            "gamevalName": "dt2_horn_part_2"
+          },
+          "after": {
+            "gamevalName": "bobs_on_holiday"
+          }
+        },
+        "271": {
+          "before": {
+            "gamevalName": "dt2_vault"
+          },
+          "after": {
+            "gamevalName": "arabique"
+          }
+        },
+        "272": {
+          "before": {
+            "gamevalName": "dt2_scar"
+          },
+          "after": {
+            "gamevalName": "the_enclave"
+          }
+        },
+        "273": {
+          "before": {
+            "gamevalName": "dt2_pursuer"
+          },
+          "after": {
+            "gamevalName": "down_and_out"
+          }
+        },
+        "274": {
+          "before": {
+            "gamevalName": "dt2_horn"
+          },
+          "after": {
+            "gamevalName": "attack4"
+          }
+        },
+        "275": {
+          "before": {
+            "gamevalName": "dt2_ghorrock"
+          },
+          "after": {
+            "gamevalName": "no_way_out"
+          }
+        },
+        "276": {
+          "before": {
+            "gamevalName": "dt2_digsite"
+          },
+          "after": {
+            "gamevalName": "fremmenik_trollking_jingle"
+          }
+        },
+        "277": {
+          "before": {
+            "gamevalName": "dt2_lassar"
+          },
+          "after": {
+            "gamevalName": "baroque"
+          }
+        },
+        "278": {
+          "before": {
+            "gamevalName": "dt2_leviathan"
+          },
+          "after": {
+            "gamevalName": "the_heist"
+          }
+        },
+        "279": {
+          "before": {
+            "gamevalName": "dt2_sliske"
+          },
+          "after": {
+            "gamevalName": "lamistards_labyrinth"
+          }
+        },
+        "280": {
+          "before": {
+            "gamevalName": "dt2_sucellus"
+          },
+          "after": {
+            "gamevalName": "the_north"
+          }
+        },
+        "281": {
+          "before": {
+            "gamevalName": "dt2_whisperer"
+          },
+          "after": {
+            "gamevalName": "the_plundered_tomb"
+          }
+        },
+        "282": {
+          "before": {
+            "gamevalName": "dt2_horn_part_6"
+          },
+          "after": {
+            "gamevalName": "heavy_security"
+          }
+        },
+        "283": {
+          "before": {
+            "gamevalName": "dt2_stranglewood"
+          },
+          "after": {
+            "gamevalName": "trouble_brewing"
+          }
+        },
+        "284": {
+          "before": {
+            "gamevalName": "dreamstate"
+          },
+          "after": {
+            "gamevalName": "dogs_of_war"
+          }
+        },
+        "285": {
+          "before": {
+            "gamevalName": "assault_and_battery"
+          },
+          "after": {
+            "gamevalName": "greatness"
+          }
+        },
+        "286": {
+          "before": {
+            "gamevalName": "attack4"
+          },
+          "after": {
+            "gamevalName": "jungle_bells"
+          }
+        },
+        "287": {
+          "before": {
+            "gamevalName": "marzipan"
+          },
+          "after": {
+            "gamevalName": "winter_funfare"
+          }
+        },
+        "288": {
+          "before": {
+            "gamevalName": "newbie_melody"
+          },
+          "after": {
+            "gamevalName": "wonder"
+          }
+        },
+        "289": {
+          "before": {
+            "gamevalName": "baroque"
+          },
+          "after": {
+            "gamevalName": "waterlogged"
+          }
+        },
+        "290": {
+          "before": {
+            "gamevalName": "forgettable_melody"
+          },
+          "after": {
+            "gamevalName": "cellar_song"
+          }
+        },
+        "291": {
+          "before": {
+            "gamevalName": "slug_a_bug_ball"
+          },
+          "after": {
+            "gamevalName": "yuletide_eve"
+          }
+        },
+        "292": {
+          "before": {
+            "gamevalName": "victory_is_mine"
+          },
+          "after": {
+            "gamevalName": "home_sweet_home"
+          }
+        },
+        "293": {
+          "before": {
+            "gamevalName": "the_old_ones"
+          },
+          "after": {
+            "gamevalName": "subterranea"
+          }
+        },
+        "294": {
+          "before": {
+            "gamevalName": "soundscape"
+          },
+          "after": {
+            "gamevalName": "bone_dance"
+          }
+        },
+        "295": {
+          "before": {
+            "gamevalName": "in_the_pits"
+          },
+          "after": {
+            "gamevalName": "the_lost_melody"
+          }
+        },
+        "296": {
+          "before": {
+            "gamevalName": "kr_betray_jingle"
+          },
+          "after": {
+            "gamevalName": "fanfare2"
+          }
+        },
+        "297": {
+          "before": {
+            "gamevalName": "espionage"
+          },
+          "after": {
+            "gamevalName": "upass"
+          }
+        },
+        "298": {
+          "before": {
+            "gamevalName": "werewolves"
+          },
+          "after": {
+            "gamevalName": "cave_background"
+          }
+        },
+        "299": {
+          "before": {
+            "gamevalName": "untouchable"
+          },
+          "after": {
+            "gamevalName": "big_chords"
+          }
+        },
+        "300": {
+          "before": {
+            "gamevalName": "expecting"
+          },
+          "after": {
+            "gamevalName": "on_the_shore"
+          }
+        },
+        "301": {
+          "before": {
+            "gamevalName": "romper_chomper"
+          },
+          "after": {
+            "gamevalName": "the_desolate_isle"
+          }
+        },
+        "302": {
+          "before": {
+            "gamevalName": "cellar_song"
+          },
+          "after": {
+            "gamevalName": "forest"
+          }
+        },
+        "303": {
+          "before": {
+            "gamevalName": "jungle_troubles"
+          },
+          "after": {
+            "gamevalName": "sea_shanty"
+          }
+        },
+        "304": {
+          "before": {
+            "gamevalName": "inadequacy"
+          },
+          "after": {
+            "gamevalName": "joy_of_the_hunt"
+          }
+        },
+        "305": {
+          "before": {
+            "gamevalName": "the_lunar_isle"
+          },
+          "after": {
+            "gamevalName": "high_spirits"
+          }
+        },
+        "306": {
+          "before": {
+            "gamevalName": "nightmare_combat"
+          },
+          "after": {
+            "gamevalName": "starlight"
+          }
+        },
+        "307": {
+          "before": {
+            "gamevalName": "slepe_dungeon"
+          },
+          "after": {
+            "gamevalName": "church_music_2"
+          }
+        },
+        "308": {
+          "before": {
+            "gamevalName": "shining"
+          },
+          "after": {
+            "gamevalName": "the_mad_mole"
+          }
+        },
+        "309": {
+          "before": {
+            "gamevalName": "lotr_jingle_3"
+          },
+          "after": {
+            "gamevalName": "corporealbeast"
+          }
+        },
+        "310": {
+          "before": {
+            "gamevalName": "forsaken_tower"
+          },
+          "after": {
+            "gamevalName": "yesteryear"
+          }
+        },
+        "830": {
+          "before": {
+            "gamevalName": "sotetseg_ambience"
+          },
+          "after": {
+            "gamevalName": "safety_in_numbers"
+          }
+        },
+        "831": {
+          "before": {
+            "gamevalName": "verzik_combat"
+          },
+          "after": {
+            "gamevalName": "funny_bunnies"
+          }
+        },
+        "832": {
+          "before": {
+            "gamevalName": "spookyjungle"
+          },
+          "after": {
+            "gamevalName": "evil_bobs_island"
+          }
+        }
+      }
+    }
+  }
+};
+function toggleAll(expand){document.querySelectorAll('details').forEach(d=>d.open=expand);}
+function escapeHtml(str){if(str===undefined||str===null)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function tokens(str){return String(str).match(/\s+|[^\s]+/g)||[];}
+function diffTokens(before,after){
+ const a=tokens(before),b=tokens(after),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const beforeParts=[],afterParts=[];let i=0,j=0;
+ while(i<m&&j<n){
+   if(a[i]===b[j]){beforeParts.push({t:a[i],c:false});afterParts.push({t:b[j],c:false});i++;j++;}
+   else if(dp[i+1][j]>=dp[i][j+1]){beforeParts.push({t:a[i++],c:true});}
+   else{afterParts.push({t:b[j++],c:true});}
+ }
+ while(i<m)beforeParts.push({t:a[i++],c:true});
+ while(j<n)afterParts.push({t:b[j++],c:true});
+ return {before:beforeParts,after:afterParts};}
+function renderParts(parts,cls){return parts.map(p=>p.c?`<span class='${cls}'>${escapeHtml(p.t)}</span>`:escapeHtml(p.t)).join('');}
+function valueText(v){return (v&&typeof v==='object')?JSON.stringify(v,null,Array.isArray(v)&&v.length<=8?0:2):String(v);}
+function renderValue(v,other,side){
+ if(v===undefined)return '';
+ const text=valueText(v);
+ if(other===undefined)return `<span class='${side==='before'?'diff-del':'diff-ins'}'>${escapeHtml(text)}</span>`;
+ const d=diffTokens(text,valueText(other));
+ return renderParts(d.before,side==='before'?'diff-del':'diff-ins');}
+function isPlainObject(v){return v&&typeof v==='object'&&!Array.isArray(v);}
+function renderChangedField(k,before,after){
+ const bv=before[k],av=after[k];
+ if(isPlainObject(bv)||isPlainObject(av)){
+   const bobj=isPlainObject(bv)?bv:{},aobj=isPlainObject(av)?av:{};
+   const subKeys=Array.from(new Set([...Object.keys(bobj),...Object.keys(aobj)])).sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true})).filter(sk=>valueText(bobj[sk])!==valueText(aobj[sk]));
+   if(subKeys.length===0)return '';
+   return subKeys.map(sk=>`<tr><td class='field-name'>${escapeHtml(k+'.'+sk)}</td><td><pre>${renderValue(bobj[sk],aobj[sk],'before')}</pre></td><td><pre>${renderValue(aobj[sk],bobj[sk],'after')}</pre></td></tr>`).join('');
+ }
+ return `<tr><td class='field-name'>${escapeHtml(k)}</td><td><pre>${renderValue(bv,av,'before')}</pre></td><td><pre>${renderValue(av,bv,'after')}</pre></td></tr>`;}
+function createChangedTable(diff){
+ const before=diff.before||{},after=diff.after||{};
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>(k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k]));
+ if(keys.length===0)return '<p class="empty">Metadata only</p>';
+ let html='<div class="table-wrap"><table class="changed-table"><tr><th>Field</th><th>Before</th><th>After</th></tr>';
+ for(const k of keys){html+=renderChangedField(k,before,after);}
+ return html+'</table></div>';}
+function createChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const beforeName=before.gameval||before.gamevalName||before.name;
+ const afterName=after.gameval||after.gamevalName||after.name;
+ const readable=afterName||beforeName||`ID ${id}`;
+ return `<div class='changed-entry'><div class='changed-entry-title'><span>${escapeHtml(readable)}</span><span class='changed-entry-id'>${escapeHtml(id)}</span></div>${createChangedTable(diff)}</div>`;}
+function createWidgetChangedRows(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const gv=after.gameval||before.gameval||after.gamevalName||before.gamevalName||'';
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>k!=='id'&&((k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k])));
+ return keys.map(k=>`<tr><td><pre>${escapeHtml(id)}</pre></td><td><pre>${escapeHtml(gv)}</pre></td><td class='field-name'>${escapeHtml(k)}</td><td><pre>${renderValue(before[k],after[k],'before')}</pre></td><td><pre>${renderValue(after[k],before[k],'after')}</pre></td></tr>`).join('');}
+function createWidgetChangedTable(ch){
+ if(Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ let rows='';for(const [id,diff]of Object.entries(ch)){rows+=createWidgetChangedRows(id,diff);}
+ if(!rows)return '<p class="empty">Metadata only</p>';
+ return '<div class="table-wrap"><table class="changed-table"><tr><th>id</th><th>gameval</th><th>key</th><th>prev</th><th>new</th></tr>'+rows+'</table></div>';}
+function createTable(rows){
+ if(!rows||Object.keys(rows).length===0) return '<p class="empty">None</p>';
+ let keys=new Set();for(const r of Object.values(rows)){for(const k of Object.keys(r))keys.add(k);}const cols=Array.from(keys);
+ let html='<div class="table-wrap"><table><tr>'+cols.map(k=>'<th>'+escapeHtml(k)+'</th>').join('')+'</tr>';
+ for(const [id,r]of Object.entries(rows)){
+   html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
+ }
+ html+='</table></div>';return html;}
+function spriteName(id,r){return (r&&(r.gamevalName||r.name))||`Sprite ${id}`;}
+function createSpriteFrames(r){
+ const frames=(r&&r.frames)||[];if(!frames.length)return '<p class="empty">No decoded frames</p>';
+ return '<div class="sprite-frames">'+frames.map(f=>`<div class='sprite-frame'><img src='${escapeHtml(f.image)}' alt='frame ${escapeHtml(f.frame)}'><span>#${escapeHtml(f.frame)} ${escapeHtml(f.width)}x${escapeHtml(f.height)}</span></div>`).join('')+'</div>';}
+function createSpriteCard(id,r){
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(spriteName(id,r))}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml((r&&r.spriteCount)||0)} frame(s)</span></div>${createSpriteFrames(r)}</div>`;}
+function createSpriteTable(rows){
+ if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(rows).map(([id,r])=>createSpriteCard(id,r)).join('')+'</div>';}
+function createSpriteChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};const title=spriteName(id,after.gamevalName?after:before);
+ const count=((before.spriteCount!==undefined?before.spriteCount:'?')+' -> '+(after.spriteCount!==undefined?after.spriteCount:'?'));
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(title)}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml(count)} frame(s)</span></div><div class='sprite-pair'><div><p class='sprite-side-title'>Before</p>${createSpriteFrames(before)}</div><div><p class='sprite-side-title'>After</p>${createSpriteFrames(after)}</div></div></div>`;}
+function createSpriteChangedTable(ch){
+ if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(ch).map(([id,diff])=>createSpriteChangedBlock(id,diff)).join('')+'</div>';}
+function createBucket(title,cls,count,content){
+ if(!count)return '';
+ return `<details class='bucket'><summary class='section-summary'><span class='section-title ${cls}'>${title}</span><span class='badge ${cls}'>${count}</span></summary><div class='body'>${content}</div></details>`;}
+function build(){const c=document.getElementById('content');for(const [section,det]of Object.entries(data.details)){
+ const summary=data.summary[section]||{};
+ const total=(summary.added||0)+(summary.removed||0)+(summary.changed||0);if(!total)continue;
+ const sec=document.createElement('section');
+ const detailsEl=document.createElement('details');
+ const head=document.createElement('summary');
+ head.className='section-summary';
+ head.innerHTML=`<span class='section-title'>${escapeHtml(section)}</span>`+
+ `<span class='badge added'>+${summary.added||0} added</span>`+
+ `<span class='badge removed'>-${summary.removed||0} removed</span>`+
+ `<span class='badge changed'>${summary.changed||0} changed</span>`;
+ detailsEl.appendChild(head);
+ const add=det.added||{};const rem=det.removed||{};const ch=det.changed||{};
+ let changedBody='';
+ if(Object.keys(ch).length===0){changedBody+='<p class="empty">None</p>';}
+ else{
+   for(const [id,diff]of Object.entries(ch)){
+     changedBody+=createChangedBlock(id,diff);
+   }
+ }
+ if(section==='Widgets'){changedBody=createWidgetChangedTable(ch);}
+ if(section==='Sprites'){changedBody=createSpriteChangedTable(ch);}
+ const addedBody=section==='Sprites'?createSpriteTable(add):createTable(add);
+ const removedBody=section==='Sprites'?createSpriteTable(rem):createTable(rem);
+ const body='<div class="body">'+
+   createBucket('Added','added',summary.added||0,addedBody)+
+   createBucket('Removed','removed',summary.removed||0,removedBody)+
+   createBucket('Changed','changed',summary.changed||0,changedBody)+
+   '</div>';detailsEl.innerHTML+=body;
+ sec.appendChild(detailsEl);c.appendChild(sec);}}
+build();
+</script>
+</body></html>
