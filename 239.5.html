@@ -61,7 +61,7 @@ pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-w
 <div id='content'></div>
 <script>
 const data={
-  "timestamp": "2026-07-23 12:46:09",
+  "timestamp": "2026-07-24 15:03:53",
   "oldPath": ".\\old",
   "newPath": ".\\new",
   "summary": {
@@ -78,7 +78,7 @@ const data={
     "NPCs": {
       "added": 0,
       "removed": 0,
-      "changed": 6
+      "changed": 8
     },
     "Items": {
       "added": 2,
@@ -4350,60 +4350,204 @@ const data={
         "9026": {
           "before": {
             "combat": 24,
+            "stats": {
+              "attack": 28,
+              "strength": 6,
+              "defence": 32,
+              "hitpoints": 14,
+              "magic": 1,
+              "ranged": 6
+            },
             "gamevalName": "crystal_rat"
           },
           "after": {
             "combat": 23,
+            "stats": {
+              "attack": 28,
+              "strength": 4,
+              "defence": 32,
+              "hitpoints": 12,
+              "magic": 1,
+              "ranged": 6
+            },
             "gamevalName": "crystal_rat"
+          }
+        },
+        "9028": {
+          "before": {
+            "stats": {
+              "attack": 24,
+              "strength": 2,
+              "defence": 68,
+              "hitpoints": 14,
+              "magic": 1,
+              "ranged": 2
+            },
+            "gamevalName": "crystal_bat"
+          },
+          "after": {
+            "stats": {
+              "attack": 24,
+              "strength": 4,
+              "defence": 68,
+              "hitpoints": 12,
+              "magic": 1,
+              "ranged": 2
+            },
+            "gamevalName": "crystal_bat"
           }
         },
         "9029": {
           "before": {
             "combat": 48,
+            "stats": {
+              "attack": 50,
+              "strength": 24,
+              "defence": 48,
+              "hitpoints": 44,
+              "magic": 1,
+              "ranged": 24
+            },
             "gamevalName": "crystal_unicorn"
           },
           "after": {
             "combat": 45,
+            "stats": {
+              "attack": 50,
+              "strength": 18,
+              "defence": 48,
+              "hitpoints": 38,
+              "magic": 1,
+              "ranged": 24
+            },
             "gamevalName": "crystal_unicorn"
           }
         },
         "9031": {
           "before": {
             "combat": 74,
+            "stats": {
+              "attack": 106,
+              "strength": 22,
+              "defence": 66,
+              "hitpoints": 52,
+              "magic": 1,
+              "ranged": 22
+            },
             "gamevalName": "crystal_wolf"
           },
           "after": {
             "combat": 69,
+            "stats": {
+              "attack": 106,
+              "strength": 18,
+              "defence": 66,
+              "hitpoints": 38,
+              "magic": 1,
+              "ranged": 22
+            },
             "gamevalName": "crystal_wolf"
           }
         },
         "9040": {
           "before": {
             "combat": 34,
+            "stats": {
+              "attack": 42,
+              "strength": 6,
+              "defence": 48,
+              "hitpoints": 14,
+              "magic": 1,
+              "ranged": 6
+            },
             "gamevalName": "crystal_rat_hm"
           },
           "after": {
             "combat": 33,
+            "stats": {
+              "attack": 42,
+              "strength": 4,
+              "defence": 48,
+              "hitpoints": 12,
+              "magic": 1,
+              "ranged": 6
+            },
             "gamevalName": "crystal_rat_hm"
+          }
+        },
+        "9042": {
+          "before": {
+            "stats": {
+              "attack": 36,
+              "strength": 2,
+              "defence": 102,
+              "hitpoints": 14,
+              "magic": 1,
+              "ranged": 2
+            },
+            "gamevalName": "crystal_bat_hm"
+          },
+          "after": {
+            "stats": {
+              "attack": 36,
+              "strength": 4,
+              "defence": 102,
+              "hitpoints": 12,
+              "magic": 1,
+              "ranged": 2
+            },
+            "gamevalName": "crystal_bat_hm"
           }
         },
         "9043": {
           "before": {
             "combat": 64,
+            "stats": {
+              "attack": 75,
+              "strength": 24,
+              "defence": 72,
+              "hitpoints": 44,
+              "magic": 1,
+              "ranged": 24
+            },
             "gamevalName": "crystal_unicorn_hm"
           },
           "after": {
             "combat": 61,
+            "stats": {
+              "attack": 75,
+              "strength": 18,
+              "defence": 72,
+              "hitpoints": 38,
+              "magic": 1,
+              "ranged": 24
+            },
             "gamevalName": "crystal_unicorn_hm"
           }
         },
         "9045": {
           "before": {
             "combat": 102,
+            "stats": {
+              "attack": 159,
+              "strength": 22,
+              "defence": 99,
+              "hitpoints": 52,
+              "magic": 1,
+              "ranged": 22
+            },
             "gamevalName": "crystal_wolf_hm"
           },
           "after": {
             "combat": 97,
+            "stats": {
+              "attack": 159,
+              "strength": 18,
+              "defence": 99,
+              "hitpoints": 38,
+              "magic": 1,
+              "ranged": 22
+            },
             "gamevalName": "crystal_wolf_hm"
           }
         }
@@ -6528,157 +6672,387 @@ const data={
     "Structs": {
       "added": {
         "1190": {
-          "1306": 637,
-          "1307": 3594,
-          "1308": "Maggot Squasher",
-          "1309": "Kill the Maggot King.",
-          "1310": 3,
-          "1311": 3,
-          "1312": 37,
-          "id": 1190
+          "id": 1190,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 3,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King.",
+            "CA_NAME(1308)": "Maggot Squasher",
+            "CA_NUMBER(1306)": 637,
+            "CA_TIER(1310)": 3
+          }
         },
         "1194": {
-          "1306": 638,
-          "1307": 3594,
-          "1308": "Maggot Exterminator",
-          "1309": "Kill the Maggot King 25 times.",
-          "1310": 4,
-          "1311": 3,
-          "1312": 37,
-          "id": 1194
+          "id": 1194,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 3,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King 25 times.",
+            "CA_NAME(1308)": "Maggot Exterminator",
+            "CA_NUMBER(1306)": 638,
+            "CA_TIER(1310)": 4
+          }
         },
         "1195": {
-          "1306": 639,
-          "1307": 3594,
-          "1308": "Camping the King",
-          "1309": "Kill the Maggot King 12 times without leaving the arena.",
-          "1310": 5,
-          "1311": 1,
-          "1312": 37,
-          "id": 1195
+          "id": 1195,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 1,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King 12 times without leaving the arena.",
+            "CA_NAME(1308)": "Camping the King",
+            "CA_NUMBER(1306)": 639,
+            "CA_TIER(1310)": 5
+          }
         },
         "1196": {
-          "1306": 640,
-          "1307": 3594,
-          "1308": "Maggot King Speed Chaser",
-          "1309": "Kill the Maggot King 5 times in 9 minutes.",
-          "1310": 5,
-          "1311": 6,
-          "1312": 37,
-          "id": 1196
+          "id": 1196,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 6,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King 5 times in 9 minutes.",
+            "CA_NAME(1308)": "Maggot King Speed Chaser",
+            "CA_NUMBER(1306)": 640,
+            "CA_TIER(1310)": 5
+          }
         },
         "1197": {
-          "1306": 641,
-          "1307": 3594,
-          "1308": "Trying to fit in",
-          "1309": "Kill the Maggot King using only weapons that can be found in Vampyrium.",
-          "1310": 4,
-          "1311": 5,
-          "1312": 37,
-          "id": 1197
+          "id": 1197,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 5,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King using only weapons that can be found in Vampyrium.",
+            "CA_NAME(1308)": "Trying to fit in",
+            "CA_NUMBER(1306)": 641,
+            "CA_TIER(1310)": 4
+          }
         },
         "1198": {
-          "1306": 642,
-          "1307": 3594,
-          "1308": "King-sized clobbering",
-          "1309": "Kill the Maggot King without missing a single melee punish.",
-          "1310": 5,
-          "1311": 4,
-          "1312": 37,
-          "id": 1198
+          "id": 1198,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 4,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King without missing a single melee punish.",
+            "CA_NAME(1308)": "King-sized clobbering",
+            "CA_NUMBER(1306)": 642,
+            "CA_TIER(1310)": 5
+          }
         },
         "1199": {
-          "1306": 643,
-          "1307": 3594,
-          "1308": "Digging in",
-          "1309": "Kill the Maggot King without moving more than 40 tiles.",
-          "1310": 5,
-          "1311": 5,
-          "1312": 37,
-          "id": 1199
+          "id": 1199,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 5,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King without moving more than 40 tiles.",
+            "CA_NAME(1308)": "Digging in",
+            "CA_NUMBER(1306)": 643,
+            "CA_TIER(1310)": 5
+          }
         },
         "1200": {
-          "1306": 644,
-          "1307": 3594,
-          "1308": "Cordoned Off",
-          "1309": "Kill the Maggot King without moving beyond the back row of tiles.",
-          "1310": 5,
-          "1311": 5,
-          "1312": 37,
-          "id": 1200
+          "id": 1200,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 5,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King without moving beyond the back row of tiles.",
+            "CA_NAME(1308)": "Cordoned Off",
+            "CA_NUMBER(1306)": 644,
+            "CA_TIER(1310)": 5
+          }
         },
         "1201": {
-          "1306": 645,
-          "1307": 3594,
-          "1308": "Perfect Maggot King",
-          "1309": "Kill the Maggot King without taking any avoidable damage or him ever being healed.",
-          "1310": 5,
-          "1311": 2,
-          "1312": 37,
-          "id": 1201
+          "id": 1201,
+          "paramCount": 7,
+          "params": {
+            "1307": 3594,
+            "1311": 2,
+            "CA_BOSS_NUMBER(1312)": 37,
+            "CA_DESCRIPTION(1309)": "Kill the Maggot King without taking any avoidable damage or him ever being healed.",
+            "CA_NAME(1308)": "Perfect Maggot King",
+            "CA_NUMBER(1306)": 645,
+            "CA_TIER(1310)": 5
+          }
         }
       },
       "removed": {},
       "changed": {
         "880": {
           "before": {
-            "1086": "Auto-equip worn items from gravestone",
-            "1088": "combat,grave,death,equip,auto",
-            "1096": "When enabled, when you retrieve an item from your gravestone, you will auto-equip any items that were equipped when you died."
+            "params": {
+              "1078": 0,
+              "1085": 1,
+              "1119": 0,
+              "INGAME_SETTING_DESCRIPTION(1096)": "When enabled, when you retrieve an item from your gravestone, you will auto-equip any items that were equipped when you died.",
+              "INGAME_SETTING_NAME(1086)": "Auto-equip worn items from gravestone",
+              "INGAME_SETTING_NUMBER(1077)": 371,
+              "INGAME_SETTING_TAGS(1088)": "combat,grave,death,equip,auto"
+            }
           },
           "after": {
-            "1086": "Auto-equip \u0026 sort items from gravestone",
-            "1088": "combat,grave,death,equip,auto,sort,gravestone,organise",
-            "1096": "When enabled, when you retrieve an item from your gravestone, you will auto-equip any items that were equipped when you died, and the rest will be sorted to their original positions."
+            "params": {
+              "1078": 0,
+              "1085": 1,
+              "1119": 0,
+              "INGAME_SETTING_DESCRIPTION(1096)": "When enabled, when you retrieve an item from your gravestone, you will auto-equip any items that were equipped when you died, and the rest will be sorted to their original positions.",
+              "INGAME_SETTING_NAME(1086)": "Auto-equip \u0026 sort items from gravestone",
+              "INGAME_SETTING_NUMBER(1077)": 371,
+              "INGAME_SETTING_TAGS(1088)": "combat,grave,death,equip,auto,sort,gravestone,organise"
+            }
           }
         },
         "1188": {
           "before": {
-            "1319": "The Maggot King is a boss found in the far off land of Vampyrium.\u003cbr\u003e\u003cbr\u003eAttack Styles - All",
-            "1320": "Mandatory requirements:\u003cbr\u003e - The Blood Moon Rises"
+            "params": {
+              "1317": 43900587,
+              "1324": 0,
+              "1325": 250,
+              "1327": 300,
+              "CA_BOSS_ANIMATION_ID(1323)": 13926,
+              "CA_BOSS_COMBAT_LEVEL(1314)": 741,
+              "CA_BOSS_DESCRIPTION(1319)": "The Maggot King is a boss found in the far off land of Vampyrium.\u003cbr\u003e\u003cbr\u003eAttack Styles - All",
+              "CA_BOSS_MODELZOOM(1329)": 2600,
+              "CA_BOSS_MODEL_ID(1322)": 61512,
+              "CA_BOSS_MODEL_ROTATION_X(1326)": 17,
+              "CA_BOSS_MODEL_ROTATION_Y(1328)": 0,
+              "CA_BOSS_NAME(1313)": "Maggot King",
+              "CA_BOSS_NUMBER(1315)": 37,
+              "CA_BOSS_REQUIREMENTS(1320)": "Mandatory requirements:\u003cbr\u003e - The Blood Moon Rises"
+            }
           },
           "after": {
-            "1319": "The Maggot King is a boss found in the far off land of Vampyrium.\u003cbr\u003e\u003cbr\u003eAttack Styles - All\u003cbr\u003eImmunities - Poison, Venom\u003cbr\u003eSlayer Categories - None",
-            "1320": "Mandatory requirements:\u003cbr\u003e - The Blood Moon Rises\u003cbr\u003e\u003cbr\u003eCombat Achievement task difficulty:\u003cbr\u003e - Hard \u003cbr\u003e - Elite \u003cbr\u003e - Master"
+            "params": {
+              "1317": 43900587,
+              "1324": 0,
+              "1325": 250,
+              "1327": 300,
+              "CA_BOSS_ANIMATION_ID(1323)": 13926,
+              "CA_BOSS_COMBAT_LEVEL(1314)": 741,
+              "CA_BOSS_DESCRIPTION(1319)": "The Maggot King is a boss found in the far off land of Vampyrium.\u003cbr\u003e\u003cbr\u003eAttack Styles - All\u003cbr\u003eImmunities - Poison, Venom\u003cbr\u003eSlayer Categories - None",
+              "CA_BOSS_MODELZOOM(1329)": 2600,
+              "CA_BOSS_MODEL_ID(1322)": 61512,
+              "CA_BOSS_MODEL_ROTATION_X(1326)": 17,
+              "CA_BOSS_MODEL_ROTATION_Y(1328)": 0,
+              "CA_BOSS_NAME(1313)": "Maggot King",
+              "CA_BOSS_NUMBER(1315)": 37,
+              "CA_BOSS_REQUIREMENTS(1320)": "Mandatory requirements:\u003cbr\u003e - The Blood Moon Rises\u003cbr\u003e\u003cbr\u003eCombat Achievement task difficulty:\u003cbr\u003e - Hard \u003cbr\u003e - Elite \u003cbr\u003e - Master"
+            }
           }
         },
         "3247": {
           "before": {
-            "1309": "Complete a Corrupted Gauntlet in less than 7 minutes and 30 seconds."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 18,
+              "CA_DESCRIPTION(1309)": "Complete a Corrupted Gauntlet in less than 7 minutes and 30 seconds.",
+              "CA_NAME(1308)": "Corrupted Gauntlet Speed-Chaser",
+              "CA_NUMBER(1306)": 107,
+              "CA_TIER(1310)": 5
+            }
           },
           "after": {
-            "1309": "Complete a Corrupted Gauntlet in less than 7 minutes and 5 seconds."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 18,
+              "CA_DESCRIPTION(1309)": "Complete a Corrupted Gauntlet in less than 7 minutes and 5 seconds.",
+              "CA_NAME(1308)": "Corrupted Gauntlet Speed-Chaser",
+              "CA_NUMBER(1306)": 107,
+              "CA_TIER(1310)": 5
+            }
           }
         },
         "3248": {
           "before": {
-            "1309": "Complete a Corrupted Gauntlet in less than 6 minutes and 30 seconds."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 18,
+              "CA_DESCRIPTION(1309)": "Complete a Corrupted Gauntlet in less than 6 minutes and 30 seconds.",
+              "CA_NAME(1308)": "Corrupted Gauntlet Speed-Runner",
+              "CA_NUMBER(1306)": 108,
+              "CA_TIER(1310)": 6
+            }
           },
           "after": {
-            "1309": "Complete a Corrupted Gauntlet in less than 6 minutes and 5 seconds."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 18,
+              "CA_DESCRIPTION(1309)": "Complete a Corrupted Gauntlet in less than 6 minutes and 5 seconds.",
+              "CA_NAME(1308)": "Corrupted Gauntlet Speed-Runner",
+              "CA_NUMBER(1306)": 108,
+              "CA_TIER(1310)": 6
+            }
           }
         },
         "3257": {
           "before": {
-            "1309": "Complete the Gauntlet in less than 5 minutes."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 17,
+              "CA_DESCRIPTION(1309)": "Complete the Gauntlet in less than 5 minutes.",
+              "CA_NAME(1308)": "Gauntlet Speed-Chaser",
+              "CA_NUMBER(1306)": 117,
+              "CA_TIER(1310)": 5
+            }
           },
           "after": {
-            "1309": "Complete the Gauntlet in less than 4 minutes and 45 seconds."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 17,
+              "CA_DESCRIPTION(1309)": "Complete the Gauntlet in less than 4 minutes and 45 seconds.",
+              "CA_NAME(1308)": "Gauntlet Speed-Chaser",
+              "CA_NUMBER(1306)": 117,
+              "CA_TIER(1310)": 5
+            }
           }
         },
         "3258": {
           "before": {
-            "1309": "Complete the Gauntlet in less than 4 minutes."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 17,
+              "CA_DESCRIPTION(1309)": "Complete the Gauntlet in less than 4 minutes.",
+              "CA_NAME(1308)": "Gauntlet Speed-Runner",
+              "CA_NUMBER(1306)": 118,
+              "CA_TIER(1310)": 6
+            }
           },
           "after": {
-            "1309": "Complete the Gauntlet in less than 3 minutes and 45 seconds."
+            "params": {
+              "1307": 3594,
+              "1311": 6,
+              "CA_BOSS_NUMBER(1312)": 17,
+              "CA_DESCRIPTION(1309)": "Complete the Gauntlet in less than 3 minutes and 45 seconds.",
+              "CA_NAME(1308)": "Gauntlet Speed-Runner",
+              "CA_NUMBER(1306)": 118,
+              "CA_TIER(1310)": 6
+            }
           }
         },
         "6436": {
-          "before": {},
+          "before": {
+            "paramCount": 46,
+            "params": {
+              "1021": 3576,
+              "1022": 8208,
+              "1023": 8235,
+              "1024": 8317,
+              "1025": 8318,
+              "1026": 8330,
+              "1027": 16019731,
+              "1028": 16704893,
+              "1029": 16777215,
+              "1030": 1,
+              "1031": 8319,
+              "1032": 496,
+              "1033": 6456,
+              "1039": 15,
+              "1040": 75,
+              "1041": 225,
+              "1143": 8235,
+              "1144": 8208,
+              "149": 5810,
+              "1856": 8331,
+              "1857": 5979,
+              "1882": "Leagues VI",
+              "2025": 0,
+              "2041": 5976,
+              "2048": 3045,
+              "2050": "\u003ccol\u003dFE206A\u003e",
+              "2051": "\u003ccol\u003d94141d\u003e",
+              "2052": 330256,
+              "2053": 1,
+              "2054": 3613,
+              "2055": 8332,
+              "2058": 1,
+              "2572": 5728,
+              "2573": 5950,
+              "2575": 13,
+              "858": "Leagues VI - Demonic Pacts",
+              "864": 27298880,
+              "865": 5,
+              "867": 16275,
+              "87": 5977,
+              "870": 5702,
+              "871": 7999,
+              "872": 8870,
+              "888": 3371,
+              "889": 5960,
+              "891": 3378
+            }
+          },
           "after": {
-            "1145": 1399,
-            "1146": 1820
+            "paramCount": 48,
+            "params": {
+              "1021": 3576,
+              "1022": 8208,
+              "1023": 8235,
+              "1024": 8317,
+              "1025": 8318,
+              "1026": 8330,
+              "1027": 16019731,
+              "1028": 16704893,
+              "1029": 16777215,
+              "1030": 1,
+              "1031": 8319,
+              "1032": 496,
+              "1033": 6456,
+              "1039": 15,
+              "1040": 75,
+              "1041": 225,
+              "1143": 8235,
+              "1144": 8208,
+              "1145": 1399,
+              "1146": 1820,
+              "149": 5810,
+              "1856": 8331,
+              "1857": 5979,
+              "1882": "Leagues VI",
+              "2025": 0,
+              "2041": 5976,
+              "2048": 3045,
+              "2050": "\u003ccol\u003dFE206A\u003e",
+              "2051": "\u003ccol\u003d94141d\u003e",
+              "2052": 330256,
+              "2053": 1,
+              "2054": 3613,
+              "2055": 8332,
+              "2058": 1,
+              "2572": 5728,
+              "2573": 5950,
+              "2575": 13,
+              "858": "Leagues VI - Demonic Pacts",
+              "864": 27298880,
+              "865": 5,
+              "867": 16275,
+              "87": 5977,
+              "870": 5702,
+              "871": 7999,
+              "872": 8870,
+              "888": 3371,
+              "889": 5960,
+              "891": 3378
+            }
           }
         }
       }
@@ -13645,14 +14019,14 @@ function createSpriteFrames(r){
  const frames=(r&&r.frames)||[];if(!frames.length)return '<p class="empty">No decoded frames</p>';
  return '<div class="sprite-frames">'+frames.map(f=>`<div class='sprite-frame'><img src='${escapeHtml(f.image)}' alt='frame ${escapeHtml(f.frame)}'><span>#${escapeHtml(f.frame)} ${escapeHtml(f.width)}x${escapeHtml(f.height)}</span></div>`).join('')+'</div>';}
 function createSpriteCard(id,r){
- return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(spriteName(id,r))}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml((r&&r.spriteCount)||0)} frame(s)</span></div>${createSpriteFrames(r)}</div>`;}
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(spriteName(id,r))}</span><span class='sprite-meta'>${escapeHtml(id)} Â· ${escapeHtml((r&&r.spriteCount)||0)} frame(s)</span></div>${createSpriteFrames(r)}</div>`;}
 function createSpriteTable(rows){
  if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
  return '<div class="sprite-grid">'+Object.entries(rows).map(([id,r])=>createSpriteCard(id,r)).join('')+'</div>';}
 function createSpriteChangedBlock(id,diff){
  const before=diff.before||{},after=diff.after||{};const title=spriteName(id,after.gamevalName?after:before);
  const count=((before.spriteCount!==undefined?before.spriteCount:'?')+' -> '+(after.spriteCount!==undefined?after.spriteCount:'?'));
- return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(title)}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml(count)} frame(s)</span></div><div class='sprite-pair'><div><p class='sprite-side-title'>Before</p>${createSpriteFrames(before)}</div><div><p class='sprite-side-title'>After</p>${createSpriteFrames(after)}</div></div></div>`;}
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(title)}</span><span class='sprite-meta'>${escapeHtml(id)} Â· ${escapeHtml(count)} frame(s)</span></div><div class='sprite-pair'><div><p class='sprite-side-title'>Before</p>${createSpriteFrames(before)}</div><div><p class='sprite-side-title'>After</p>${createSpriteFrames(after)}</div></div></div>`;}
 function createSpriteChangedTable(ch){
  if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
  return '<div class="sprite-grid">'+Object.entries(ch).map(([id,diff])=>createSpriteChangedBlock(id,diff)).join('')+'</div>';}
