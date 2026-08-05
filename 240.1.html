@@ -1,4 +1,83 @@
-{
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>OSRS Cache Diff Report</title>
+<style>
+:root{color-scheme:dark;--bg:#151719;--panel:#202326;--panel2:#262a2e;--border:#343a40;--text:#d8dde3;--muted:#8d99a6;--blue:#7cc7ff;--green:#91d18b;--red:#f28b82;--amber:#f7c873;}
+*{box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:0;font-size:14px;line-height:1.35;}
+header{position:sticky;top:0;z-index:10;background:#1b1e21;border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px #0004;}
+h1{margin:0;color:#f2f6fb;font-size:20px;font-weight:650;}
+.actions{margin-left:auto;display:flex;gap:8px;}
+#content{max-width:1800px;margin:0 auto;padding:14px 18px 28px;}
+section{background:var(--panel);border:1px solid var(--border);border-radius:8px;margin:0 0 12px;overflow:hidden;}
+summary{cursor:pointer;font-weight:650;color:var(--blue);list-style:none;}
+summary::-webkit-details-marker{display:none;}
+.section-summary{display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.section-summary:before{content:'+';color:var(--muted);font-family:Consolas,monospace;width:14px;}
+details[open]>.section-summary:before{content:'-';}
+.section-title{min-width:190px;}
+.badge{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:999px;padding:2px 8px;background:#15181b;color:var(--muted);font-size:12px;font-weight:600;}
+.body{border-top:1px solid var(--border);padding:12px 14px 16px;}
+.bucket{border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 8px;overflow:hidden;}
+.bucket>.section-summary{padding:8px 10px;}
+.bucket>.body{padding:10px;border-top:1px solid var(--border);}
+.subhead{margin:14px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 12px;}
+table{border-collapse:collapse;width:100%;min-width:640px;}
+th,td{border-bottom:1px solid #2c3238;padding:6px 9px;text-align:left;vertical-align:top;}
+th{position:sticky;top:0;background:var(--panel2);color:#f2f6fb;font-size:12px;font-weight:650;z-index:1;}
+tr:nth-child(even){background:#1c2024;}tr:hover{background:#242a30;}
+.added{color:var(--green);}.removed{color:var(--red);}.changed{color:var(--amber);}
+.diff-ins{background:#173d24;color:#c7f7ce;border-radius:3px;padding:0 2px;}
+.diff-del{background:#4a1f22;color:#ffc5c0;border-radius:3px;padding:0 2px;text-decoration:line-through;}
+.changed-table{width:100%;min-width:900px;table-layout:fixed;}
+.changed-table .field-col{width:220px;}
+.changed-table .key-col{width:160px;}
+.changed-table .id-col{width:90px;}
+.changed-table .meta-col{width:240px;}
+.changed-table pre{white-space:pre-wrap;word-break:break-word;}
+.changed-table .field-name{padding-right:28px;}
+.changed-table .id-cell,.changed-table .meta-cell,.changed-table .value-cell{padding-right:24px;}
+.changed-entry{border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 10px;overflow:hidden;}
+.changed-entry-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--amber);display:flex;gap:8px;align-items:baseline;}
+.changed-entry-id{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.changed-entry .table-wrap{border:0;border-radius:0;margin:0;}
+.field-name{color:var(--blue);font-family:Consolas,monospace;}
+button{padding:6px 10px;background:#242930;color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer;font:inherit;}
+button:hover{background:#303741;}
+pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-wrap;word-break:break-word;font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;color:var(--text);}
+.sprite-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.sprite-card{border:1px solid var(--border);border-radius:6px;background:#181b1e;overflow:hidden;}
+.sprite-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--blue);display:flex;gap:8px;align-items:baseline;}
+.sprite-meta{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.sprite-frames{display:flex;flex-wrap:wrap;gap:8px;padding:10px;}
+.sprite-frame{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:54px;color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:11px;}
+.sprite-frame img{max-width:160px;max-height:160px;image-rendering:pixelated;background:#0f1113;border:1px solid #2c3238;border-radius:4px;padding:4px;}
+.sprite-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;}
+.sprite-side-title{margin:0 0 8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:650;}
+.script-source{max-height:520px;overflow:auto;white-space:pre;word-break:normal;}
+.script-diff{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border-top:1px solid var(--border);}
+.script-pane{min-width:0;border-right:1px solid var(--border);}
+.script-pane:last-child{border-right:0;}
+.script-pane-title{padding:6px 10px;background:var(--panel2);border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:650;}
+.script-lines{max-height:640px;overflow:auto;font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;white-space:pre;}
+.script-line{display:block;min-height:16px;padding:0 8px;}
+.script-line.same{color:var(--text);}
+.script-line.ins{background:#173d24;color:#c7f7ce;}
+.script-line.del{background:#4a1f22;color:#ffc5c0;}
+.empty{color:var(--muted);font-style:italic;margin:4px 0 12px;}
+</style>
+</head>
+<body>
+<header><h1>OSRS Cache Diff</h1><div class='actions'>
+<button onclick="toggleAll(true)">Expand All</button>
+<button onclick="toggleAll(false)">Collapse All</button>
+</div></header>
+<div id='content'></div>
+<script>
+const data={
   "timestamp": "2026-08-05 12:33:41",
   "oldPath": "build\\libs\\old",
   "newPath": "build\\libs\\new",
@@ -34548,4 +34627,152 @@
       }
     }
   }
-}
+};
+function toggleAll(expand){document.querySelectorAll('details').forEach(d=>d.open=expand);}
+function escapeHtml(str){if(str===undefined||str===null)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function tokens(str){return String(str).match(/\s+|[^\s]+/g)||[];}
+function diffTokens(before,after){
+ const a=tokens(before),b=tokens(after),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const beforeParts=[],afterParts=[];let i=0,j=0;
+ while(i<m&&j<n){
+   if(a[i]===b[j]){beforeParts.push({t:a[i],c:false});afterParts.push({t:b[j],c:false});i++;j++;}
+   else if(dp[i+1][j]>=dp[i][j+1]){beforeParts.push({t:a[i++],c:true});}
+   else{afterParts.push({t:b[j++],c:true});}
+ }
+ while(i<m)beforeParts.push({t:a[i++],c:true});
+ while(j<n)afterParts.push({t:b[j++],c:true});
+ return {before:beforeParts,after:afterParts};}
+function renderParts(parts,cls){return parts.map(p=>p.c?`<span class='${cls}'>${escapeHtml(p.t)}</span>`:escapeHtml(p.t)).join('');}
+function valueText(v){return Array.isArray(v)?JSON.stringify(v):(v&&typeof v==='object')?JSON.stringify(v,null,2):String(v);}
+function renderValue(v,other,side){
+ if(v===undefined)return '';
+ const text=valueText(v);
+ if(other===undefined)return `<span class='${side==='before'?'diff-del':'diff-ins'}'>${escapeHtml(text)}</span>`;
+ const d=diffTokens(text,valueText(other));
+ return renderParts(d.before,side==='before'?'diff-del':'diff-ins');}
+function isPlainObject(v){return v&&typeof v==='object'&&!Array.isArray(v);}
+function renderChangedField(k,before,after){
+ const bv=before[k],av=after[k];
+ if(isPlainObject(bv)||isPlainObject(av)){
+   const bobj=isPlainObject(bv)?bv:{},aobj=isPlainObject(av)?av:{};
+   const subKeys=Array.from(new Set([...Object.keys(bobj),...Object.keys(aobj)])).sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true})).filter(sk=>valueText(bobj[sk])!==valueText(aobj[sk]));
+   if(subKeys.length===0)return '';
+   return subKeys.map(sk=>`<tr><td class='field-name'>${escapeHtml(k+'.'+sk)}</td><td class='value-cell'><pre>${renderValue(bobj[sk],aobj[sk],'before')}</pre></td><td class='value-cell'><pre>${renderValue(aobj[sk],bobj[sk],'after')}</pre></td></tr>`).join('');
+ }
+ return `<tr><td class='field-name'>${escapeHtml(k)}</td><td class='value-cell'><pre>${renderValue(bv,av,'before')}</pre></td><td class='value-cell'><pre>${renderValue(av,bv,'after')}</pre></td></tr>`;}
+function createChangedTable(diff){
+ const before=diff.before||{},after=diff.after||{};
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>(k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k]));
+ if(keys.length===0)return '<p class="empty">Metadata only</p>';
+ let html='<div class="table-wrap"><table class="changed-table"><colgroup><col class="field-col"><col><col></colgroup><tr><th>Field</th><th>Before</th><th>After</th></tr>';
+ for(const k of keys){html+=renderChangedField(k,before,after);}
+ return html+'</table></div>';}
+function createChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const beforeName=before.gameval||before.gamevalName||before.name;
+ const afterName=after.gameval||after.gamevalName||after.name;
+ const readable=afterName||beforeName||`ID ${id}`;
+ return `<div class='changed-entry'><div class='changed-entry-title'><span>${escapeHtml(readable)}</span><span class='changed-entry-id'>${escapeHtml(id)}</span></div>${createChangedTable(diff)}</div>`;}
+function createWidgetChangedRows(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const gv=after.gameval||before.gameval||after.gamevalName||before.gamevalName||'';
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>k!=='id'&&((k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k])));
+ return keys.map(k=>`<tr><td class='id-cell'><pre>${escapeHtml(id)}</pre></td><td class='meta-cell'><pre>${escapeHtml(gv)}</pre></td><td class='field-name'>${escapeHtml(k)}</td><td class='value-cell'><pre>${renderValue(before[k],after[k],'before')}</pre></td><td class='value-cell'><pre>${renderValue(after[k],before[k],'after')}</pre></td></tr>`).join('');}
+function createWidgetChangedTable(ch){
+ if(Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ let rows='';for(const [id,diff]of Object.entries(ch)){rows+=createWidgetChangedRows(id,diff);}
+ if(!rows)return '<p class="empty">Metadata only</p>';
+ return '<div class="table-wrap"><table class="changed-table"><colgroup><col class="id-col"><col class="meta-col"><col class="key-col"><col><col></colgroup><tr><th>id</th><th>gameval</th><th>key</th><th>prev</th><th>new</th></tr>'+rows+'</table></div>';}
+function createTable(rows){
+ if(!rows||Object.keys(rows).length===0) return '<p class="empty">None</p>';
+ let keys=new Set();for(const r of Object.values(rows)){for(const k of Object.keys(r))keys.add(k);}const cols=Array.from(keys);
+ let html='<div class="table-wrap"><table><tr>'+cols.map(k=>'<th>'+escapeHtml(k)+'</th>').join('')+'</tr>';
+ for(const [id,r]of Object.entries(rows)){
+   html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
+ }
+ html+='</table></div>';return html;}
+function createClientScriptTable(rows){
+ if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
+ let html='<div class="table-wrap"><table><tr><th>id</th><th>name</th><th>file</th><th>instructions</th><th>source</th></tr>';
+ for(const r of Object.values(rows)){
+   html+=`<tr><td><pre>${escapeHtml(r.id)}</pre></td><td><pre>${escapeHtml(r.gamevalName||'')}</pre></td><td><pre>${escapeHtml(r.file||'')}</pre></td><td><pre>${escapeHtml(r.instructionCount||0)}</pre></td><td><pre class='script-source'>${escapeHtml(r.disassembly||'')}</pre></td></tr>`;
+ }
+ return html+'</table></div>';}
+function diffLines(before,after){
+ const a=String(before||'').split('\n'),b=String(after||'').split('\n'),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const left=[],right=[];let i=0,j=0;
+ while(i<m&&j<n){
+   if(a[i]===b[j]){left.push({t:a[i++],c:'same'});right.push({t:b[j++],c:'same'});}
+   else if(dp[i+1][j]>=dp[i][j+1]){left.push({t:a[i++],c:'del'});right.push({t:'',c:'same'});}
+   else{left.push({t:'',c:'same'});right.push({t:b[j++],c:'ins'});}
+ }
+ while(i<m){left.push({t:a[i++],c:'del'});right.push({t:'',c:'same'});}
+ while(j<n){left.push({t:'',c:'same'});right.push({t:b[j++],c:'ins'});}
+ return {left,right};}
+function renderScriptLines(lines){return lines.map(l=>`<span class='script-line ${l.c}'>${escapeHtml(l.t)}</span>`).join('');}
+function createClientScriptChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const name=after.gamevalName||before.gamevalName||`script_${id}`;
+ const d=diffLines(before.disassembly||'',after.disassembly||'');
+ const meta=`${escapeHtml(id)} · ${escapeHtml(before.instructionCount||0)} -> ${escapeHtml(after.instructionCount||0)} instructions`;
+ return `<div class='changed-entry'><div class='changed-entry-title'><span>${escapeHtml(name)}</span><span class='changed-entry-id'>${meta}</span></div><div class='script-diff'><div class='script-pane'><div class='script-pane-title'>Before</div><div class='script-lines'>${renderScriptLines(d.left)}</div></div><div class='script-pane'><div class='script-pane-title'>After</div><div class='script-lines'>${renderScriptLines(d.right)}</div></div></div></div>`;}
+function createClientScriptChangedTable(ch){
+ if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ return Object.entries(ch).map(([id,diff])=>createClientScriptChangedBlock(id,diff)).join('');}
+function spriteName(id,r){return (r&&(r.gamevalName||r.name))||`Sprite ${id}`;}
+function createSpriteFrames(r){
+ const frames=(r&&r.frames)||[];if(!frames.length)return '<p class="empty">No decoded frames</p>';
+ return '<div class="sprite-frames">'+frames.map(f=>`<div class='sprite-frame'><img src='${escapeHtml(f.image)}' alt='frame ${escapeHtml(f.frame)}'><span>#${escapeHtml(f.frame)} ${escapeHtml(f.width)}x${escapeHtml(f.height)}</span></div>`).join('')+'</div>';}
+function createSpriteCard(id,r){
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(spriteName(id,r))}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml((r&&r.spriteCount)||0)} frame(s)</span></div>${createSpriteFrames(r)}</div>`;}
+function createSpriteTable(rows){
+ if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(rows).map(([id,r])=>createSpriteCard(id,r)).join('')+'</div>';}
+function createSpriteChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};const title=spriteName(id,after.gamevalName?after:before);
+ const count=((before.spriteCount!==undefined?before.spriteCount:'?')+' -> '+(after.spriteCount!==undefined?after.spriteCount:'?'));
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(title)}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml(count)} frame(s)</span></div><div class='sprite-pair'><div><p class='sprite-side-title'>Before</p>${createSpriteFrames(before)}</div><div><p class='sprite-side-title'>After</p>${createSpriteFrames(after)}</div></div></div>`;}
+function createSpriteChangedTable(ch){
+ if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(ch).map(([id,diff])=>createSpriteChangedBlock(id,diff)).join('')+'</div>';}
+function createBucket(title,cls,count,content){
+ if(!count)return '';
+ return `<details class='bucket'><summary class='section-summary'><span class='section-title ${cls}'>${title}</span><span class='badge ${cls}'>${count}</span></summary><div class='body'>${content}</div></details>`;}
+function build(){const c=document.getElementById('content');for(const [section,det]of Object.entries(data.details)){
+ const summary=data.summary[section]||{};
+ const total=(summary.added||0)+(summary.removed||0)+(summary.changed||0);if(!total)continue;
+ const sec=document.createElement('section');
+ const detailsEl=document.createElement('details');
+ const head=document.createElement('summary');
+ head.className='section-summary';
+ head.innerHTML=`<span class='section-title'>${escapeHtml(section)}</span>`+
+ `<span class='badge added'>+${summary.added||0} added</span>`+
+ `<span class='badge removed'>-${summary.removed||0} removed</span>`+
+ `<span class='badge changed'>${summary.changed||0} changed</span>`;
+ detailsEl.appendChild(head);
+ const add=det.added||{};const rem=det.removed||{};const ch=det.changed||{};
+ let changedBody='';
+ if(Object.keys(ch).length===0){changedBody+='<p class="empty">None</p>';}
+ else{
+   for(const [id,diff]of Object.entries(ch)){
+     changedBody+=createChangedBlock(id,diff);
+   }
+ }
+ if(section==='Widgets'){changedBody=createWidgetChangedTable(ch);}
+ if(section==='Sprites'){changedBody=createSpriteChangedTable(ch);}
+ if(section==='Clientscripts'){changedBody=createClientScriptChangedTable(ch);}
+ const addedBody=section==='Sprites'?createSpriteTable(add):(section==='Clientscripts'?createClientScriptTable(add):createTable(add));
+ const removedBody=section==='Sprites'?createSpriteTable(rem):(section==='Clientscripts'?createClientScriptTable(rem):createTable(rem));
+ const body='<div class="body">'+
+   createBucket('Added','added',summary.added||0,addedBody)+
+   createBucket('Removed','removed',summary.removed||0,removedBody)+
+   createBucket('Changed','changed',summary.changed||0,changedBody)+
+   '</div>';detailsEl.innerHTML+=body;
+ sec.appendChild(detailsEl);c.appendChild(sec);}}
+build();
+</script>
+</body></html>
