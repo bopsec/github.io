@@ -80,7 +80,7 @@ pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-w
 <div id='content'></div>
 <script>
 const data={
-  "timestamp": "2026-08-05 16:32:02",
+  "timestamp": "2026-08-05 16:47:21",
   "oldPath": "build\\libs\\old",
   "newPath": "build\\libs\\new",
   "summary": {
@@ -16078,10 +16078,20 @@ function diffTokens(before,after){
 function renderParts(parts,cls){return parts.map(p=>p.c?`<span class='${cls}'>${escapeHtml(p.t)}</span>`:escapeHtml(p.t)).join('');}
 function valueText(v){return Array.isArray(v)?JSON.stringify(v,null,2):(v&&typeof v==='object')?JSON.stringify(v,null,2):String(v);}
 function sameValue(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+function maxNestedArrayLength(v){if(!Array.isArray(v))return 0;let max=v.length;for(const item of v)max=Math.max(max,maxNestedArrayLength(item));return max;}
 function isPrefixArray(shorter,longer){if(!Array.isArray(shorter)||!Array.isArray(longer)||shorter.length>longer.length)return false;for(let i=0;i<shorter.length;i++){if(!sameValue(shorter[i],longer[i]))return false;}return true;}
 function formatSlot(v){return Array.isArray(v)?'['+v.map(valueText).join(', ')+']':valueText(v);}
 function renderSlotLines(values,start,end,markStart,markEnd,cls){let html='';for(let i=start;i<end;i++){const line=`${i}: ${formatSlot(values[i])}`;html+=i>=markStart&&i<markEnd?`<span class='${cls}'>${escapeHtml(line)}</span>\n`:escapeHtml(line)+'\n';}return html.trimEnd();}
 function renderChangeContext(values,index,count,side,kind){const start=Math.max(0,index-3),end=Math.min(values.length,index+Math.max(count,0)+3),cls=kind==='added'?'diff-ins':'diff-del';if(!values.length)return '';if(side==='before'&&kind==='added')return renderSlotLines(values,start,Math.min(values.length,index+3),-1,-1,cls);if(side==='after'&&kind==='removed')return renderSlotLines(values,start,Math.min(values.length,index+3),-1,-1,cls);return renderSlotLines(values,start,end,index,index+count,cls);}
+function renderSmallArray(v,other,side){
+ const cls=side==='before'?'diff-del':'diff-ins',a=v.map(valueText),b=other.map(valueText),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const matched=Array(m).fill(false);let i=0,j=0;
+ while(i<m&&j<n){if(a[i]===b[j]){matched[i]=true;i++;j++;}else if(dp[i+1][j]>=dp[i][j+1]){i++;}else{j++;}}
+ let html='[\n';
+ for(let i=0;i<v.length;i++){const line='  '+JSON.stringify(v[i])+(i===v.length-1?'':',');html+=matched[i]?escapeHtml(line):`<span class='${cls}'>${escapeHtml(line)}</span>`;html+='\n';}
+ return html+']';}
 function singleBlockArrayChange(before,after,path){
  if(!Array.isArray(before)||!Array.isArray(after)||before.length===after.length)return null;
  const shorter=before.length<after.length?before:after,longer=before.length<after.length?after:before,kind=before.length<after.length?'added':'removed';
@@ -16095,20 +16105,21 @@ function arrayDiffSummary(before,after,path){
  const block=singleBlockArrayChange(before,after,path);if(block)return block;
  if(isPrefixArray(before,after)){const added=after.slice(before.length),slots=added.length;return {kind:'added',path,index:before.length,slots,values:added,before,after};}
  if(isPrefixArray(after,before)){const removed=before.slice(after.length),slots=removed.length;return {kind:'removed',path,index:after.length,slots,values:removed,before,after};}
- const nested=[];const max=Math.max(before.length,after.length);for(let i=0;i<max;i++){if(Array.isArray(before[i])&&Array.isArray(after[i])){const s=arrayDiffSummary(before[i],after[i],`${path}[${i}]`);if(s)nested.push(s);}else if(!sameValue(before[i],after[i])){if(i>=before.length||i>=after.length)return null;nested.push({kind:'changed',path:`${path}[${i}]`,before:before[i],after:after[i]});}}
+ const nested=[];const max=Math.max(before.length,after.length);for(let i=0;i<max;i++){if(Array.isArray(before[i])&&Array.isArray(after[i])){const s=arrayDiffSummary(before[i],after[i],`${path}[${i}]`);if(s)nested.push(s);}else if(!sameValue(before[i],after[i])){if(i>=before.length||i>=after.length)return null;const ctx=before.length===after.length&&before.length<=4?{contextPath:path,contextBefore:before,contextAfter:after,contextIndex:i}:{};nested.push({kind:'changed',path:`${path}[${i}]`,before:before[i],after:after[i],...ctx});}}
  return nested.length?{kind:'nested',path,children:nested}:null;}
 function flattenSummary(summary){return summary.kind==='nested'?summary.children.flatMap(flattenSummary):[summary];}
+function renderChangedPart(path,current,other,side){const d=diffTokens(valueText(current),valueText(other)),cls=side==='before'?'diff-del':'diff-ins';return `<span class='diff-summary'>${escapeHtml(path)}: value changed</span><span class='diff-list'>${renderParts(d.before,cls)}</span>`;}
 function renderArraySummary(summary,side){
  const parts=flattenSummary(summary);let html='';
- for(const p of parts){if(p.kind==='changed'){const current=side==='before'?p.before:p.after,other=side==='before'?p.after:p.before,d=diffTokens(valueText(current),valueText(other)),cls=side==='before'?'diff-del':'diff-ins';html+=`<span class='diff-summary'>${escapeHtml(p.path)}: value changed</span><span class='diff-list'>${renderParts(d.before,cls)}</span>`;continue;}const label=p.kind==='added'?'added':'removed';
+ for(const p of parts){if(p.kind==='changed'){const current=side==='before'?p.before:p.after,other=side==='before'?p.after:p.before;if(p.contextBefore&&p.contextAfter){const ctx=side==='before'?p.contextBefore:p.contextAfter,otherCtx=side==='before'?p.contextAfter:p.contextBefore;for(let i=0;i<ctx.length;i++){const childPath=`${p.contextPath}[${i}]`;if(i===p.contextIndex)html+=renderChangedPart(childPath,ctx[i],otherCtx[i],side);else html+=`<span class='diff-summary'>${escapeHtml(childPath)}: ${escapeHtml(valueText(ctx[i]))}</span>`;}continue;}html+=renderChangedPart(p.path,current,other,side);continue;}const label=p.kind==='added'?'added':'removed';
    html+=`<span class='diff-summary'>${escapeHtml(p.path)}: ${escapeHtml(p.slots)} slot${p.slots===1?'':'s'} ${label}</span>`;
    html+=`<span class='diff-list'>${renderChangeContext(side==='before'?p.before:p.after,p.index,p.slots,side,p.kind)}</span>`;
  }
  return html;}
 function renderValue(v,other,side){
  if(v===undefined)return '';
- if(Array.isArray(v)&&Array.isArray(other)&&Math.max(v.length,other.length)<=12)return escapeHtml(valueText(v));
- if(Array.isArray(v)&&Array.isArray(other)&&Math.max(v.length,other.length)>12){const summary=arrayDiffSummary(side==='before'?v:other,side==='before'?other:v,'value');if(summary)return renderArraySummary(summary,side);}
+ if(Array.isArray(v)&&Array.isArray(other)&&Math.max(maxNestedArrayLength(v),maxNestedArrayLength(other))<=12)return renderSmallArray(v,other,side);
+ if(Array.isArray(v)&&Array.isArray(other)){const summary=arrayDiffSummary(side==='before'?v:other,side==='before'?other:v,'value');if(summary)return renderArraySummary(summary,side);}
  const text=valueText(v);
  if(other===undefined)return `<span class='${side==='before'?'diff-del':'diff-ins'}'>${escapeHtml(text)}</span>`;
  const d=diffTokens(text,valueText(other));
