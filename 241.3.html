@@ -1,0 +1,2498 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>OSRS Cache Diff Report</title>
+<style>
+:root{color-scheme:dark;--bg:#151719;--panel:#202326;--panel2:#262a2e;--border:#343a40;--text:#d8dde3;--muted:#8d99a6;--blue:#7cc7ff;--green:#91d18b;--red:#f28b82;--amber:#f7c873;}
+*{box-sizing:border-box;}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);margin:0;padding:0;font-size:14px;line-height:1.35;}
+header{position:sticky;top:0;z-index:10;background:#1b1e21;border-bottom:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 10px #0004;}
+h1{margin:0;color:#f2f6fb;font-size:20px;font-weight:650;}
+.actions{margin-left:auto;display:flex;gap:8px;}
+#content{max-width:1800px;margin:0 auto;padding:14px 18px 28px;}
+section{background:var(--panel);border:1px solid var(--border);border-radius:8px;margin:0 0 12px;overflow:hidden;}
+summary{cursor:pointer;font-weight:650;color:var(--blue);list-style:none;}
+summary::-webkit-details-marker{display:none;}
+.section-summary{display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.section-summary:before{content:'+';color:var(--muted);font-family:Consolas,monospace;width:14px;}
+details[open]>.section-summary:before{content:'-';}
+.section-title{min-width:190px;}
+.badge{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--border);border-radius:999px;padding:2px 8px;background:#15181b;color:var(--muted);font-size:12px;font-weight:600;}
+.body{border-top:1px solid var(--border);padding:12px 14px 16px;}
+.bucket{border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 8px;overflow:hidden;}
+.bucket>.section-summary{padding:8px 10px;}
+.bucket>.body{padding:10px;border-top:1px solid var(--border);}
+.subhead{margin:14px 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 12px;}
+table{border-collapse:collapse;width:100%;min-width:640px;}
+th,td{border-bottom:1px solid #2c3238;padding:6px 9px;text-align:left;vertical-align:top;}
+th{position:sticky;top:0;background:var(--panel2);color:#f2f6fb;font-size:12px;font-weight:650;z-index:1;}
+tr:nth-child(even){background:#1c2024;}tr:hover{background:#242a30;}
+.added{color:var(--green);}.removed{color:var(--red);}.changed{color:var(--amber);}
+.diff-ins{background:#173d24;color:#c7f7ce;border-radius:3px;padding:0 2px;}
+.diff-del{background:#4a1f22;color:#ffc5c0;border-radius:3px;padding:0 2px;text-decoration:line-through;}
+.diff-summary{display:block;color:var(--amber);margin:0 0 6px;}
+.diff-list{display:block;margin-top:4px;}
+.changed-table{width:100%;min-width:900px;table-layout:fixed;}
+.changed-table .field-col{width:220px;}
+.changed-table .key-col{width:160px;}
+.changed-table .id-col{width:90px;}
+.changed-table .meta-col{width:240px;}
+.changed-table pre{white-space:pre-wrap;word-break:break-word;}
+.changed-table .field-name{padding-right:28px;}
+.changed-table .id-cell,.changed-table .meta-cell,.changed-table .value-cell{padding-right:24px;}
+.changed-entry{border:1px solid var(--border);border-radius:6px;background:#181b1e;margin:0 0 10px;overflow:hidden;}
+.changed-entry-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--amber);display:flex;gap:8px;align-items:baseline;}
+.changed-entry-id{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.changed-entry .table-wrap{border:0;border-radius:0;margin:0;}
+.field-name{color:var(--blue);font-family:Consolas,monospace;}
+button{padding:6px 10px;background:#242930;color:var(--text);border:1px solid var(--border);border-radius:6px;cursor:pointer;font:inherit;}
+button:hover{background:#303741;}
+pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-wrap;word-break:break-word;font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;color:var(--text);}
+.sprite-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;}
+.sprite-card{border:1px solid var(--border);border-radius:6px;background:#181b1e;overflow:hidden;}
+.sprite-title{padding:8px 10px;border-bottom:1px solid var(--border);font-weight:650;color:var(--blue);display:flex;gap:8px;align-items:baseline;}
+.sprite-meta{color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;font-weight:500;}
+.sprite-frames{display:flex;flex-wrap:wrap;gap:8px;padding:10px;}
+.sprite-frame{display:flex;flex-direction:column;gap:4px;align-items:center;min-width:54px;color:var(--muted);font-family:Consolas,'Cascadia Mono',monospace;font-size:11px;}
+.sprite-frame img{max-width:160px;max-height:160px;image-rendering:pixelated;background:#0f1113;border:1px solid #2c3238;border-radius:4px;padding:4px;}
+.sprite-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;}
+.sprite-side-title{margin:0 0 8px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:650;}
+.script-source{max-height:520px;overflow:auto;white-space:pre;word-break:normal;}
+.script-diff{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0;border-top:1px solid var(--border);}
+.script-pane{min-width:0;border-right:1px solid var(--border);}
+.script-pane:last-child{border-right:0;}
+.script-pane-title{padding:6px 10px;background:var(--panel2);border-bottom:1px solid var(--border);color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em;font-weight:650;}
+.script-lines{max-height:640px;overflow:auto;font-family:Consolas,'Cascadia Mono',monospace;font-size:12px;white-space:pre;}
+.script-line{display:block;min-height:16px;padding:0 8px;}
+.script-line.same{color:var(--text);}
+.script-line.ins{background:#173d24;color:#c7f7ce;}
+.script-line.del{background:#4a1f22;color:#ffc5c0;}
+.empty{color:var(--muted);font-style:italic;margin:4px 0 12px;}
+</style>
+</head>
+<body>
+<header><h1>OSRS Cache Diff</h1><div class='actions'>
+<button onclick="toggleAll(true)">Expand All</button>
+<button onclick="toggleAll(false)">Collapse All</button>
+</div></header>
+<div id='content'></div>
+<script>
+const data={
+  "timestamp": "2026-10-14 12:36:44",
+  "oldPath": "/home/pi/osrs-weekly/cache/current",
+  "newPath": "/home/pi/osrs-weekly/cache/candidate",
+  "summary": {
+    "Enums": {
+      "added": 0,
+      "removed": 0,
+      "changed": 1
+    },
+    "NPCs": {
+      "added": 0,
+      "removed": 0,
+      "changed": 18
+    },
+    "Items": {
+      "added": 0,
+      "removed": 0,
+      "changed": 19
+    },
+    "Params": {
+      "added": 1,
+      "removed": 0,
+      "changed": 0
+    },
+    "Inventories": {
+      "added": 0,
+      "removed": 0,
+      "changed": 1
+    },
+    "Varbits": {
+      "added": 3,
+      "removed": 0,
+      "changed": 0
+    },
+    "Database Rows": {
+      "added": 3,
+      "removed": 0,
+      "changed": 2
+    },
+    "Clientscripts": {
+      "added": 0,
+      "removed": 0,
+      "changed": 3
+    }
+  },
+  "details": {
+    "Enums": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "3702": {
+          "before": {
+            "intVals": [
+              "fishing_rod(307)",
+              "fly_fishing_rod(309)",
+              "fishingrod_pearl(22846)",
+              "fishingrod_pearl_fly(22844)",
+              "oily_fishing_rod(1585)",
+              "fishingrod_pearl_oily(23122)",
+              "brut_fishing_rod(11323)",
+              "fishingrod_pearl_brut(22842)",
+              "harpoon(311)",
+              "hunting_barbed_harpoon(10129)",
+              "dragon_harpoon(21028)",
+              "infernal_harpoon(21031)",
+              "infernal_harpoon_empty(21033)",
+              "crystal_harpoon(23762)",
+              "crystal_harpoon_inactive(23764)",
+              "league_trailblazer_harpoon(25114)",
+              "trailblazer_harpoon_no_infernal(25373)",
+              "trailblazer_harpoon(25059)",
+              "trailblazer_harpoon_empty(25367)",
+              "net(303)",
+              "big_net(305)",
+              "lobster_pot(301)",
+              "fishing_bait(313)",
+              "wilderness_fishing_bait(11940)",
+              "brut_fish_cuts(11334)",
+              "sailing_fine_fish_offcuts(32307)",
+              "feather(314)",
+              "hunting_stripy_bird_feather(10087)",
+              "piscarilius_sandworms(13431)",
+              "aerial_fishing_pearl(22820)",
+              "spirit_flakes(25588)",
+              "tbwt_raw_karambwanji(3150)",
+              "trawler_reward_hat(13258)",
+              "trawler_reward_top(13259)",
+              "trawler_reward_legs(13260)",
+              "trawler_reward_boots(13261)",
+              "spirit_angler_hat(25592)",
+              "spirit_angler_top(25594)",
+              "spirit_angler_legs(25596)",
+              "spirit_angler_boots(25598)",
+              "tbwt_karambwan_vessel(3157)",
+              "tbwt_karambwan_vessel_loaded_with_karambwanji(3159)",
+              "fossil_drift_net(21652)",
+              "tiny_net(6674)",
+              "4dosefisherspotion(2438)",
+              "3dosefisherspotion(151)",
+              "2dosefisherspotion(153)",
+              "1dosefisherspotion(155)",
+              "hundred_pirate_diving_helmet(7534)",
+              "hundred_pirate_diving_backpack(7535)",
+              "mudskipper_flippers(6666)",
+              "dark_flippers(25557)",
+              "merfolk_trident(21649)",
+              "zeah_blessing_easy(22941)",
+              "zeah_blessing_medium(22943)",
+              "zeah_blessing_hard(22945)",
+              "zeah_blessing_elite(22947)",
+              "trailblazer_reloaded_harpoon_no_infernal(30349)",
+              "trailblazer_reloaded_harpoon(30342)",
+              "trailblazer_reloaded_harpoon_empty(30343)",
+              "diabolic_worms(30773)",
+              "candle_lantern_lit(4531)",
+              "oil_lantern_lit(4539)",
+              "bullseye_lantern_lit(4550)",
+              "shark_lure(30900)",
+              "4dose2fisherspotion(31602)",
+              "3dose2fisherspotion(31605)",
+              "2dose2fisherspotion(31608)",
+              "1dose2fisherspotion(31611)"
+            ],
+            "keys": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68
+            ],
+            "size": 69
+          },
+          "after": {
+            "intVals": [
+              "fishing_rod(307)",
+              "fly_fishing_rod(309)",
+              "fishingrod_pearl(22846)",
+              "fishingrod_pearl_fly(22844)",
+              "oily_fishing_rod(1585)",
+              "fishingrod_pearl_oily(23122)",
+              "brut_fishing_rod(11323)",
+              "fishingrod_pearl_brut(22842)",
+              "harpoon(311)",
+              "hunting_barbed_harpoon(10129)",
+              "dragon_harpoon(21028)",
+              "infernal_harpoon(21031)",
+              "infernal_harpoon_empty(21033)",
+              "crystal_harpoon(23762)",
+              "crystal_harpoon_inactive(23764)",
+              "league_trailblazer_harpoon(25114)",
+              "trailblazer_harpoon_no_infernal(25373)",
+              "trailblazer_harpoon(25059)",
+              "trailblazer_harpoon_empty(25367)",
+              "net(303)",
+              "big_net(305)",
+              "lobster_pot(301)",
+              "fishing_bait(313)",
+              "wilderness_fishing_bait(11940)",
+              "brut_fish_cuts(11334)",
+              "sailing_fine_fish_offcuts(32307)",
+              "feather(314)",
+              "hunting_stripy_bird_feather(10087)",
+              "piscarilius_sandworms(13431)",
+              "aerial_fishing_pearl(22820)",
+              "spirit_flakes(25588)",
+              "tbwt_raw_karambwanji(3150)",
+              "trawler_reward_hat(13258)",
+              "trawler_reward_top(13259)",
+              "trawler_reward_legs(13260)",
+              "trawler_reward_boots(13261)",
+              "spirit_angler_hat(25592)",
+              "spirit_angler_top(25594)",
+              "spirit_angler_legs(25596)",
+              "spirit_angler_boots(25598)",
+              "tbwt_karambwan_vessel(3157)",
+              "tbwt_karambwan_vessel_loaded_with_karambwanji(3159)",
+              "fossil_drift_net(21652)",
+              "tiny_net(6674)",
+              "4dosefisherspotion(2438)",
+              "3dosefisherspotion(151)",
+              "2dosefisherspotion(153)",
+              "1dosefisherspotion(155)",
+              "hundred_pirate_diving_helmet(7534)",
+              "hundred_pirate_diving_backpack(7535)",
+              "mudskipper_flippers(6666)",
+              "dark_flippers(25557)",
+              "merfolk_trident(21649)",
+              "zeah_blessing_easy(22941)",
+              "zeah_blessing_medium(22943)",
+              "zeah_blessing_hard(22945)",
+              "zeah_blessing_elite(22947)",
+              "trailblazer_reloaded_harpoon_no_infernal(30349)",
+              "trailblazer_reloaded_harpoon(30342)",
+              "trailblazer_reloaded_harpoon_empty(30343)",
+              "diabolic_worms(30773)",
+              "candle_lantern_lit(4531)",
+              "oil_lantern_lit(4539)",
+              "bullseye_lantern_lit(4550)",
+              "shark_lure(30900)",
+              "4dose2fisherspotion(31602)",
+              "3dose2fisherspotion(31605)",
+              "2dose2fisherspotion(31608)",
+              "1dose2fisherspotion(31611)",
+              "knife(946)",
+              "hammer(2347)"
+            ],
+            "keys": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30,
+              31,
+              32,
+              33,
+              34,
+              35,
+              36,
+              37,
+              38,
+              39,
+              40,
+              41,
+              42,
+              43,
+              44,
+              45,
+              46,
+              47,
+              48,
+              49,
+              50,
+              51,
+              52,
+              53,
+              54,
+              55,
+              56,
+              57,
+              58,
+              59,
+              60,
+              61,
+              62,
+              63,
+              64,
+              65,
+              66,
+              67,
+              68,
+              69,
+              70
+            ],
+            "size": 71
+          }
+        }
+      }
+    },
+    "NPCs": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "16579": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_magic",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_magic",
+            "name": "Pete Kayer"
+          }
+        },
+        "16580": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_melee_voidwaker",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_melee_voidwaker",
+            "name": "Pete Kayer"
+          }
+        },
+        "16581": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_melee_halberd",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_melee_halberd",
+            "name": "Pete Kayer"
+          }
+        },
+        "16582": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_ranged",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_ranged",
+            "name": "Pete Kayer"
+          }
+        },
+        "16583": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_tank",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_tank",
+            "name": "Pete Kayer"
+          }
+        },
+        "16584": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_melee_mistake",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_melee_mistake",
+            "name": "Pete Kayer"
+          }
+        },
+        "16585": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_ranged_mistake",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_ranged_mistake",
+            "name": "Pete Kayer"
+          }
+        },
+        "16586": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_expert_boss_magic_mistake",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_expert_boss_magic_mistake",
+            "name": "Pete Kayer"
+          }
+        },
+        "16588": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_magic",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_magic",
+            "name": "Pete Kayer"
+          }
+        },
+        "16589": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_ranged",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_ranged",
+            "name": "Pete Kayer"
+          }
+        },
+        "16590": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_melee",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_melee",
+            "name": "Pete Kayer"
+          }
+        },
+        "16591": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_melee_special",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_melee_special",
+            "name": "Pete Kayer"
+          }
+        },
+        "16592": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_more_magic_than_melee",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_more_magic_than_melee",
+            "name": "Pete Kayer"
+          }
+        },
+        "16593": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_more_melee_than_magic",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_more_melee_than_magic",
+            "name": "Pete Kayer"
+          }
+        },
+        "16594": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_more_ranged_than_melee",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_more_ranged_than_melee",
+            "name": "Pete Kayer"
+          }
+        },
+        "16595": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_more_melee_than_ranged",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_more_melee_than_ranged",
+            "name": "Pete Kayer"
+          }
+        },
+        "16596": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_more_ranged_than_magic",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_more_ranged_than_magic",
+            "name": "Pete Kayer"
+          }
+        },
+        "16597": {
+          "before": {
+            "combat": 135,
+            "gamevalName": "pvptut_medium_boss_more_magic_than_ranged",
+            "name": "Pete Kayer"
+          },
+          "after": {
+            "combat": 126,
+            "gamevalName": "pvptut_medium_boss_more_magic_than_ranged",
+            "name": "Pete Kayer"
+          }
+        }
+      }
+    },
+    "Items": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "11324": {
+          "before": {
+            "interfaceOptions": [
+              "Eat",
+              null,
+              null,
+              null,
+              "Drop"
+            ],
+            "gamevalName": "brut_roe",
+            "name": "Roe"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              null,
+              null,
+              "Eat",
+              "Drop"
+            ],
+            "gamevalName": "brut_roe",
+            "name": "Roe"
+          }
+        },
+        "13241": {
+          "before": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Check",
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_axe",
+            "name": "Infernal axe"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Check",
+              "Toggle",
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_axe",
+            "name": "Infernal axe"
+          }
+        },
+        "13242": {
+          "before": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              null,
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_axe_empty",
+            "name": "Infernal axe (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Toggle",
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_axe_empty",
+            "name": "Infernal axe (uncharged)"
+          }
+        },
+        "13243": {
+          "before": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Check",
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_pickaxe",
+            "name": "Infernal pickaxe"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Check",
+              "Toggle",
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_pickaxe",
+            "name": "Infernal pickaxe"
+          }
+        },
+        "13244": {
+          "before": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              null,
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_pickaxe_empty",
+            "name": "Infernal pickaxe (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Toggle",
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "infernal_pickaxe_empty",
+            "name": "Infernal pickaxe (uncharged)"
+          }
+        },
+        "21031": {
+          "before": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Check",
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "infernal_harpoon",
+            "name": "Infernal harpoon"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Check",
+              "Toggle",
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "infernal_harpoon",
+            "name": "Infernal harpoon"
+          }
+        },
+        "21033": {
+          "before": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              null,
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "infernal_harpoon_empty",
+            "name": "Infernal harpoon (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              null,
+              "Wield",
+              "Toggle",
+              null,
+              "Drop"
+            ],
+            "params": {
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "infernal_harpoon_empty",
+            "name": "Infernal harpoon (uncharged)"
+          }
+        },
+        "25059": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "trailblazer_harpoon",
+            "name": "Infernal harpoon (or)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_harpoon",
+            "name": "Infernal harpoon (or)"
+          }
+        },
+        "25063": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_pickaxe",
+            "name": "Infernal pickaxe (or)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_pickaxe",
+            "name": "Infernal pickaxe (or)"
+          }
+        },
+        "25066": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_axe",
+            "name": "Infernal axe (or)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_axe",
+            "name": "Infernal axe (or)"
+          }
+        },
+        "25367": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "trailblazer_harpoon_empty",
+            "name": "Infernal harpoon (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_harpoon_empty",
+            "name": "Infernal harpoon (uncharged)"
+          }
+        },
+        "25369": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_pickaxe_empty",
+            "name": "Infernal pickaxe (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_pickaxe_empty",
+            "name": "Infernal pickaxe (uncharged)"
+          }
+        },
+        "25371": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_axe_empty",
+            "name": "Infernal axe (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_axe_empty",
+            "name": "Infernal axe (uncharged)"
+          }
+        },
+        "30342": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "trailblazer_reloaded_harpoon",
+            "name": "Infernal harpoon (or)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_reloaded_harpoon",
+            "name": "Infernal harpoon (or)"
+          }
+        },
+        "30343": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "gamevalName": "trailblazer_reloaded_harpoon_empty",
+            "name": "Infernal harpoon (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 32,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_reloaded_harpoon_empty",
+            "name": "Infernal harpoon (uncharged)"
+          }
+        },
+        "30345": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_reloaded_pickaxe",
+            "name": "Infernal pickaxe (or)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_reloaded_pickaxe",
+            "name": "Infernal pickaxe (or)"
+          }
+        },
+        "30346": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_reloaded_pickaxe_empty",
+            "name": "Infernal pickaxe (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 21,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": -2,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": 38,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_reloaded_pickaxe_empty",
+            "name": "Infernal pickaxe (uncharged)"
+          }
+        },
+        "30347": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_reloaded_axe",
+            "name": "Infernal axe (or)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              "Check",
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_2(451)": "Check",
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_reloaded_axe",
+            "name": "Infernal axe (or)"
+          }
+        },
+        "30348": {
+          "before": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Change-Style",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "gamevalName": "trailblazer_reloaded_axe_empty",
+            "name": "Infernal axe (uncharged)"
+          },
+          "after": {
+            "interfaceOptions": [
+              "Wield",
+              null,
+              "Revert",
+              "Options",
+              "Drop"
+            ],
+            "params": {
+              "148": 1,
+              "ATTACK_SPEED(14)": 5,
+              "CLUE_ITEM_REQ_TYPE(258)": 35,
+              "CRUSH_ATTACK(2)": 32,
+              "EQUIPPED_OPTION_3(452)": "Change-Style",
+              "EQUIPPED_OPTION_4(453)": "Toggle",
+              "MELEE_STRENGTH(10)": 42,
+              "NOT_ALCHABLE(295)": 1,
+              "SLASH_ATTACK(1)": 38,
+              "SLASH_DEFENCE(6)": 1,
+              "STAB_ATTACK(0)": -2,
+              "STAT_REQUIRED_LEVEL_1(23)": 61
+            },
+            "subops": [
+              null,
+              null,
+              null,
+              [
+                "Change-Style",
+                "Toggle",
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+              ],
+              null
+            ],
+            "gamevalName": "trailblazer_reloaded_axe_empty",
+            "name": "Infernal axe (uncharged)"
+          }
+        }
+      }
+    },
+    "Params": {
+      "added": {
+        "2657": {
+          "defaultInt": 0,
+          "id": 2657
+        }
+      },
+      "removed": {},
+      "changed": {}
+    },
+    "Inventories": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "651": {
+          "before": {
+            "size": 35,
+            "gamevalName": "tackle_box"
+          },
+          "after": {
+            "size": 37,
+            "gamevalName": "tackle_box"
+          }
+        }
+      }
+    },
+    "Varbits": {
+      "added": {
+        "16318": {
+          "id": 16318,
+          "varplayerDisplay": "1277",
+          "startBit": 27,
+          "endBit": 27,
+          "bitCount": 1
+        },
+        "16319": {
+          "id": 16319,
+          "varplayerDisplay": "1277",
+          "startBit": 28,
+          "endBit": 28,
+          "bitCount": 1
+        },
+        "16320": {
+          "id": 16320,
+          "varplayerDisplay": "1277",
+          "startBit": 29,
+          "endBit": 29,
+          "bitCount": 1
+        }
+      },
+      "removed": {},
+      "changed": {}
+    },
+    "Database Rows": {
+      "added": {
+        "16987": {
+          "id": 16987,
+          "tableId": 213,
+          "columnTypes": [
+            [
+              "OBJ"
+            ],
+            null,
+            [
+              "STRING"
+            ],
+            [
+              "INTEGER",
+              "INTEGER",
+              "INTEGER"
+            ],
+            null,
+            null,
+            [
+              "BOOLEAN"
+            ],
+            null,
+            null,
+            null,
+            null
+          ],
+          "columnValues": [
+            [
+              "rcu_pouch_colossal(26784)"
+            ],
+            null,
+            [
+              "Colossal pouch capacity increase\u003cbr\u003eNow holds up to 16 essence."
+            ],
+            [
+              [
+                12,
+                50,
+                3
+              ]
+            ],
+            null,
+            null,
+            [
+              1
+            ],
+            null,
+            null,
+            null,
+            null
+          ],
+          "gamevalName": "skill_feature_runecraft_pouch_colossal_level_50"
+        },
+        "16988": {
+          "id": 16988,
+          "tableId": 213,
+          "columnTypes": [
+            [
+              "OBJ"
+            ],
+            null,
+            [
+              "STRING"
+            ],
+            [
+              "INTEGER",
+              "INTEGER",
+              "INTEGER"
+            ],
+            null,
+            null,
+            [
+              "BOOLEAN"
+            ],
+            null,
+            null,
+            null,
+            null
+          ],
+          "columnValues": [
+            [
+              "rcu_pouch_colossal(26784)"
+            ],
+            null,
+            [
+              "Colossal pouch capacity increase\u003cbr\u003eNow holds up to 27 essence."
+            ],
+            [
+              [
+                12,
+                75,
+                3
+              ]
+            ],
+            null,
+            null,
+            [
+              1
+            ],
+            null,
+            null,
+            null,
+            null
+          ],
+          "gamevalName": "skill_feature_runecraft_pouch_colossal_level_75"
+        },
+        "16989": {
+          "id": 16989,
+          "tableId": 213,
+          "columnTypes": [
+            [
+              "OBJ"
+            ],
+            null,
+            [
+              "STRING"
+            ],
+            [
+              "INTEGER",
+              "INTEGER",
+              "INTEGER"
+            ],
+            null,
+            null,
+            [
+              "BOOLEAN"
+            ],
+            null,
+            null,
+            null,
+            null
+          ],
+          "columnValues": [
+            [
+              "rcu_pouch_colossal(26784)"
+            ],
+            null,
+            [
+              "Colossal pouch capacity increase\u003cbr\u003eNow holds up to 40 essence."
+            ],
+            [
+              [
+                12,
+                85,
+                3
+              ]
+            ],
+            null,
+            null,
+            [
+              1
+            ],
+            null,
+            null,
+            null,
+            null
+          ],
+          "gamevalName": "skill_feature_runecraft_pouch_colossal_level_85"
+        }
+      },
+      "removed": {},
+      "changed": {
+        "12490": {
+          "before": {
+            "columnValues": [
+              [
+                "rcu_pouch_large(5512)"
+              ],
+              null,
+              [
+                "Large pouch\u003cbr\u003eHolds 9 extra essence"
+              ],
+              [
+                [
+                  12,
+                  50,
+                  3
+                ]
+              ],
+              null,
+              null,
+              [
+                1
+              ],
+              null,
+              null,
+              null,
+              null
+            ],
+            "gamevalName": "skill_feature_runecraft_pouch_large"
+          },
+          "after": {
+            "columnValues": [
+              [
+                "rcu_pouch_large(5512)"
+              ],
+              null,
+              [
+                "Large pouch\u003cbr\u003eHolds 9 extra essence."
+              ],
+              [
+                [
+                  12,
+                  50,
+                  3
+                ]
+              ],
+              null,
+              null,
+              [
+                1
+              ],
+              null,
+              null,
+              null,
+              null
+            ],
+            "gamevalName": "skill_feature_runecraft_pouch_large"
+          }
+        },
+        "12491": {
+          "before": {
+            "columnValues": [
+              [
+                "rcu_pouch_giant(5514)"
+              ],
+              null,
+              [
+                "Giant pouch\u003cbr\u003eHolds 12 extra essence"
+              ],
+              [
+                [
+                  12,
+                  75,
+                  3
+                ]
+              ],
+              null,
+              null,
+              [
+                1
+              ],
+              null,
+              null,
+              null,
+              null
+            ],
+            "gamevalName": "skill_feature_runecraft_pouch_giant"
+          },
+          "after": {
+            "columnValues": [
+              [
+                "rcu_pouch_giant(5514)"
+              ],
+              null,
+              [
+                "Giant pouch\u003cbr\u003eHolds 12 extra essence."
+              ],
+              [
+                [
+                  12,
+                  75,
+                  3
+                ]
+              ],
+              null,
+              null,
+              [
+                1
+              ],
+              null,
+              null,
+              null,
+              null
+            ],
+            "gamevalName": "skill_feature_runecraft_pouch_giant"
+          }
+        }
+      }
+    },
+    "Clientscripts": {
+      "added": {},
+      "removed": {},
+      "changed": {
+        "212": {
+          "before": {
+            "id": 212,
+            "instructionCount": 143,
+            "intArgCount": 0,
+            "objArgCount": 0,
+            "longArgCount": 0,
+            "localIntCount": 4,
+            "localObjCount": 0,
+            "localLongCount": 0,
+            "switchCount": 0,
+            "file": "changed_clientscripts/old/script_212.cs2",
+            "disassembly": "// 212\n[clientscript,script212]\nif_setontimer(\"script6110(pvptut_ui_universe, -1)\", pvptut_ui_universe);\nif_setonresize(\"script9920\", pvptut_ui_universe);\n~script4215(pvptut_ui_btn_close, \"Close\");\nif_setonop(\"script3738\", pvptut_ui_btn_close);\ndef_graphic $graphic0 \u003d menu_buttons_4;\ndef_graphic $graphic1 \u003d menu_buttons_5;\nif (~script1972 \u003d true) {\n    if_setsize(33, 33, ^setsize_abs, ^setsize_abs, pvptut_ui_btn_back);\n    if_setposition(1, 1, ^setpos_abs_left, ^setpos_abs_top, pvptut_ui_btn_back);\n    if_setgraphic($graphic0, pvptut_ui_btn_back);\n    if_setonmouseleave(\"script44(event_com, $graphic0)\", pvptut_ui_btn_back);\n} else {\n    if_setsize(21, 21, ^setsize_abs, ^setsize_abs, pvptut_ui_btn_back);\n    if_setposition(7, 7, ^setpos_abs_left, ^setpos_abs_top, pvptut_ui_btn_back);\n    if_setgraphic($graphic0, pvptut_ui_btn_back);\n    if_setonmouserepeat(\"script44(event_com, $graphic1)\", pvptut_ui_btn_back);\n    if_setonmouseleave(\"script44(event_com, $graphic0)\", pvptut_ui_btn_back);\n}\nif_setop(1, \"Back\", pvptut_ui_btn_back);\nif_setonop(\"script9917\", pvptut_ui_btn_back);\n~script31(pvptut_ui_mainmenu_content_scrollbar, pvptut_ui_mainmenu_content, scrollbar_dragger_v2_3, scrollbar_dragger_v2_0, scrollbar_dragger_v2_1, scrollbar_dragger_v2_2, scrollbar_v2_0, scrollbar_v2_1);\n~script31(pvptut_ui_tutorial_content_scrollbar, pvptut_ui_tutorial_content, scrollbar_dragger_v2_3, scrollbar_dragger_v2_0, scrollbar_dragger_v2_1, scrollbar_dragger_v2_2, scrollbar_v2_0, scrollbar_v2_1);\n~script5295(pvptut_ui_tutorial_content_border, 0);\ndef_int $int2 \u003d enum_getoutputcount(enum_6013);\ndef_int $int3 \u003d 0;\nwhile ($int3 \u003c $int2) {\n    cc_create(pvptut_ui_tutorial_btn_start, ^iftype_rectangle, $int3);\n    cc_setposition(0, 0, ^setpos_abs_left, ^setpos_abs_top);\n    cc_setsize(0, 0, ^setsize_minus, ^setsize_minus);\n    cc_setfill(false);\n    cc_settrans(255);\n    cc_sethide(true);\n    $int3 \u003d calc($int3 + 1);\n}\n%pvptut_ui_selected_tutorial \u003d null;\n~script9921;\n"
+          },
+          "after": {
+            "id": 212,
+            "instructionCount": 117,
+            "intArgCount": 0,
+            "objArgCount": 0,
+            "longArgCount": 0,
+            "localIntCount": 4,
+            "localObjCount": 0,
+            "localLongCount": 0,
+            "switchCount": 0,
+            "file": "changed_clientscripts/new/script_212.cs2",
+            "disassembly": "// 212\n[clientscript,script212]\nif_setontimer(\"script6110(pvptut_ui_universe, -1)\", pvptut_ui_universe);\nif_setonresize(\"script9920\", pvptut_ui_universe);\n~script4215(pvptut_ui_btn_close, \"Close\");\nif_setonop(\"script3738\", pvptut_ui_btn_close);\ndef_graphic $graphic0 \u003d menu_buttons_4;\ndef_graphic $graphic1 \u003d menu_buttons_5;\nif_setsize(21, 21, ^setsize_abs, ^setsize_abs, pvptut_ui_btn_back);\nif_setposition(7, 7, ^setpos_abs_left, ^setpos_abs_top, pvptut_ui_btn_back);\nif_setgraphic($graphic0, pvptut_ui_btn_back);\nif_setonmouserepeat(\"script44(event_com, $graphic1)\", pvptut_ui_btn_back);\nif_setonmouseleave(\"script44(event_com, $graphic0)\", pvptut_ui_btn_back);\nif_setop(1, \"Back\", pvptut_ui_btn_back);\nif_setonop(\"script9917\", pvptut_ui_btn_back);\n~script31(pvptut_ui_mainmenu_content_scrollbar, pvptut_ui_mainmenu_content, scrollbar_dragger_v2_3, scrollbar_dragger_v2_0, scrollbar_dragger_v2_1, scrollbar_dragger_v2_2, scrollbar_v2_0, scrollbar_v2_1);\n~script31(pvptut_ui_tutorial_content_scrollbar, pvptut_ui_tutorial_content, scrollbar_dragger_v2_3, scrollbar_dragger_v2_0, scrollbar_dragger_v2_1, scrollbar_dragger_v2_2, scrollbar_v2_0, scrollbar_v2_1);\n~script5295(pvptut_ui_tutorial_content_border, 0);\ndef_int $int2 \u003d enum_getoutputcount(enum_6013);\ndef_int $int3 \u003d 0;\nwhile ($int3 \u003c $int2) {\n    cc_create(pvptut_ui_tutorial_btn_start, ^iftype_rectangle, $int3);\n    cc_setposition(0, 0, ^setpos_abs_left, ^setpos_abs_top);\n    cc_setsize(0, 0, ^setsize_minus, ^setsize_minus);\n    cc_setfill(false);\n    cc_settrans(255);\n    cc_sethide(true);\n    $int3 \u003d calc($int3 + 1);\n}\n%pvptut_ui_selected_tutorial \u003d null;\n~script9921;\n"
+          }
+        },
+        "9898": {
+          "before": {
+            "id": 9898,
+            "instructionCount": 42,
+            "intArgCount": 2,
+            "objArgCount": 0,
+            "longArgCount": 0,
+            "localIntCount": 3,
+            "localObjCount": 0,
+            "localLongCount": 0,
+            "switchCount": 0,
+            "file": "changed_clientscripts/old/script_9898.cs2",
+            "disassembly": "// 9898\n[clientscript,script9898](obj $obj0, coord $coord1)\nif (~script100 \u003d false | map_members \u003d false) {\n    return;\n}\nif ($coord1 ! null \u0026 loc_coord ! $coord1) {\n    return;\n}\ndef_entityoverlay $entityoverlay2 \u003d entityoverlay_create_loc(6, ^overlaytype_middle, 36, 32, 0);\nif (if_find_entityoverlay($entityoverlay2) \u003d true) {\n    ~script9901(loc_type, loc_coord, $entityoverlay2, ~script9902(loc_type), $obj0);\n}\n~script9899($entityoverlay2, loc_type, loc_coord, $obj0);\n"
+          },
+          "after": {
+            "id": 9898,
+            "instructionCount": 42,
+            "intArgCount": 2,
+            "objArgCount": 0,
+            "longArgCount": 0,
+            "localIntCount": 3,
+            "localObjCount": 0,
+            "localLongCount": 0,
+            "switchCount": 0,
+            "file": "changed_clientscripts/new/script_9898.cs2",
+            "disassembly": "// 9898\n[clientscript,script9898](obj $obj0, coord $coord1)\nif (~script100 \u003d false | map_members \u003d false) {\n    return;\n}\nif ($coord1 ! null \u0026 loc_coord ! $coord1) {\n    return;\n}\ndef_entityoverlay $entityoverlay2 \u003d entityoverlay_create_loc(6, ^overlaytype_top, 36, 32, 0);\nif (if_find_entityoverlay($entityoverlay2) \u003d true) {\n    ~script9901(loc_type, loc_coord, $entityoverlay2, ~script9902(loc_type), $obj0);\n}\n~script9899($entityoverlay2, loc_type, loc_coord, $obj0);\n"
+          }
+        },
+        "9899": {
+          "before": {
+            "id": 9899,
+            "instructionCount": 138,
+            "intArgCount": 4,
+            "objArgCount": 0,
+            "longArgCount": 0,
+            "localIntCount": 6,
+            "localObjCount": 0,
+            "localLongCount": 0,
+            "switchCount": 0,
+            "file": "changed_clientscripts/old/script_9899.cs2",
+            "disassembly": "// 9899\n[clientscript,script9899](entityoverlay $entityoverlay0, loc $loc1, coord $coord2, obj $obj3)\ncc_deleteall_entityoverlay($entityoverlay0);\nif (%farming_patch_overlay_enabled \u003d 0) {\n    return;\n}\ndef_int $int4 \u003d ~script9902($loc1);\nif ($int4 \u003d -1) {\n    return;\n}\ncc_create_entityoverlay($entityoverlay0, ^iftype_graphic, 0);\ncc_setsize(36, 32, ^setsize_abs, ^setsize_abs);\ncc_setposition(0, 0, ^setpos_abs_centre, ^setpos_abs_centre);\nif ($int4 \u003d 0) {\n    cc_setobject_nonum(bucket_empty, 1);\n} else if ($int4 \u003d 1 | $int4 \u003d 1) {\n    if ($obj3 \u003d null) {\n        cc_setobject_nonum(bucket_compost, 1);\n    } else {\n        cc_setobject_nonum($obj3, 1);\n    }\n} else if ($int4 \u003d 2) {\n    cc_setobject_nonum(bucket_supercompost, 1);\n} else if ($int4 \u003d 3) {\n    cc_setobject_nonum(bucket_ultracompost, 1);\n}\ncc_setoutline(1);\ndef_int $int5 \u003d ~script5329(504);\ncc_create_entityoverlay($entityoverlay0, ^iftype_text, 1);\ncc_setsize(10, 10, ^setsize_abs, ^setsize_abs);\ncc_setposition(-3, 7, ^setpos_abs_centre, ^setpos_abs_centre);\ncc_setcolour($int5);\ncc_settextfont(b12_full);\ncc_settextalign(^settextalign_centre, ^settextalign_centre, 0);\ncc_settextshadow(true);\nif ($int4 \u003d 0) {\n    cc_settext(\"E\");\n} else if ($int4 \u003d 1 | $int4 \u003d 1) {\n    if ($obj3 \u003d null) {\n        cc_settext(\"C\");\n    } else {\n        cc_settext(\"S\");\n    }\n} else if ($int4 \u003d 2) {\n    cc_settext(\"S\");\n} else if ($int4 \u003d 3) {\n    cc_settext(\"U\");\n}\n"
+          },
+          "after": {
+            "id": 9899,
+            "instructionCount": 126,
+            "intArgCount": 4,
+            "objArgCount": 0,
+            "longArgCount": 0,
+            "localIntCount": 6,
+            "localObjCount": 0,
+            "localLongCount": 0,
+            "switchCount": 0,
+            "file": "changed_clientscripts/new/script_9899.cs2",
+            "disassembly": "// 9899\n[clientscript,script9899](entityoverlay $entityoverlay0, loc $loc1, coord $coord2, obj $obj3)\ncc_deleteall_entityoverlay($entityoverlay0);\nif (%farming_patch_overlay_enabled \u003d 0) {\n    return;\n}\ndef_int $int4 \u003d ~script9902($loc1);\nif ($int4 \u003d -1 | $int4 \u003d 0) {\n    return;\n}\ncc_create_entityoverlay($entityoverlay0, ^iftype_graphic, 0);\ncc_setsize(36, 32, ^setsize_abs, ^setsize_abs);\ncc_setposition(0, 0, ^setpos_abs_centre, ^setpos_abs_centre);\nif ($int4 \u003d 1 | $int4 \u003d 1) {\n    if ($obj3 \u003d null) {\n        cc_setobject_nonum(bucket_compost, 1);\n    } else {\n        cc_setobject_nonum($obj3, 1);\n    }\n} else if ($int4 \u003d 2) {\n    cc_setobject_nonum(bucket_supercompost, 1);\n} else if ($int4 \u003d 3) {\n    cc_setobject_nonum(bucket_ultracompost, 1);\n}\ncc_setoutline(1);\ndef_int $int5 \u003d ~script5329(504);\ncc_create_entityoverlay($entityoverlay0, ^iftype_text, 1);\ncc_setsize(10, 10, ^setsize_abs, ^setsize_abs);\ncc_setposition(-3, 7, ^setpos_abs_centre, ^setpos_abs_centre);\ncc_setcolour($int5);\ncc_settextfont(b12_full);\ncc_settextalign(^settextalign_centre, ^settextalign_centre, 0);\ncc_settextshadow(true);\nif ($int4 \u003d 1 | $int4 \u003d 1) {\n    if ($obj3 \u003d null) {\n        cc_settext(\"C\");\n    } else {\n        cc_settext(\"S\");\n    }\n} else if ($int4 \u003d 2) {\n    cc_settext(\"S\");\n} else if ($int4 \u003d 3) {\n    cc_settext(\"U\");\n}\n"
+          }
+        }
+      }
+    }
+  }
+};
+function toggleAll(expand){document.querySelectorAll('details').forEach(d=>d.open=expand);}
+function escapeHtml(str){if(str===undefined||str===null)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function tokens(str){return String(str).match(/\s+|[A-Za-z0-9_]+|./g)||[];}
+function diffTokens(before,after){
+ const a=tokens(before),b=tokens(after),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const beforeParts=[],afterParts=[];let i=0,j=0;
+ while(i<m&&j<n){
+   if(a[i]===b[j]){beforeParts.push({t:a[i],c:false});afterParts.push({t:b[j],c:false});i++;j++;}
+   else if(dp[i+1][j]>=dp[i][j+1]){beforeParts.push({t:a[i++],c:true});}
+   else{afterParts.push({t:b[j++],c:true});}
+ }
+ while(i<m)beforeParts.push({t:a[i++],c:true});
+ while(j<n)afterParts.push({t:b[j++],c:true});
+ return {before:beforeParts,after:afterParts};}
+function renderParts(parts,cls){return parts.map(p=>p.c?`<span class='${cls}'>${escapeHtml(p.t)}</span>`:escapeHtml(p.t)).join('');}
+function valueText(v){return Array.isArray(v)?JSON.stringify(v,null,2):(v&&typeof v==='object')?JSON.stringify(v,null,2):String(v);}
+function sameValue(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+function maxNestedArrayLength(v){if(!Array.isArray(v))return 0;let max=v.length;for(const item of v)max=Math.max(max,maxNestedArrayLength(item));return max;}
+function isPrefixArray(shorter,longer){if(!Array.isArray(shorter)||!Array.isArray(longer)||shorter.length>longer.length)return false;for(let i=0;i<shorter.length;i++){if(!sameValue(shorter[i],longer[i]))return false;}return true;}
+function formatSlot(v){return Array.isArray(v)?'['+v.map(valueText).join(', ')+']':valueText(v);}
+function renderSlotLines(values,start,end,markStart,markEnd,cls){let html='';for(let i=start;i<end;i++){const line=`${i}: ${formatSlot(values[i])}`;html+=i>=markStart&&i<markEnd?`<span class='${cls}'>${escapeHtml(line)}</span>\n`:escapeHtml(line)+'\n';}return html.trimEnd();}
+function renderChangeContext(values,index,count,side,kind){const start=Math.max(0,index-3),end=Math.min(values.length,index+Math.max(count,0)+3),cls=kind==='added'?'diff-ins':'diff-del';if(!values.length)return '';if(side==='before'&&kind==='added')return renderSlotLines(values,start,Math.min(values.length,index+3),-1,-1,cls);if(side==='after'&&kind==='removed')return renderSlotLines(values,start,Math.min(values.length,index+3),-1,-1,cls);return renderSlotLines(values,start,end,index,index+count,cls);}
+function renderSmallArray(v,other,side){
+ const cls=side==='before'?'diff-del':'diff-ins',a=v.map(valueText),b=other.map(valueText),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const matched=Array(m).fill(false);let i=0,j=0;
+ while(i<m&&j<n){if(a[i]===b[j]){matched[i]=true;i++;j++;}else if(dp[i+1][j]>=dp[i][j+1]){i++;}else{j++;}}
+ let html='[\n';
+ for(let i=0;i<v.length;i++){const line='  '+JSON.stringify(v[i])+(i===v.length-1?'':',');html+=matched[i]?escapeHtml(line):`<span class='${cls}'>${escapeHtml(line)}</span>`;html+='\n';}
+ return html+']';}
+function singleBlockArrayChange(before,after,path){
+ if(!Array.isArray(before)||!Array.isArray(after)||before.length===after.length)return null;
+ const shorter=before.length<after.length?before:after,longer=before.length<after.length?after:before,kind=before.length<after.length?'added':'removed';
+ let prefix=0;while(prefix<shorter.length&&sameValue(shorter[prefix],longer[prefix]))prefix++;
+ let suffix=0;while(suffix<shorter.length-prefix&&sameValue(shorter[shorter.length-1-suffix],longer[longer.length-1-suffix]))suffix++;
+ if(prefix+suffix!==shorter.length)return null;
+ const values=longer.slice(prefix,longer.length-suffix),slots=values.length;
+ return {kind,path,index:prefix,slots,values,before,after};}
+function arrayDiffSummary(before,after,path){
+ if(!Array.isArray(before)||!Array.isArray(after)||sameValue(before,after))return null;
+ const block=singleBlockArrayChange(before,after,path);if(block)return block;
+ if(isPrefixArray(before,after)){const added=after.slice(before.length),slots=added.length;return {kind:'added',path,index:before.length,slots,values:added,before,after};}
+ if(isPrefixArray(after,before)){const removed=before.slice(after.length),slots=removed.length;return {kind:'removed',path,index:after.length,slots,values:removed,before,after};}
+ const nested=[];const max=Math.max(before.length,after.length);for(let i=0;i<max;i++){if(Array.isArray(before[i])&&Array.isArray(after[i])){const s=arrayDiffSummary(before[i],after[i],`${path}[${i}]`);if(s)nested.push(s);}else if(!sameValue(before[i],after[i])){if(i>=before.length||i>=after.length)return null;const ctx=before.length===after.length&&before.length<=4?{contextPath:path,contextBefore:before,contextAfter:after,contextIndex:i}:{};nested.push({kind:'changed',path:`${path}[${i}]`,before:before[i],after:after[i],...ctx});}}
+ return nested.length?{kind:'nested',path,children:nested}:null;}
+function flattenSummary(summary){return summary.kind==='nested'?summary.children.flatMap(flattenSummary):[summary];}
+function renderChangedPart(path,current,other,side){const d=diffTokens(valueText(current),valueText(other)),cls=side==='before'?'diff-del':'diff-ins';return `<span class='diff-summary'>${escapeHtml(path)}: value changed</span><span class='diff-list'>${renderParts(d.before,cls)}</span>`;}
+function renderArraySummary(summary,side){
+ const parts=flattenSummary(summary);let html='';
+ for(const p of parts){if(p.kind==='changed'){const current=side==='before'?p.before:p.after,other=side==='before'?p.after:p.before;if(p.contextBefore&&p.contextAfter){const ctx=side==='before'?p.contextBefore:p.contextAfter,otherCtx=side==='before'?p.contextAfter:p.contextBefore;for(let i=0;i<ctx.length;i++){const childPath=`${p.contextPath}[${i}]`;if(i===p.contextIndex)html+=renderChangedPart(childPath,ctx[i],otherCtx[i],side);else html+=`<span class='diff-summary'>${escapeHtml(childPath)}: ${escapeHtml(valueText(ctx[i]))}</span>`;}continue;}html+=renderChangedPart(p.path,current,other,side);continue;}const label=p.kind==='added'?'added':'removed';
+   html+=`<span class='diff-summary'>${escapeHtml(p.path)}: ${escapeHtml(p.slots)} slot${p.slots===1?'':'s'} ${label}</span>`;
+   html+=`<span class='diff-list'>${renderChangeContext(side==='before'?p.before:p.after,p.index,p.slots,side,p.kind)}</span>`;
+ }
+ return html;}
+function renderValue(v,other,side){
+ if(v===undefined)return '';
+ if(Array.isArray(v)&&Array.isArray(other)&&Math.max(maxNestedArrayLength(v),maxNestedArrayLength(other))<=12)return renderSmallArray(v,other,side);
+ if(Array.isArray(v)&&Array.isArray(other)){const summary=arrayDiffSummary(side==='before'?v:other,side==='before'?other:v,'value');if(summary)return renderArraySummary(summary,side);}
+ const text=valueText(v);
+ if(other===undefined)return `<span class='${side==='before'?'diff-del':'diff-ins'}'>${escapeHtml(text)}</span>`;
+ const d=diffTokens(text,valueText(other));
+ return renderParts(d.before,side==='before'?'diff-del':'diff-ins');}
+function isPlainObject(v){return v&&typeof v==='object'&&!Array.isArray(v);}
+function renderChangedField(k,before,after){
+ const bv=before[k],av=after[k];
+ if(isPlainObject(bv)||isPlainObject(av)){
+   const bobj=isPlainObject(bv)?bv:{},aobj=isPlainObject(av)?av:{};
+   const subKeys=Array.from(new Set([...Object.keys(bobj),...Object.keys(aobj)])).sort((a,b)=>String(a).localeCompare(String(b),undefined,{numeric:true})).filter(sk=>valueText(bobj[sk])!==valueText(aobj[sk]));
+   if(subKeys.length===0)return '';
+   return subKeys.map(sk=>`<tr><td class='field-name'>${escapeHtml(k+'.'+sk)}</td><td class='value-cell'><pre>${renderValue(bobj[sk],aobj[sk],'before')}</pre></td><td class='value-cell'><pre>${renderValue(aobj[sk],bobj[sk],'after')}</pre></td></tr>`).join('');
+ }
+ return `<tr><td class='field-name'>${escapeHtml(k)}</td><td class='value-cell'><pre>${renderValue(bv,av,'before')}</pre></td><td class='value-cell'><pre>${renderValue(av,bv,'after')}</pre></td></tr>`;}
+function createChangedTable(diff){
+ const before=diff.before||{},after=diff.after||{};
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>(k!=='gamevalName'&&k!=='gameval'&&k!=='name')||valueText(before[k])!==valueText(after[k]));
+ if(keys.length===0)return '<p class="empty">Metadata only</p>';
+ let html='<div class="table-wrap"><table class="changed-table"><colgroup><col class="field-col"><col><col></colgroup><tr><th>Field</th><th>Before</th><th>After</th></tr>';
+ for(const k of keys){html+=renderChangedField(k,before,after);}
+ return html+'</table></div>';}
+function createChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const beforeName=before.gameval||before.gamevalName||before.name;
+ const afterName=after.gameval||after.gamevalName||after.name;
+ const readable=afterName||beforeName||`ID ${id}`;
+ return `<div class='changed-entry'><div class='changed-entry-title'><span>${escapeHtml(readable)}</span><span class='changed-entry-id'>${escapeHtml(id)}</span></div>${createChangedTable(diff)}</div>`;}
+function createWidgetChangedRows(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const gv=after.gameval||before.gameval||after.gamevalName||before.gamevalName||'';
+ const keys=Array.from(new Set([...Object.keys(before),...Object.keys(after)])).filter(k=>k!=='id'&&((k!=='gamevalName'&&k!=='gameval')||valueText(before[k])!==valueText(after[k])));
+ return keys.map(k=>`<tr><td class='id-cell'><pre>${escapeHtml(id)}</pre></td><td class='meta-cell'><pre>${escapeHtml(gv)}</pre></td><td class='field-name'>${escapeHtml(k)}</td><td class='value-cell'><pre>${renderValue(before[k],after[k],'before')}</pre></td><td class='value-cell'><pre>${renderValue(after[k],before[k],'after')}</pre></td></tr>`).join('');}
+function createWidgetChangedTable(ch){
+ if(Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ let rows='';for(const [id,diff]of Object.entries(ch)){rows+=createWidgetChangedRows(id,diff);}
+ if(!rows)return '<p class="empty">Metadata only</p>';
+ return '<div class="table-wrap"><table class="changed-table"><colgroup><col class="id-col"><col class="meta-col"><col class="key-col"><col><col></colgroup><tr><th>id</th><th>gameval</th><th>key</th><th>prev</th><th>new</th></tr>'+rows+'</table></div>';}
+function createTable(rows){
+ if(!rows||Object.keys(rows).length===0) return '<p class="empty">None</p>';
+ let keys=new Set();for(const r of Object.values(rows)){for(const k of Object.keys(r))keys.add(k);}const cols=Array.from(keys);
+ let html='<div class="table-wrap"><table><tr>'+cols.map(k=>'<th>'+escapeHtml(k)+'</th>').join('')+'</tr>';
+ for(const [id,r]of Object.entries(rows)){
+   html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
+ }
+ html+='</table></div>';return html;}
+function createClientScriptTable(rows){
+ if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
+ let html='<div class="table-wrap"><table><tr><th>id</th><th>name</th><th>file</th><th>instructions</th><th>source</th></tr>';
+ for(const r of Object.values(rows)){
+   html+=`<tr><td><pre>${escapeHtml(r.id)}</pre></td><td><pre>${escapeHtml(r.gamevalName||'')}</pre></td><td><pre>${escapeHtml(r.file||'')}</pre></td><td><pre>${escapeHtml(r.instructionCount||0)}</pre></td><td><pre class='script-source'>${escapeHtml(r.disassembly||'')}</pre></td></tr>`;
+ }
+ return html+'</table></div>';}
+function diffLines(before,after){
+ const a=String(before||'').split('\n'),b=String(after||'').split('\n'),m=a.length,n=b.length;
+ const dp=Array.from({length:m+1},()=>Array(n+1).fill(0));
+ for(let i=m-1;i>=0;i--)for(let j=n-1;j>=0;j--)dp[i][j]=a[i]===b[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+ const left=[],right=[];let i=0,j=0;
+ while(i<m&&j<n){
+   if(a[i]===b[j]){left.push({t:a[i++],c:'same'});right.push({t:b[j++],c:'same'});}
+   else if(dp[i+1][j]>=dp[i][j+1]){left.push({t:a[i++],c:'del'});right.push({t:'',c:'same'});}
+   else{left.push({t:'',c:'same'});right.push({t:b[j++],c:'ins'});}
+ }
+ while(i<m){left.push({t:a[i++],c:'del'});right.push({t:'',c:'same'});}
+ while(j<n){left.push({t:'',c:'same'});right.push({t:b[j++],c:'ins'});}
+ return {left,right};}
+function renderScriptLines(lines){return lines.map(l=>`<span class='script-line ${l.c}'>${escapeHtml(l.t)}</span>`).join('');}
+function createClientScriptChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};
+ const name=after.gamevalName||before.gamevalName||`script_${id}`;
+ const d=diffLines(before.disassembly||'',after.disassembly||'');
+ const meta=`${escapeHtml(id)} · ${escapeHtml(before.instructionCount||0)} -> ${escapeHtml(after.instructionCount||0)} instructions`;
+ return `<div class='changed-entry'><div class='changed-entry-title'><span>${escapeHtml(name)}</span><span class='changed-entry-id'>${meta}</span></div><div class='script-diff'><div class='script-pane'><div class='script-pane-title'>Before</div><div class='script-lines'>${renderScriptLines(d.left)}</div></div><div class='script-pane'><div class='script-pane-title'>After</div><div class='script-lines'>${renderScriptLines(d.right)}</div></div></div></div>`;}
+function createClientScriptChangedTable(ch){
+ if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ return Object.entries(ch).map(([id,diff])=>createClientScriptChangedBlock(id,diff)).join('');}
+function spriteName(id,r){return (r&&(r.gamevalName||r.name))||`Sprite ${id}`;}
+function createSpriteFrames(r){
+ const frames=(r&&r.frames)||[];if(!frames.length)return '<p class="empty">No decoded frames</p>';
+ return '<div class="sprite-frames">'+frames.map(f=>`<div class='sprite-frame'><img src='${escapeHtml(f.image)}' alt='frame ${escapeHtml(f.frame)}'><span>#${escapeHtml(f.frame)} ${escapeHtml(f.width)}x${escapeHtml(f.height)}</span></div>`).join('')+'</div>';}
+function createSpriteCard(id,r){
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(spriteName(id,r))}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml((r&&r.spriteCount)||0)} frame(s)</span></div>${createSpriteFrames(r)}</div>`;}
+function createSpriteTable(rows){
+ if(!rows||Object.keys(rows).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(rows).map(([id,r])=>createSpriteCard(id,r)).join('')+'</div>';}
+function createSpriteChangedBlock(id,diff){
+ const before=diff.before||{},after=diff.after||{};const title=spriteName(id,after.gamevalName?after:before);
+ const count=((before.spriteCount!==undefined?before.spriteCount:'?')+' -> '+(after.spriteCount!==undefined?after.spriteCount:'?'));
+ return `<div class='sprite-card'><div class='sprite-title'><span>${escapeHtml(title)}</span><span class='sprite-meta'>${escapeHtml(id)} · ${escapeHtml(count)} frame(s)</span></div><div class='sprite-pair'><div><p class='sprite-side-title'>Before</p>${createSpriteFrames(before)}</div><div><p class='sprite-side-title'>After</p>${createSpriteFrames(after)}</div></div></div>`;}
+function createSpriteChangedTable(ch){
+ if(!ch||Object.keys(ch).length===0)return '<p class="empty">None</p>';
+ return '<div class="sprite-grid">'+Object.entries(ch).map(([id,diff])=>createSpriteChangedBlock(id,diff)).join('')+'</div>';}
+function createBucket(title,cls,count,content){
+ if(!count)return '';
+ return `<details class='bucket'><summary class='section-summary'><span class='section-title ${cls}'>${title}</span><span class='badge ${cls}'>${count}</span></summary><div class='body'>${content}</div></details>`;}
+function build(){const c=document.getElementById('content');for(const [section,det]of Object.entries(data.details)){
+ const summary=data.summary[section]||{};
+ const total=(summary.added||0)+(summary.removed||0)+(summary.changed||0);if(!total)continue;
+ const sec=document.createElement('section');
+ const detailsEl=document.createElement('details');
+ const head=document.createElement('summary');
+ head.className='section-summary';
+ head.innerHTML=`<span class='section-title'>${escapeHtml(section)}</span>`+
+ `<span class='badge added'>+${summary.added||0} added</span>`+
+ `<span class='badge removed'>-${summary.removed||0} removed</span>`+
+ `<span class='badge changed'>${summary.changed||0} changed</span>`;
+ detailsEl.appendChild(head);
+ const add=det.added||{};const rem=det.removed||{};const ch=det.changed||{};
+ let changedBody='';
+ if(Object.keys(ch).length===0){changedBody+='<p class="empty">None</p>';}
+ else{
+   for(const [id,diff]of Object.entries(ch)){
+     changedBody+=createChangedBlock(id,diff);
+   }
+ }
+ if(section==='Widgets'){changedBody=createWidgetChangedTable(ch);}
+ if(section==='Sprites'){changedBody=createSpriteChangedTable(ch);}
+ if(section==='Clientscripts'){changedBody=createClientScriptChangedTable(ch);}
+ const addedBody=section==='Sprites'?createSpriteTable(add):(section==='Clientscripts'?createClientScriptTable(add):createTable(add));
+ const removedBody=section==='Sprites'?createSpriteTable(rem):(section==='Clientscripts'?createClientScriptTable(rem):createTable(rem));
+ const body='<div class="body">'+
+   createBucket('Added','added',summary.added||0,addedBody)+
+   createBucket('Removed','removed',summary.removed||0,removedBody)+
+   createBucket('Changed','changed',summary.changed||0,changedBody)+
+   '</div>';detailsEl.innerHTML+=body;
+ sec.appendChild(detailsEl);c.appendChild(sec);}}
+build();
+</script>
+</body></html>
