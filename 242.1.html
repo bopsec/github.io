@@ -183,6 +183,11 @@ const data={
       "removed": 0,
       "changed": 0
     },
+    "Ambient Sounds": {
+      "added": 21,
+      "removed": 0,
+      "changed": 0
+    },
     "Clientscripts": {
       "added": 129,
       "removed": 12,
@@ -203577,8 +203582,8 @@ const data={
         "0": {
           "id": 0,
           "gamevalName": "scape main",
-          "previewUrl": "assets/cache-audio/242.1/music/0.ogg?v=242.1",
-          "displayName": "Legacy login track (archive 0)"
+          "displayName": "Legacy login track (archive 0)",
+          "previewUrl": "assets/cache-audio/242.1/music/0.ogg?v=242.1"
         },
         "1": {
           "id": 1,
@@ -203658,8 +203663,8 @@ const data={
         "16": {
           "id": 16,
           "gamevalName": "scape main default",
-          "previewUrl": "assets/cache-audio/242.1/music/16.ogg?v=242.1",
-          "displayName": "Scape Main"
+          "displayName": "Scape Main",
+          "previewUrl": "assets/cache-audio/242.1/music/16.ogg?v=242.1"
         },
         "17": {
           "id": 17,
@@ -209631,6 +209636,96 @@ const data={
       "removed": {},
       "changed": {}
     },
+    "Ambient Sounds": {
+      "added": {
+        "1": {
+          "id": 1,
+          "gamevalName": "castle_drakan"
+        },
+        "2": {
+          "id": 2,
+          "gamevalName": "sangvesti"
+        },
+        "3": {
+          "id": 3,
+          "gamevalName": "sotfa_forest"
+        },
+        "4": {
+          "id": 4,
+          "gamevalName": "sotfa_forest_underground"
+        },
+        "5": {
+          "id": 5,
+          "gamevalName": "sugadinti_hideout_inner"
+        },
+        "6": {
+          "id": 6,
+          "gamevalName": "sugadinti_hideout_outer"
+        },
+        "7": {
+          "id": 7,
+          "gamevalName": "castle_drakan_roof"
+        },
+        "8": {
+          "id": 8,
+          "gamevalName": "vampyrium"
+        },
+        "9": {
+          "id": 9,
+          "gamevalName": "wyrmscraig"
+        },
+        "10": {
+          "id": 10,
+          "gamevalName": "wyrmscraig_underground"
+        },
+        "11": {
+          "id": 11,
+          "gamevalName": "tfa_ezekiel_finale"
+        },
+        "12": {
+          "id": 12,
+          "gamevalName": "tfa_vault"
+        },
+        "13": {
+          "id": 13,
+          "gamevalName": "tfa_ocellus"
+        },
+        "14": {
+          "id": 14,
+          "gamevalName": "tfa_nexus"
+        },
+        "15": {
+          "id": 15,
+          "gamevalName": "tfa_lobby"
+        },
+        "16": {
+          "id": 16,
+          "gamevalName": "tfa_bork"
+        },
+        "17": {
+          "id": 17,
+          "gamevalName": "tfa_xarth"
+        },
+        "18": {
+          "id": 18,
+          "gamevalName": "tfa_dagonhai"
+        },
+        "19": {
+          "id": 19,
+          "gamevalName": "tfa_jelly"
+        },
+        "20": {
+          "id": 20,
+          "gamevalName": "tfa_moia"
+        },
+        "21": {
+          "id": 21,
+          "gamevalName": "tfa_ezekiel"
+        }
+      },
+      "removed": {},
+      "changed": {}
+    },
     "Clientscripts": {
       "added": {
         "464": {
@@ -213456,6 +213551,7 @@ function createTable(rows){
    html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
  }
  html+='</table></div>';return html;}
+function createAmbientSoundTable(rows){return '<p class="audio-meta">Ambient sounds are layered soundscape definitions; they do not have a single audio file to play.</p>'+createTable(rows);}
 function isAudioSection(section){return section==='Sound Effects'||section==='Music Tracks'||section==='Jingles';}
 function createAudioTable(section){const note=section==='Sound Effects'?'':' Music and jingles use General MIDI instruments, which can sound different from the game.';return `<div class='audio-catalog' data-section='${escapeHtml(section)}'><input class='audio-search' type='search' aria-label='Search ${escapeHtml(section)}' placeholder='Search names or IDs'><p class='audio-meta'>Press Play to listen directly in the browser.${note}</p><div class='audio-results'></div><button class='audio-more' type='button'>Show 100 more</button></div>`;}
 function renderAudioCatalog(box){
@@ -213538,7 +213634,7 @@ function build(){const c=document.getElementById('content');for(const [section,d
  if(section==='Widgets'){changedBody=createWidgetChangedTable(ch);}
  if(section==='Sprites'){changedBody=createSpriteChangedTable(ch);}
  if(section==='Clientscripts'){changedBody=createClientScriptChangedTable(ch);}
- const addedBody=isAudioSection(section)?createAudioTable(section):(section==='Sprites'?createSpriteTable(add):(section==='Clientscripts'?createClientScriptTable(add):createTable(add)));
+ const addedBody=isAudioSection(section)?createAudioTable(section):(section==='Ambient Sounds'?createAmbientSoundTable(add):(section==='Sprites'?createSpriteTable(add):(section==='Clientscripts'?createClientScriptTable(add):createTable(add))));
  const removedBody=section==='Sprites'?createSpriteTable(rem):(section==='Clientscripts'?createClientScriptTable(rem):createTable(rem));
  const body='<div class="body">'+
    createBucket('Added','added',summary.added||0,addedBody)+
