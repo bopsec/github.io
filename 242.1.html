@@ -73,6 +73,7 @@ pre{margin:0;background:transparent;padding:0;overflow:visible;white-space:pre-w
 .audio-player-bar{position:sticky;top:54px;z-index:9;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 18px;background:var(--panel2);border-bottom:1px solid var(--border);}
 .audio-player-bar[hidden]{display:none;}
 .audio-player-bar audio{max-width:420px;width:100%;height:32px;}
+.audio-player-bar audio[hidden]{display:none;}
 .audio-catalog input{width:min(460px,100%);padding:8px 10px;margin:0 0 10px;background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:6px;}
 .audio-catalog button{cursor:pointer;padding:5px 10px;}
 .audio-catalog .audio-meta{color:var(--muted);margin:0 0 10px;}
@@ -209640,87 +209641,1213 @@ const data={
       "added": {
         "1": {
           "id": 1,
-          "gamevalName": "castle_drakan"
+          "gamevalName": "castle_drakan",
+          "definitionSha256": "3100ce3660d34e027ef91cdca21e07a6c1d21d7c23dfc68ab4ce642d87982f34",
+          "loopSoundIds": [
+            11601
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 650,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 1600,
+              "soundEffectIds": [
+                11599,
+                2411
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 1000,
+              "soundEffectIds": [
+                11594,
+                11595,
+                2411,
+                2411,
+                2411
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 800,
+              "soundEffectIds": [
+                11596,
+                11597,
+                11598,
+                2411,
+                2411,
+                2411,
+                2411,
+                2411,
+                2411
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "2411": "assets/cache-audio/242.1/sound/2411.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11594": "assets/cache-audio/242.1/sound/11594.ogg?v=242.1",
+            "11595": "assets/cache-audio/242.1/sound/11595.ogg?v=242.1",
+            "11596": "assets/cache-audio/242.1/sound/11596.ogg?v=242.1",
+            "11597": "assets/cache-audio/242.1/sound/11597.ogg?v=242.1",
+            "11598": "assets/cache-audio/242.1/sound/11598.ogg?v=242.1",
+            "11599": "assets/cache-audio/242.1/sound/11599.ogg?v=242.1",
+            "11601": "assets/cache-audio/242.1/sound/11601.ogg?v=242.1"
+          }
         },
         "2": {
           "id": 2,
-          "gamevalName": "sangvesti"
+          "gamevalName": "sangvesti",
+          "definitionSha256": "bc8e1bf0aa7dee4bebb2e05b1d75c6cb63dd4f2d91db3191dca4bf7c4b76d785",
+          "loopSoundIds": [
+            11611
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 1500,
+              "soundEffectIds": [
+                11612,
+                11613,
+                11614,
+                2411
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 2000,
+              "soundEffectIds": [
+                11603,
+                11604,
+                11605,
+                11606,
+                2411,
+                2411
+              ]
+            },
+            {
+              "minDelayTicks": 550,
+              "maxDelayTicks": 2000,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            },
+            {
+              "minDelayTicks": 600,
+              "maxDelayTicks": 1500,
+              "soundEffectIds": [
+                11617,
+                11618,
+                11619,
+                11620,
+                11621,
+                2411
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "2411": "assets/cache-audio/242.1/sound/2411.ogg?v=242.1",
+            "11603": "assets/cache-audio/242.1/sound/11603.ogg?v=242.1",
+            "11604": "assets/cache-audio/242.1/sound/11604.ogg?v=242.1",
+            "11605": "assets/cache-audio/242.1/sound/11605.ogg?v=242.1",
+            "11606": "assets/cache-audio/242.1/sound/11606.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1",
+            "11611": "assets/cache-audio/242.1/sound/11611.ogg?v=242.1",
+            "11612": "assets/cache-audio/242.1/sound/11612.ogg?v=242.1",
+            "11613": "assets/cache-audio/242.1/sound/11613.ogg?v=242.1",
+            "11614": "assets/cache-audio/242.1/sound/11614.ogg?v=242.1",
+            "11617": "assets/cache-audio/242.1/sound/11617.ogg?v=242.1",
+            "11618": "assets/cache-audio/242.1/sound/11618.ogg?v=242.1",
+            "11619": "assets/cache-audio/242.1/sound/11619.ogg?v=242.1",
+            "11620": "assets/cache-audio/242.1/sound/11620.ogg?v=242.1",
+            "11621": "assets/cache-audio/242.1/sound/11621.ogg?v=242.1"
+          }
         },
         "3": {
           "id": 3,
-          "gamevalName": "sotfa_forest"
+          "gamevalName": "sotfa_forest",
+          "definitionSha256": "f2280cb65662b9bc089efbc3e5b083ada685ebc5a097593d1f35119a02996992",
+          "loopSoundIds": [
+            11611
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2070,
+                2071,
+                2072,
+                2073,
+                2074,
+                8435,
+                8574,
+                8443
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 1500,
+              "soundEffectIds": [
+                11612,
+                11613,
+                11614,
+                2411
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 2000,
+              "soundEffectIds": [
+                11603,
+                11604,
+                11605,
+                11606,
+                2411,
+                2411
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            },
+            {
+              "minDelayTicks": 600,
+              "maxDelayTicks": 1500,
+              "soundEffectIds": [
+                11617,
+                11618,
+                11619,
+                11620,
+                11621,
+                2411
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "2070": "assets/cache-audio/242.1/sound/2070.ogg?v=242.1",
+            "2071": "assets/cache-audio/242.1/sound/2071.ogg?v=242.1",
+            "2072": "assets/cache-audio/242.1/sound/2072.ogg?v=242.1",
+            "2073": "assets/cache-audio/242.1/sound/2073.ogg?v=242.1",
+            "2074": "assets/cache-audio/242.1/sound/2074.ogg?v=242.1",
+            "2411": "assets/cache-audio/242.1/sound/2411.ogg?v=242.1",
+            "8435": "assets/cache-audio/242.1/sound/8435.ogg?v=242.1",
+            "8443": "assets/cache-audio/242.1/sound/8443.ogg?v=242.1",
+            "8574": "assets/cache-audio/242.1/sound/8574.ogg?v=242.1",
+            "11603": "assets/cache-audio/242.1/sound/11603.ogg?v=242.1",
+            "11604": "assets/cache-audio/242.1/sound/11604.ogg?v=242.1",
+            "11605": "assets/cache-audio/242.1/sound/11605.ogg?v=242.1",
+            "11606": "assets/cache-audio/242.1/sound/11606.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1",
+            "11611": "assets/cache-audio/242.1/sound/11611.ogg?v=242.1",
+            "11612": "assets/cache-audio/242.1/sound/11612.ogg?v=242.1",
+            "11613": "assets/cache-audio/242.1/sound/11613.ogg?v=242.1",
+            "11614": "assets/cache-audio/242.1/sound/11614.ogg?v=242.1",
+            "11617": "assets/cache-audio/242.1/sound/11617.ogg?v=242.1",
+            "11618": "assets/cache-audio/242.1/sound/11618.ogg?v=242.1",
+            "11619": "assets/cache-audio/242.1/sound/11619.ogg?v=242.1",
+            "11620": "assets/cache-audio/242.1/sound/11620.ogg?v=242.1",
+            "11621": "assets/cache-audio/242.1/sound/11621.ogg?v=242.1"
+          }
         },
         "4": {
           "id": 4,
-          "gamevalName": "sotfa_forest_underground"
+          "gamevalName": "sotfa_forest_underground",
+          "definitionSha256": "224fc0f6096573ea1b8058783fcb83a502b930c4401120276e050f40b6c5948d",
+          "loopSoundIds": [
+            11611
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 400,
+              "maxDelayTicks": 700,
+              "soundEffectIds": [
+                6331,
+                6289,
+                6273,
+                6390,
+                6319,
+                6398,
+                6335,
+                6292,
+                6326,
+                6366
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "6273": "assets/cache-audio/242.1/sound/6273.ogg?v=242.1",
+            "6289": "assets/cache-audio/242.1/sound/6289.ogg?v=242.1",
+            "6292": "assets/cache-audio/242.1/sound/6292.ogg?v=242.1",
+            "6319": "assets/cache-audio/242.1/sound/6319.ogg?v=242.1",
+            "6326": "assets/cache-audio/242.1/sound/6326.ogg?v=242.1",
+            "6331": "assets/cache-audio/242.1/sound/6331.ogg?v=242.1",
+            "6335": "assets/cache-audio/242.1/sound/6335.ogg?v=242.1",
+            "6366": "assets/cache-audio/242.1/sound/6366.ogg?v=242.1",
+            "6390": "assets/cache-audio/242.1/sound/6390.ogg?v=242.1",
+            "6398": "assets/cache-audio/242.1/sound/6398.ogg?v=242.1",
+            "11611": "assets/cache-audio/242.1/sound/11611.ogg?v=242.1"
+          }
         },
         "5": {
           "id": 5,
-          "gamevalName": "sugadinti_hideout_inner"
+          "gamevalName": "sugadinti_hideout_inner",
+          "definitionSha256": "224fc0f6096573ea1b8058783fcb83a502b930c4401120276e050f40b6c5948d",
+          "loopSoundIds": [
+            11611
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 400,
+              "maxDelayTicks": 700,
+              "soundEffectIds": [
+                6331,
+                6289,
+                6273,
+                6390,
+                6319,
+                6398,
+                6335,
+                6292,
+                6326,
+                6366
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "6273": "assets/cache-audio/242.1/sound/6273.ogg?v=242.1",
+            "6289": "assets/cache-audio/242.1/sound/6289.ogg?v=242.1",
+            "6292": "assets/cache-audio/242.1/sound/6292.ogg?v=242.1",
+            "6319": "assets/cache-audio/242.1/sound/6319.ogg?v=242.1",
+            "6326": "assets/cache-audio/242.1/sound/6326.ogg?v=242.1",
+            "6331": "assets/cache-audio/242.1/sound/6331.ogg?v=242.1",
+            "6335": "assets/cache-audio/242.1/sound/6335.ogg?v=242.1",
+            "6366": "assets/cache-audio/242.1/sound/6366.ogg?v=242.1",
+            "6390": "assets/cache-audio/242.1/sound/6390.ogg?v=242.1",
+            "6398": "assets/cache-audio/242.1/sound/6398.ogg?v=242.1",
+            "11611": "assets/cache-audio/242.1/sound/11611.ogg?v=242.1"
+          }
         },
         "6": {
           "id": 6,
-          "gamevalName": "sugadinti_hideout_outer"
+          "gamevalName": "sugadinti_hideout_outer",
+          "definitionSha256": "e7a7b236090a69cacd67213aaf4fc0dca03f8aa24be12f47b1e44edc90fce15b",
+          "loopSoundIds": [
+            11623,
+            11611
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1",
+            "11611": "assets/cache-audio/242.1/sound/11611.ogg?v=242.1",
+            "11623": "assets/cache-audio/242.1/sound/11623.ogg?v=242.1"
+          }
         },
         "7": {
           "id": 7,
-          "gamevalName": "castle_drakan_roof"
+          "gamevalName": "castle_drakan_roof",
+          "definitionSha256": "6ead2e8ca79da1f0132c4257b9b3c6dec205b518b768786228cbf75e4160235c",
+          "loopSoundIds": [
+            11602
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "11602": "assets/cache-audio/242.1/sound/11602.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         },
         "8": {
           "id": 8,
-          "gamevalName": "vampyrium"
+          "gamevalName": "vampyrium",
+          "definitionSha256": "b574d36040b5c23ba3bd0a9b7e02954e66b63a7d6f3cbaff3a9cf4cdccb0efd9",
+          "loopSoundIds": [
+            11601
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 1600,
+              "soundEffectIds": [
+                11599
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 800,
+              "soundEffectIds": [
+                11594,
+                11595,
+                2050,
+                2052
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 800,
+              "soundEffectIds": [
+                11596,
+                11597,
+                11598
+              ]
+            }
+          ],
+          "fadeInTicks": 20,
+          "fadeOutTicks": 20,
+          "soundEffectUrls": {
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11594": "assets/cache-audio/242.1/sound/11594.ogg?v=242.1",
+            "11595": "assets/cache-audio/242.1/sound/11595.ogg?v=242.1",
+            "11596": "assets/cache-audio/242.1/sound/11596.ogg?v=242.1",
+            "11597": "assets/cache-audio/242.1/sound/11597.ogg?v=242.1",
+            "11598": "assets/cache-audio/242.1/sound/11598.ogg?v=242.1",
+            "11599": "assets/cache-audio/242.1/sound/11599.ogg?v=242.1",
+            "11601": "assets/cache-audio/242.1/sound/11601.ogg?v=242.1"
+          }
         },
         "9": {
           "id": 9,
-          "gamevalName": "wyrmscraig"
+          "gamevalName": "wyrmscraig",
+          "definitionSha256": "59947ab510aef1bbda36d0ae5be74969f9c62b0152be0680b8504b3782d429ee",
+          "loopSoundIds": [
+            12021
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 1000,
+              "soundEffectIds": [
+                12022,
+                12023,
+                12024,
+                12025
+              ]
+            },
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 950,
+              "soundEffectIds": [
+                12016,
+                12017,
+                12018
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "12016": "assets/cache-audio/242.1/sound/12016.ogg?v=242.1",
+            "12017": "assets/cache-audio/242.1/sound/12017.ogg?v=242.1",
+            "12018": "assets/cache-audio/242.1/sound/12018.ogg?v=242.1",
+            "12021": "assets/cache-audio/242.1/sound/12021.ogg?v=242.1",
+            "12022": "assets/cache-audio/242.1/sound/12022.ogg?v=242.1",
+            "12023": "assets/cache-audio/242.1/sound/12023.ogg?v=242.1",
+            "12024": "assets/cache-audio/242.1/sound/12024.ogg?v=242.1",
+            "12025": "assets/cache-audio/242.1/sound/12025.ogg?v=242.1"
+          }
         },
         "10": {
           "id": 10,
-          "gamevalName": "wyrmscraig_underground"
+          "gamevalName": "wyrmscraig_underground",
+          "definitionSha256": "89dec7530c1bdd15f80a38eace5b95e316a72e283a50d50c67787f20df118b84",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2040,
+                2043,
+                2044,
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2040": "assets/cache-audio/242.1/sound/2040.ogg?v=242.1",
+            "2043": "assets/cache-audio/242.1/sound/2043.ogg?v=242.1",
+            "2044": "assets/cache-audio/242.1/sound/2044.ogg?v=242.1",
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1"
+          }
         },
         "11": {
           "id": 11,
-          "gamevalName": "tfa_ezekiel_finale"
+          "gamevalName": "tfa_ezekiel_finale",
+          "definitionSha256": "f24a024356605422f0d8540e0a9d6bfa15d71b83f15bf153c3e03096ecafd05f",
+          "loopSoundIds": [
+            12803,
+            12419
+          ],
+          "randomLayers": [],
+          "fadeInTicks": 50,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "12419": "assets/cache-audio/242.1/sound/12419.ogg?v=242.1",
+            "12803": "assets/cache-audio/242.1/sound/12803.ogg?v=242.1"
+          }
         },
         "12": {
           "id": 12,
-          "gamevalName": "tfa_vault"
+          "gamevalName": "tfa_vault",
+          "definitionSha256": "0f53c2be618ce6407d976063fe39d61235ce912a8a746f1e1ef1dbf2b9e2264a",
+          "loopSoundIds": [
+            8513,
+            12714
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 550,
+              "soundEffectIds": [
+                12708,
+                12709,
+                12710,
+                12711,
+                12712,
+                12713
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 1000,
+              "soundEffectIds": [
+                12699,
+                12700,
+                12701,
+                12702,
+                12703,
+                12704,
+                12705,
+                12706,
+                12706,
+                12707
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 2000,
+              "soundEffectIds": [
+                12690,
+                12691,
+                12692,
+                12693,
+                12694,
+                12695,
+                12696,
+                12697,
+                12698
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "12690": "assets/cache-audio/242.1/sound/12690.ogg?v=242.1",
+            "12691": "assets/cache-audio/242.1/sound/12691.ogg?v=242.1",
+            "12692": "assets/cache-audio/242.1/sound/12692.ogg?v=242.1",
+            "12693": "assets/cache-audio/242.1/sound/12693.ogg?v=242.1",
+            "12694": "assets/cache-audio/242.1/sound/12694.ogg?v=242.1",
+            "12695": "assets/cache-audio/242.1/sound/12695.ogg?v=242.1",
+            "12696": "assets/cache-audio/242.1/sound/12696.ogg?v=242.1",
+            "12697": "assets/cache-audio/242.1/sound/12697.ogg?v=242.1",
+            "12698": "assets/cache-audio/242.1/sound/12698.ogg?v=242.1",
+            "12699": "assets/cache-audio/242.1/sound/12699.ogg?v=242.1",
+            "12700": "assets/cache-audio/242.1/sound/12700.ogg?v=242.1",
+            "12701": "assets/cache-audio/242.1/sound/12701.ogg?v=242.1",
+            "12702": "assets/cache-audio/242.1/sound/12702.ogg?v=242.1",
+            "12703": "assets/cache-audio/242.1/sound/12703.ogg?v=242.1",
+            "12704": "assets/cache-audio/242.1/sound/12704.ogg?v=242.1",
+            "12705": "assets/cache-audio/242.1/sound/12705.ogg?v=242.1",
+            "12706": "assets/cache-audio/242.1/sound/12706.ogg?v=242.1",
+            "12707": "assets/cache-audio/242.1/sound/12707.ogg?v=242.1",
+            "12708": "assets/cache-audio/242.1/sound/12708.ogg?v=242.1",
+            "12709": "assets/cache-audio/242.1/sound/12709.ogg?v=242.1",
+            "12710": "assets/cache-audio/242.1/sound/12710.ogg?v=242.1",
+            "12711": "assets/cache-audio/242.1/sound/12711.ogg?v=242.1",
+            "12712": "assets/cache-audio/242.1/sound/12712.ogg?v=242.1",
+            "12713": "assets/cache-audio/242.1/sound/12713.ogg?v=242.1",
+            "12714": "assets/cache-audio/242.1/sound/12714.ogg?v=242.1"
+          }
         },
         "13": {
           "id": 13,
-          "gamevalName": "tfa_ocellus"
+          "gamevalName": "tfa_ocellus",
+          "definitionSha256": "f8aa8ff2fa416d58c2f249993b114dc718591b07c9265e988b67a1c709805f7c",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                12718,
+                12719,
+                12720,
+                12721,
+                12722,
+                12723,
+                12724
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 1100,
+              "soundEffectIds": [
+                12715,
+                12716,
+                12717
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1",
+            "12715": "assets/cache-audio/242.1/sound/12715.ogg?v=242.1",
+            "12716": "assets/cache-audio/242.1/sound/12716.ogg?v=242.1",
+            "12717": "assets/cache-audio/242.1/sound/12717.ogg?v=242.1",
+            "12718": "assets/cache-audio/242.1/sound/12718.ogg?v=242.1",
+            "12719": "assets/cache-audio/242.1/sound/12719.ogg?v=242.1",
+            "12720": "assets/cache-audio/242.1/sound/12720.ogg?v=242.1",
+            "12721": "assets/cache-audio/242.1/sound/12721.ogg?v=242.1",
+            "12722": "assets/cache-audio/242.1/sound/12722.ogg?v=242.1",
+            "12723": "assets/cache-audio/242.1/sound/12723.ogg?v=242.1",
+            "12724": "assets/cache-audio/242.1/sound/12724.ogg?v=242.1"
+          }
         },
         "14": {
           "id": 14,
-          "gamevalName": "tfa_nexus"
+          "gamevalName": "tfa_nexus",
+          "definitionSha256": "fa94b30d8802745153cca44a7b364dbbbd1afecff03f84d5cb58eaa50cf337db",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2040,
+                2043,
+                2044,
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                12718,
+                12719,
+                12720,
+                12721,
+                12722,
+                12723,
+                12724
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2040": "assets/cache-audio/242.1/sound/2040.ogg?v=242.1",
+            "2043": "assets/cache-audio/242.1/sound/2043.ogg?v=242.1",
+            "2044": "assets/cache-audio/242.1/sound/2044.ogg?v=242.1",
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1",
+            "12718": "assets/cache-audio/242.1/sound/12718.ogg?v=242.1",
+            "12719": "assets/cache-audio/242.1/sound/12719.ogg?v=242.1",
+            "12720": "assets/cache-audio/242.1/sound/12720.ogg?v=242.1",
+            "12721": "assets/cache-audio/242.1/sound/12721.ogg?v=242.1",
+            "12722": "assets/cache-audio/242.1/sound/12722.ogg?v=242.1",
+            "12723": "assets/cache-audio/242.1/sound/12723.ogg?v=242.1",
+            "12724": "assets/cache-audio/242.1/sound/12724.ogg?v=242.1"
+          }
         },
         "15": {
           "id": 15,
-          "gamevalName": "tfa_lobby"
+          "gamevalName": "tfa_lobby",
+          "definitionSha256": "265d1e393ceb51278a7c6141dafce70f2d9a9644256df04ead49de9c67fe9cc9",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                12718,
+                12719,
+                12720,
+                12721,
+                12722,
+                12723,
+                12724
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1",
+            "12718": "assets/cache-audio/242.1/sound/12718.ogg?v=242.1",
+            "12719": "assets/cache-audio/242.1/sound/12719.ogg?v=242.1",
+            "12720": "assets/cache-audio/242.1/sound/12720.ogg?v=242.1",
+            "12721": "assets/cache-audio/242.1/sound/12721.ogg?v=242.1",
+            "12722": "assets/cache-audio/242.1/sound/12722.ogg?v=242.1",
+            "12723": "assets/cache-audio/242.1/sound/12723.ogg?v=242.1",
+            "12724": "assets/cache-audio/242.1/sound/12724.ogg?v=242.1"
+          }
         },
         "16": {
           "id": 16,
-          "gamevalName": "tfa_bork"
+          "gamevalName": "tfa_bork",
+          "definitionSha256": "34914abb73f325beb6450420a30aef91d64e20ea44404b520b0164bddb2f6742",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         },
         "17": {
           "id": 17,
-          "gamevalName": "tfa_xarth"
+          "gamevalName": "tfa_xarth",
+          "definitionSha256": "34914abb73f325beb6450420a30aef91d64e20ea44404b520b0164bddb2f6742",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         },
         "18": {
           "id": 18,
-          "gamevalName": "tfa_dagonhai"
+          "gamevalName": "tfa_dagonhai",
+          "definitionSha256": "34914abb73f325beb6450420a30aef91d64e20ea44404b520b0164bddb2f6742",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         },
         "19": {
           "id": 19,
-          "gamevalName": "tfa_jelly"
+          "gamevalName": "tfa_jelly",
+          "definitionSha256": "34914abb73f325beb6450420a30aef91d64e20ea44404b520b0164bddb2f6742",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         },
         "20": {
           "id": 20,
-          "gamevalName": "tfa_moia"
+          "gamevalName": "tfa_moia",
+          "definitionSha256": "34914abb73f325beb6450420a30aef91d64e20ea44404b520b0164bddb2f6742",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         },
         "21": {
           "id": 21,
-          "gamevalName": "tfa_ezekiel"
+          "gamevalName": "tfa_ezekiel",
+          "definitionSha256": "34914abb73f325beb6450420a30aef91d64e20ea44404b520b0164bddb2f6742",
+          "loopSoundIds": [
+            8513
+          ],
+          "randomLayers": [
+            {
+              "minDelayTicks": 350,
+              "maxDelayTicks": 750,
+              "soundEffectIds": [
+                11590,
+                11591,
+                11592,
+                11593
+              ]
+            },
+            {
+              "minDelayTicks": 250,
+              "maxDelayTicks": 500,
+              "soundEffectIds": [
+                2048,
+                2045,
+                2050,
+                2052,
+                2046
+              ]
+            },
+            {
+              "minDelayTicks": 150,
+              "maxDelayTicks": 450,
+              "soundEffectIds": [
+                11607,
+                11608,
+                11609,
+                11610
+              ]
+            }
+          ],
+          "fadeInTicks": 100,
+          "fadeOutTicks": 100,
+          "soundEffectUrls": {
+            "2045": "assets/cache-audio/242.1/sound/2045.ogg?v=242.1",
+            "2046": "assets/cache-audio/242.1/sound/2046.ogg?v=242.1",
+            "2048": "assets/cache-audio/242.1/sound/2048.ogg?v=242.1",
+            "2050": "assets/cache-audio/242.1/sound/2050.ogg?v=242.1",
+            "2052": "assets/cache-audio/242.1/sound/2052.ogg?v=242.1",
+            "8513": "assets/cache-audio/242.1/sound/8513.ogg?v=242.1",
+            "11590": "assets/cache-audio/242.1/sound/11590.ogg?v=242.1",
+            "11591": "assets/cache-audio/242.1/sound/11591.ogg?v=242.1",
+            "11592": "assets/cache-audio/242.1/sound/11592.ogg?v=242.1",
+            "11593": "assets/cache-audio/242.1/sound/11593.ogg?v=242.1",
+            "11607": "assets/cache-audio/242.1/sound/11607.ogg?v=242.1",
+            "11608": "assets/cache-audio/242.1/sound/11608.ogg?v=242.1",
+            "11609": "assets/cache-audio/242.1/sound/11609.ogg?v=242.1",
+            "11610": "assets/cache-audio/242.1/sound/11610.ogg?v=242.1"
+          }
         }
       },
       "removed": {},
@@ -213551,7 +214678,7 @@ function createTable(rows){
    html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
  }
  html+='</table></div>';return html;}
-function createAmbientSoundTable(rows){return '<p class="audio-meta">Ambient sounds are layered soundscape definitions; they do not have a single audio file to play.</p>'+createTable(rows);}
+function createAmbientSoundTable(rows){let html='<p class="audio-meta">Play a 60-second preview mixed from this ambient definition and its sound effects. Timing and levels are approximate.</p><div class="table-wrap"><table><tr><th>ID</th><th>Name</th><th>Listen</th></tr>';for(const r of Object.values(rows)){const ids=[...(r.loopSoundIds||[]),...(r.randomLayers||[]).flatMap(x=>x.soundEffectIds||[])],urls=r.soundEffectUrls||{},ready=ids.length>0&&ids.every(id=>urls[id]);const play=ready?`<button type='button' class='ambient-play' data-id='${r.id}'>Play mix</button>`:'Audio unavailable';html+=`<tr><td><pre>${escapeHtml(r.id)}</pre></td><td><pre>${escapeHtml(r.gamevalName||'(unnamed)')}</pre></td><td>${play}</td></tr>`;}return html+'</table></div>';}
 function isAudioSection(section){return section==='Sound Effects'||section==='Music Tracks'||section==='Jingles';}
 function createAudioTable(section){const note=section==='Sound Effects'?'':' Music and jingles use General MIDI instruments, which can sound different from the game.';return `<div class='audio-catalog' data-section='${escapeHtml(section)}'><input class='audio-search' type='search' aria-label='Search ${escapeHtml(section)}' placeholder='Search names or IDs'><p class='audio-meta'>Press Play to listen directly in the browser.${note}</p><div class='audio-results'></div><button class='audio-more' type='button'>Show 100 more</button></div>`;}
 function renderAudioCatalog(box){
@@ -213644,9 +214771,22 @@ function build(){const c=document.getElementById('content');for(const [section,d
  sec.appendChild(detailsEl);c.appendChild(sec);}}
 build();
 document.querySelectorAll('.audio-catalog').forEach(renderAudioCatalog);
+let ambientPlayback=null;
+function stopAmbientPlayback(){const s=ambientPlayback;if(!s)return;ambientPlayback=null;s.closed=true;for(const t of s.timers)clearTimeout(t);for(const source of s.sources){try{source.stop();}catch(e){}}s.context.close().catch(()=>{});}
+async function playAmbientSound(row){
+ stopAmbientPlayback();const AudioEngine=window.AudioContext||window.webkitAudioContext;if(!AudioEngine){document.getElementById('audio-status').textContent='Web Audio is unavailable in this browser';return;}
+ const context=new AudioEngine(),session={context,closed:false,timers:new Set(),sources:new Set()};ambientPlayback=session;
+ try{await context.resume();const entries=Object.entries(row.soundEffectUrls||{});const sounds=await Promise.all(entries.map(async ([id,url])=>{const response=await fetch(url);if(!response.ok)throw new Error('Missing sound '+id);return [id,await context.decodeAudioData(await response.arrayBuffer())];}));if(session.closed)return;
+ const buffers=new Map(sounds),master=context.createGain();master.gain.setValueAtTime(0,context.currentTime);master.gain.linearRampToValueAtTime(0.65,context.currentTime+Math.max(0.05,(row.fadeInTicks||0)*0.02));master.connect(context.destination);
+ const start=(id,loop,gainValue)=>{const buffer=buffers.get(String(id));if(!buffer)return;const source=context.createBufferSource(),gain=context.createGain();source.buffer=buffer;source.loop=loop;gain.gain.value=gainValue;source.connect(gain).connect(master);source.onended=()=>session.sources.delete(source);session.sources.add(source);source.start();};
+ for(const id of row.loopSoundIds||[])start(id,true,0.35);
+ for(const layer of row.randomLayers||[]){const schedule=()=>{if(session.closed)return;const min=layer.minDelayTicks,max=layer.maxDelayTicks,delay=Math.max(100,(min+Math.random()*(max-min))*20);const timer=setTimeout(()=>{session.timers.delete(timer);if(session.closed)return;const ids=layer.soundEffectIds||[];if(ids.length)start(ids[Math.floor(Math.random()*ids.length)],false,0.5);schedule();},delay);session.timers.add(timer);};schedule();}
+ const timer=setTimeout(()=>{if(ambientPlayback===session){stopAmbientPlayback();document.getElementById('audio-status').textContent='Preview ended';}},60000);session.timers.add(timer);document.getElementById('audio-status').textContent='Playing 60-second ambient preview';
+ }catch(error){if(ambientPlayback===session){stopAmbientPlayback();document.getElementById('audio-status').textContent='Unable to play ambient preview';}}}
 document.addEventListener('input',e=>{if(e.target.classList.contains('audio-search')){const box=e.target.closest('.audio-catalog');box.dataset.limit=100;renderAudioCatalog(box);}});
-document.addEventListener('click',e=>{const more=e.target.closest('.audio-more');if(more){const box=more.closest('.audio-catalog');box.dataset.limit=Number(box.dataset.limit||100)+100;renderAudioCatalog(box);return;}const play=e.target.closest('.audio-play');if(play){const bar=document.getElementById('audio-bar'),audio=document.getElementById('audio-player');audio.pause();audio.src=play.dataset.url;document.getElementById('audio-title').textContent=play.dataset.title;document.getElementById('audio-status').textContent='';bar.hidden=false;audio.play().catch(()=>{document.getElementById('audio-status').textContent='Audio unavailable';});}});
+document.addEventListener('click',e=>{const more=e.target.closest('.audio-more');if(more){const box=more.closest('.audio-catalog');box.dataset.limit=Number(box.dataset.limit||100)+100;renderAudioCatalog(box);return;}const ambient=e.target.closest('.ambient-play');if(ambient){const row=data.details['Ambient Sounds'].added[ambient.dataset.id],bar=document.getElementById('audio-bar'),audio=document.getElementById('audio-player');audio.pause();audio.removeAttribute('src');audio.hidden=true;document.getElementById('audio-title').textContent='Ambient '+row.id+' — '+(row.gamevalName||'(unnamed)');document.getElementById('audio-status').textContent='Loading ambient mix';bar.hidden=false;playAmbientSound(row);return;}const play=e.target.closest('.audio-play');if(play){stopAmbientPlayback();const bar=document.getElementById('audio-bar'),audio=document.getElementById('audio-player');audio.hidden=false;audio.pause();audio.src=play.dataset.url;document.getElementById('audio-title').textContent=play.dataset.title;document.getElementById('audio-status').textContent='';bar.hidden=false;audio.play().catch(()=>{document.getElementById('audio-status').textContent='Audio unavailable';});}});
 document.getElementById('audio-player').addEventListener('error',()=>{document.getElementById('audio-status').textContent='Audio unavailable';});
-document.getElementById('audio-close').addEventListener('click',()=>{const audio=document.getElementById('audio-player');audio.pause();audio.removeAttribute('src');document.getElementById('audio-bar').hidden=true;});
+document.getElementById('audio-close').addEventListener('click',()=>{stopAmbientPlayback();const audio=document.getElementById('audio-player');audio.pause();audio.removeAttribute('src');document.getElementById('audio-bar').hidden=true;});
+window.addEventListener('pagehide',stopAmbientPlayback);
 </script>
 </body></html>
