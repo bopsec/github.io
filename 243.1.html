@@ -32280,9 +32280,9 @@ function createWidgetChangedTable(ch){
  let rows='';for(const [id,diff]of Object.entries(ch)){rows+=createWidgetChangedRows(id,diff);}
  if(!rows)return '<p class="empty">Metadata only</p>';
  return '<div class="table-wrap"><table class="changed-table"><colgroup><col class="id-col"><col class="meta-col"><col class="key-col"><col><col></colgroup><tr><th>id</th><th>gameval</th><th>key</th><th>prev</th><th>new</th></tr>'+rows+'</table></div>';}
-function createTable(rows){
+function createTable(rows,section){
  if(!rows||Object.keys(rows).length===0) return '<p class="empty">None</p>';
- let keys=new Set();for(const r of Object.values(rows)){for(const k of Object.keys(r))keys.add(k);}const cols=Array.from(keys);
+ let keys=new Set();for(const r of Object.values(rows)){for(const k of Object.keys(r))keys.add(k);}const preferred=section==='Varbits'?['id','gamevalName','varplayerDisplay','startBit','endBit','bitCount']:[];const cols=[...preferred.filter(k=>keys.has(k)),...Array.from(keys).filter(k=>!preferred.includes(k))];
  let html='<div class="table-wrap"><table><tr>'+cols.map(k=>'<th>'+escapeHtml(k)+'</th>').join('')+'</tr>';
  for(const [id,r]of Object.entries(rows)){
    html+='<tr>'+cols.map(k=>{ const v=r[k]; const out=(v&&typeof v==='object')?JSON.stringify(v,null,2):v; return '<td><pre>'+escapeHtml(out)+'</pre></td>'; }).join('')+'</tr>';
@@ -32371,8 +32371,8 @@ function build(){const c=document.getElementById('content');for(const [section,d
  if(section==='Widgets'){changedBody=createWidgetChangedTable(ch);}
  if(section==='Sprites'){changedBody=createSpriteChangedTable(ch);}
  if(section==='Clientscripts'){changedBody=createClientScriptChangedTable(ch);}
- const addedBody=isAudioSection(section)?createAudioTable(section):(section==='Ambient Sounds'?createAmbientSoundTable(add):(section==='Sprites'?createSpriteTable(add):(section==='Clientscripts'?createClientScriptTable(add):createTable(add))));
- const removedBody=section==='Sprites'?createSpriteTable(rem):(section==='Clientscripts'?createClientScriptTable(rem):createTable(rem));
+ const addedBody=isAudioSection(section)?createAudioTable(section):(section==='Ambient Sounds'?createAmbientSoundTable(add):(section==='Sprites'?createSpriteTable(add):(section==='Clientscripts'?createClientScriptTable(add):createTable(add,section))));
+ const removedBody=section==='Sprites'?createSpriteTable(rem):(section==='Clientscripts'?createClientScriptTable(rem):createTable(rem,section));
  const body='<div class="body">'+
    createBucket('Added','added',summary.added||0,addedBody)+
    createBucket('Removed','removed',summary.removed||0,removedBody)+
